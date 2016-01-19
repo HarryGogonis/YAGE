@@ -15,7 +15,7 @@ void Triangle::Create()
 	std::vector<VertexFormat> vertices;
 
 	//TODO programmtically input vertex
-	vertices.push_back(VertexFormat(glm::vec3(0.25, -0.25, 0.0), Color::RED));
+	vertices.push_back(VertexFormat(glm::vec3(0.25, -0.25, 0.0), Color(1,0,0)));
 	vertices.push_back(VertexFormat(glm::vec3(-0.25, -0.25, 0.0), Color::GREEN));
 	vertices.push_back(VertexFormat(glm::vec3(0.25, 0.25, 0.0), Color::BLUE));
 

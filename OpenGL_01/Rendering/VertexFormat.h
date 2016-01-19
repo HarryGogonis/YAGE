@@ -1,5 +1,6 @@
 #pragma once
 #include "glm\glm.hpp"
+#include "Util\Color.h"
 
 struct VertexFormat
 {
@@ -10,6 +11,12 @@ struct VertexFormat
 	{
 		position = inPos;
 		color = inColor;
+	}
+
+	VertexFormat(const glm::vec3 &inPos, const Color &inColor)
+	{
+		position = inPos;
+		color = inColor.toVec4();
 	}
 
 	VertexFormat() {}
