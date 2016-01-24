@@ -1,6 +1,7 @@
 #pragma once
 #include "glm\glm.hpp"
 #include "Util\Color.h"
+#include <iostream>
 
 struct VertexFormat
 {
@@ -13,11 +14,17 @@ struct VertexFormat
 		color = inColor;
 	}
 
-	VertexFormat(const glm::vec3 &inPos, const Color &inColor)
+	VertexFormat(const Vector3 &inPos, const Color &inColor)
 	{
-		position = inPos;
+		position = inPos.toVec3();
 		color = inColor.toVec4();
 	}
 
-	VertexFormat() {}
+	//VertexFormat() {}
+
+	friend std::ostream& operator<<(std::ostream& os, const VertexFormat& v) {
+		os << "x:" << v.position.x << "\ty:" << v.position.y << "\tz:" << v.position.z << std::endl;
+		return os;
+	}
+
 };

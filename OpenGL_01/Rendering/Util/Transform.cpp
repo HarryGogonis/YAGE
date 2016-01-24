@@ -14,6 +14,13 @@ Transform::Transform(Vector3 position, Vector3 scale, Quaternion rotation)
 	this->rotation = rotation;
 }
 
+Transform::Transform(Vector3 position)
+{
+	this->position = position;
+	this->scale = Vector3(1.0, 1.0, 1.0);
+	this->rotation = Quaternion();
+}
+
 Transform::~Transform()
 {
 

@@ -19,6 +19,14 @@ Color::Color(float r, float g, float b, float a)
 	this->a = a;
 }
 
+Color::Color(const Color & c)
+{
+	this->r = c.r;
+	this->g = c.g;
+	this->b = c.b;
+	this->a = c.a;
+}
+
 /*
  * Operator overloads
 */

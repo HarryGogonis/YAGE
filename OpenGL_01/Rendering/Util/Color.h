@@ -3,6 +3,7 @@
 
 /*
  * Reference: https://docs.oracle.com/javase/7/docs/api/java/awt/Color.html
+			  http://docs.unity3d.com/ScriptReference/Color.html
  * All colors are encoded as RGBA
 */
 
@@ -31,6 +32,7 @@ public:
 	const static Color HSV(int h, float s, float v);
 
 	Color(float r = 0.0, float g = 0.0, float b = 0.0, float a = 1.0);
+	Color(const Color& c);
 
 	const float getRed() const;
 	const float getGreen() const;
