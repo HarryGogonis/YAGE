@@ -4,7 +4,7 @@
 class Quad :public Model
 {
 public:
-	Quad();
+	Quad(Transform t, Color c);
 	~Quad();
 
 	void Create();
