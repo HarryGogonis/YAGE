@@ -5,6 +5,12 @@ Model::Model()
 
 }
 
+Model::Model(Transform t, Color c)
+{
+	this->transform = t;
+	this->color = c;
+}
+
 Model::~Model()
 {
 	Destroy();
