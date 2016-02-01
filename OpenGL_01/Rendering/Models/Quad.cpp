@@ -45,30 +45,46 @@ void Quad::Create()
 
 void Quad::Update()
 {
-	//TODO implement
+	// move to the right, wrap around viewport
+	if (transform.position.x > 200)
+		transform.position.x = -200;
+	transform.position.x += 0.05f;
+
+	// hue color changing!
+	const std::array<float, 3> hsv = color.getHSV();
+
+	if (hsv[0] >= 255)
+		color = Color::RED;
+	color = Color::HSV(hsv[0]+0.05, 1, 1);
+	//color = Color::GREEN;
+
+	std::vector<VertexFormat> vertices = GetVertices();
+
+	glBufferData(GL_ARRAY_BUFFER, sizeof(VertexFormat) * 4, &vertices[0], GL_STATIC_DRAW);
 }
 
 std::vector<VertexFormat> Quad::GetVertices()
 {
 	std::vector<VertexFormat> vertices;
-
+	float bScale = 50.0;
 	Vector3 c = this->transform.position;
-	Vector3 scale = this->transform.scale;
+	Matrix3 scale = this->transform.getScaleMatrix();
+	Matrix3 rotation = this->transform.getRotationMatrix();
 
-	//TODO Implement Rotation
-	vertices.push_back(VertexFormat(
-		Vector3(c.x - scale.x * 50.0f, c.y + scale.y * 50.0f, 0),
-		this->color));
-	vertices.push_back(VertexFormat(
-		Vector3(c.x + scale.x * 50.0f, c.y + scale.y * 50.0f, 0),
-		this->color));
-	vertices.push_back(VertexFormat(
-		Vector3(c.x - scale.x * 50.0f, c.y - scale.y * 50.0f, 0),
-		this->color));
-	vertices.push_back(VertexFormat(
-		Vector3(c.x + scale.x * 50.0f, c.y - scale.y * 50.0f, 0),
-		this->color));
+	Vector3 v1 = Vector3(c.x - bScale, c.y + bScale, 0);
+	Vector3 v2 = Vector3(c.x + bScale, c.y + bScale, 0);
+	Vector3 v3 = Vector3(c.x - bScale, c.y - bScale, 0);
+	Vector3 v4 = Vector3(c.x + bScale, c.y - bScale, 0);
 
+	v1 = rotation.dot(scale.dot(v1));
+	v2 = rotation.dot(scale.dot(v2));
+	v3 = rotation.dot(scale.dot(v3));
+	v4 = rotation.dot(scale.dot(v4));
+
+	vertices.push_back(VertexFormat(v1, this->color));
+	vertices.push_back(VertexFormat(v2, this->color));
+	vertices.push_back(VertexFormat(v3, this->color));
+	vertices.push_back(VertexFormat(v4, this->color));
 	return vertices;
 }
 

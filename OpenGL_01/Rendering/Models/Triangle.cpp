@@ -2,10 +2,9 @@
 #include "..\Util\Color.h"
 #include <iostream>
 
-Triangle::Triangle(Transform t, Color c) {
-	this->transform = t;
-	this->color = c;
-}
+Triangle::Triangle(Transform t, Color c): Model(t, c)
+{}
+
 Triangle::~Triangle() {} // use parent method
 
 void Triangle::Create()
@@ -53,20 +52,41 @@ void Triangle::Draw()
 	glDrawArrays(GL_TRIANGLES, 0, 3);
 }
 
+/*
+ * Returns the 2D representation of the Model
+ */
 std::vector<VertexFormat> Triangle::GetVertices()
 {
 	std::vector<VertexFormat> vertices;
-
+	float bScale = 50.0;
 	Vector3 c = this->transform.position;
-	Vector3 scale = this->transform.scale;
-	//TODO Equallateral triangle w/ no rotation
-	Vector3 x1 = Vector3(c.x * scale.x, (c.y + scale.y * 57.74f), 0.0f);
-	Vector3 x2 = Vector3(c.x - scale.x * 50.0f, c.y - scale.y * 28.87f, 0.0f);
-	Vector3 x3 = Vector3(c.x + scale.x * 50.0f, c.y - scale.y * 28.87f, 0.0f);
+	Matrix3 scale = this->transform.getScaleMatrix();
+	Matrix3 rotation = this->transform.getRotationMatrix();
 
-	vertices.push_back(VertexFormat(x1, Color::RED));
-	vertices.push_back(VertexFormat(x2, this->color));
-	vertices.push_back(VertexFormat(x3, this->color));
+	std::cout << "c:\n" << c << std::endl;
+
+	/* base vertices */
+	Vector3 v1 = Vector3(
+		c.x, 
+		c.y + bScale / 0.8660254f,
+		0.0f);
+	Vector3 v2 = Vector3(
+		c.x - bScale,
+		c.y - bScale * 0.5773503f,
+		0.0f);
+	Vector3 v3 = Vector3(
+		c.x + bScale,
+		c.y - bScale * 0.5773503f,
+		0.0f);
+
+	/* rotate and scale vertices */
+	v1 = rotation.dot(scale.dot(v1));
+	v2 = rotation.dot(scale.dot(v2));
+	v3 = rotation.dot(scale.dot(v3));
+
+	vertices.push_back(VertexFormat(v1, this->color));
+	vertices.push_back(VertexFormat(v2, this->color));
+	vertices.push_back(VertexFormat(v3, this->color));
 	
 	return vertices;
 }

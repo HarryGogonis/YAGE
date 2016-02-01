@@ -1,5 +1,4 @@
 #include "Color.h"
-
 /*
  * Static parameters
  */
@@ -87,6 +86,50 @@ const float Color::getAlpha() const
 	return a;
 }
 
+const std::array<float, 3> Color::getHSV() const
+{
+	/* Credit: http://stackoverflow.com/a/6930407 */
+	std::array<float, 3> output;
+	float min, max, delta;
+
+	min = (r < g) ? r : g;
+	min = (min < b) ? min : b;
+	max = (r > g) ? r : g;
+	max = (max > b) ? max : b;
+	delta = max - min;
+
+	output[2] = max; // v
+
+	if (delta < 0.00001)
+	{
+		output[0] = 0;
+		output[1] = 0;
+		return output;
+	}
+	if (max > 0.0)
+	{
+		output[1] = delta / max;
+	}
+	else
+	{
+		output[0] = NAN;
+		output[1] = 0;
+		return output;
+	}
+	if (r == max)
+		output[0] = (g - b) / delta;		// between yellow & magenta
+	else if (g == max)
+		output[0] = 2 + (b - r) / delta;	// between cyan & yellow
+	else
+		output[0] = 4 + (r - g) / delta;	// between magenta & cyan
+
+	output[0] *= 60.0f;
+	if (output[0] < 0.0)
+		output[0] += 360.0f;
+	
+	return output;
+}
+
 const glm::vec4 Color::toVec4() const
 {
 	return glm::vec4(r, g, b, a);
@@ -107,7 +150,7 @@ const Color Color::Lighten(const Color color, float percent)
 	return color + Color(percent, percent, percent, 0.0);
 }
 
-const Color Color::HSV(int h, float s, float v, float a) {
+const Color Color::HSV(float h, float s, float v, float a) {
 	// hue is in range [0,360]
 	// saturation, brightness, alpha is in range [0,1]
 	
@@ -115,7 +158,7 @@ const Color Color::HSV(int h, float s, float v, float a) {
 
 	h = h / 60;
 	float C = v * s;
-	float X = C * (1 - abs(h % 2 - 1));
+	float X = C * (1 - fabs( fmod(h,2) - 1));
 
 	Color color = Color();
 	if (h < 0)		return color;
@@ -127,10 +170,9 @@ const Color Color::HSV(int h, float s, float v, float a) {
 	else if (h < 6) color = Color(C, 0, X);
 	else			return color;
 
-	return color + Color(v - C, v - C, v - C, a);
-}
-
-const Color Color::HSV(int h, float s, float v)
-{
-	return HSV(h, s, v, 1);
+	return Color(
+		color.r + v - C,
+		color.g + v - C,
+		color.b + v - C,
+		a);
 }

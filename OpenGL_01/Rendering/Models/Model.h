@@ -19,12 +19,12 @@ public:
 
 	virtual GLuint GetVao() const override;
 	virtual const std::vector<GLuint>& GetVbos() const override;
-
+	Transform transform;
+	Color color;
 protected:
 	GLuint vao;
 	GLuint program;
 	std::vector<GLuint> vbos;
 
-	Transform transform;
-	Color color;
+
 };

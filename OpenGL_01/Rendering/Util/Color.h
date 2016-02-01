@@ -1,5 +1,6 @@
 #pragma once
-#include "glm\glm.hpp"
+#include <glm\vec4.hpp>
+#include <array>
 
 /*
  * Reference: https://docs.oracle.com/javase/7/docs/api/java/awt/Color.html
@@ -28,8 +29,7 @@ public:
 	const static Color Darken(const Color color, float percent);
 	const static Color Lighten(const Color color, float percent);
 
-	const static Color HSV(int h, float s, float v, float a);
-	const static Color HSV(int h, float s, float v);
+	const static Color HSV(float h, float s, float v, float a = 1.0);
 
 	Color(float r = 0.0, float g = 0.0, float b = 0.0, float a = 1.0);
 	Color(const Color& c);
@@ -38,6 +38,7 @@ public:
 	const float getGreen() const;
 	const float getBlue() const;
 	const float getAlpha() const;
+	const std::array<float, 3> getHSV() const;
 
 	const glm::vec4 toVec4() const;
 

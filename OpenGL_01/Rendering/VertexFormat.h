@@ -1,5 +1,4 @@
 #pragma once
-#include "glm\glm.hpp"
 #include "Util\Color.h"
 #include <iostream>
 
