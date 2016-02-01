@@ -27,11 +27,12 @@ Vector3::~Vector3()
 {
 }
 
-void Vector3::Set(float x, float y, float z)
+float & Vector3::operator[](int n)
 {
-	this->x = x;
-	this->y = y;
-	this->z = z;
+	assert(n >= 0 && n < 3);
+	if (n == 0) return x;
+	if (n == 1) return y;
+	return z;
 }
 
 const glm::vec3 Vector3::toVec3() const
