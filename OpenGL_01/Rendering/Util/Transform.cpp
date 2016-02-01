@@ -21,6 +21,20 @@ Transform::Transform(Vector3 position)
 	this->rotation = Quaternion();
 }
 
+Matrix3 Transform::getScaleMatrix()
+{
+	Matrix3 m = Matrix3::Zeroes();
+	m(0, 0) = scale.x;
+	m(1, 1) = scale.y;
+	m(2, 2) = scale.z;
+	return m;
+}
+
+Matrix3 Transform::getRotationMatrix()
+{
+	return rotation.rotationMatrix();
+}
+
 Transform::~Transform()
 {
 
