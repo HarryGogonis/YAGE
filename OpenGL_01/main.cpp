@@ -2,11 +2,12 @@
 #include "Managers\Scene_Manager.h"
 
 Shader_Manager* shaderManager;
-GLuint program;
 
 int main(int argc, char **argv)
 {
-	// GLUT Parameters
+	/* http://in2gpu.com/opengl-3/ */
+
+	/* GLUT Parameters */
 	WindowInfo window(
 		std::string("Beginner tutorial"), // name
 		400, 200, // position

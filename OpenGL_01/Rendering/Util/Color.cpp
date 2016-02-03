@@ -150,9 +150,12 @@ const Color Color::Lighten(const Color color, float percent)
 	return color + Color(percent, percent, percent, 0.0);
 }
 
+/**
+ * Create color via HSV value
+ * hue is in range [0,360]
+ * saturation, brightness, alpha is in range [0,1]
+ */
 const Color Color::HSV(float h, float s, float v, float a) {
-	// hue is in range [0,360]
-	// saturation, brightness, alpha is in range [0,1]
 	
 	// https://en.wikipedia.org/wiki/HSL_and_HSV#Converting_to_RGB
 

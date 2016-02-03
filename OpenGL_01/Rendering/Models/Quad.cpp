@@ -45,22 +45,6 @@ void Quad::Create()
 
 void Quad::Update()
 {
-	// move to the right, wrap around viewport
-	if (transform.position.x > 200)
-		transform.position.x = -200;
-	transform.position.x += 0.05f;
-
-	// hue color changing!
-	const std::array<float, 3> hsv = color.getHSV();
-
-	if (hsv[0] >= 255)
-		color = Color::RED;
-	color = Color::HSV(hsv[0]+0.05, 1, 1);
-	//color = Color::GREEN;
-
-	std::vector<VertexFormat> vertices = GetVertices();
-
-	glBufferData(GL_ARRAY_BUFFER, sizeof(VertexFormat) * 4, &vertices[0], GL_STATIC_DRAW);
 }
 
 std::vector<VertexFormat> Quad::GetVertices()
