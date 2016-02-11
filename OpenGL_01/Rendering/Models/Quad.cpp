@@ -1,9 +1,9 @@
 #include "Quad.h"
 #include "..\Util\Color.h"
+#include "../Util/Camera.h"
 
 Quad::Quad(Transform t, Color c): Model(t,c)
-{
-}
+{}
 
 Quad::~Quad()
 {}
@@ -45,6 +45,14 @@ void Quad::Create()
 
 void Quad::Update()
 {
+	std::cout << "UPDATE CALLED" << std::endl;
+//	transform.rotation.x = transform.rotation.x > 1 ? 0 : transform.rotation.x + 0.001;
+	transform.rotation.y = transform.rotation.y > 1 ? 0 : transform.rotation.y + 0.001;
+//	transform.rotation.z = transform.rotation.z > 1 ? 0 : transform.rotation.z + 0.001;
+	std::vector<VertexFormat> vertices = GetVertices();
+	glBufferData(GL_ARRAY_BUFFER, sizeof(VertexFormat) * 4, &vertices[0], GL_STATIC_DRAW);
+
+	
 }
 
 std::vector<VertexFormat> Quad::GetVertices()
@@ -54,6 +62,7 @@ std::vector<VertexFormat> Quad::GetVertices()
 	Vector3 c = this->transform.position;
 	Matrix3 scale = this->transform.getScaleMatrix();
 	Matrix3 rotation = this->transform.getRotationMatrix();
+	Camera camera = Camera::GetInstance();
 
 	Vector3 v1 = Vector3(c.x - bScale, c.y + bScale, 0);
 	Vector3 v2 = Vector3(c.x + bScale, c.y + bScale, 0);
