@@ -6,8 +6,8 @@ Models_Manager::Models_Manager()
 	// triangle game object
 	Transform t2 = Transform(
 		Vector4(0, 0, 0),
-		Vector4(0.5, 0.5, 1),
-		Quaternion(1.0, 0.5, 0.5, 0.5)
+		Vector4(1, 1, 1),
+		Quaternion()
 	);
 
 	Quad* quad = new Quad(t2, Color::RED);

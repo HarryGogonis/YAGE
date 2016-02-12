@@ -62,18 +62,22 @@ std::vector<VertexFormat> Quad::GetVertices()
 	Vector4 c = this->transform.position;
 	Matrix4 scale = this->transform.getScaleMatrix();
 	Matrix4 rotation = this->transform.getRotationMatrix();
-	Camera camera = Camera::GetInstance();
+	Matrix4 camera = Camera::GetInstance().Perspective();
 
 	Vector4 v1 = Vector4(c.x - bScale, c.y + bScale, 0);
 	Vector4 v2 = Vector4(c.x + bScale, c.y + bScale, 0);
 	Vector4 v3 = Vector4(c.x - bScale, c.y - bScale, 0);
 	Vector4 v4 = Vector4(c.x + bScale, c.y - bScale, 0);
 
-	v1 = rotation.dot(scale.dot(v1));
-	v2 = rotation.dot(scale.dot(v2));
-	v3 = rotation.dot(scale.dot(v3));
-	v4 = rotation.dot(scale.dot(v4));
+	//TODO matrix multiply, THEN dot product final matrix w/ position vector
+	Matrix4 m = rotation * scale - camera;
+	v1 = m.dot(v1);
+	v2 = m.dot(v2);
+	v3 = m.dot(v3);
+	v4 = m.dot(v4);
 
+	std::cout << "V1: " << v1 << std::endl;
+	
 	vertices.push_back(VertexFormat(v1, this->color));
 	vertices.push_back(VertexFormat(v2, this->color));
 	vertices.push_back(VertexFormat(v3, this->color));

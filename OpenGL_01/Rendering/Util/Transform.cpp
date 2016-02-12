@@ -21,9 +21,18 @@ Transform::Transform(Vector4 position)
 	this->rotation = Quaternion();
 }
 
+Matrix4 Transform::getTranslationMatrix()
+{
+	Matrix4 m = Matrix4::Identity();
+	m(0, 3) = position.x;
+	m(1, 3) = position.y;
+	m(2, 3) = position.z;
+	return m;
+}
+
 Matrix4 Transform::getScaleMatrix()
 {
-	Matrix4 m = Matrix4::Zeroes();
+	Matrix4 m = Matrix4::Identity();
 	m(0, 0) = scale.x;
 	m(1, 1) = scale.y;
 	m(2, 2) = scale.z;

@@ -8,14 +8,15 @@ Matrix4::~Matrix4()
 {
 }
 
-Matrix4 Matrix4::Zeroes()
+Matrix4 Matrix4::Identity()
 {
 	Matrix4 m;
 	for (int i = 0; i < ROWS; i++)
 	{
 		for (int j = 0; j < COLS; j++)
 		{
-			m(i,j) = 0;
+			if (i == j) m(i, j) = 1;
+			else		m(i, j) = 0;
 		}
 	}
 	return m;
@@ -57,4 +58,55 @@ std::ostream & operator<<(std::ostream & os, const Matrix4 & m)
 	}
 	return os;
 	// TODO: insert return statement here
+}
+
+Matrix4 operator*(const Matrix4 & A, const Matrix4 & B)
+{
+	// Matrix multiplication
+	Matrix4 m;
+	for (int i = 0; i < ROWS; i++)
+	{
+		for (int j = 0; j < COLS; j++)
+		{
+			int sum = 0;
+			for (int k = 0; k < ROWS; k++)
+			{
+				sum += A.get(i, k) * B.get(k, j);
+			}
+			m(i, j) = sum;
+		}
+	}
+	return m;
+}
+
+Matrix4 operator*(float c, const Matrix4 & A)
+{
+	// Matrix scalar operation
+	Matrix4 m;
+	for (int i = 0; i < ROWS; i++)
+	{
+		for (int j = 0; j < COLS; j++)
+		{
+			m(i, j) = c * A.get(i,j);
+		}
+	}
+	return Matrix4();
+}
+
+Matrix4 operator+(const Matrix4 &A, const Matrix4 &B)
+{
+	Matrix4 m;
+	for (int i = 0; i < ROWS; i++)
+	{
+		for (int j = 0; j < COLS; j++)
+		{
+			m(i, j) = A.get(i, j) + B.get(i,j);
+		}
+	}
+	return m;
+}
+
+Matrix4 operator-(const Matrix4 &A, const Matrix4 &B)
+{
+	return A + (-1.0f)*B;
 }

@@ -18,7 +18,7 @@ Vector4::Vector4(float x, float y, float z)
 	this->z = z;
 }
 
-Vector4::Vector4(float w, float x, float y, float z)
+Vector4::Vector4(float x, float y, float z, float w)
 {
 	this->w = w;
 	this->x = x;
@@ -41,15 +41,15 @@ Vector4::~Vector4()
 float & Vector4::operator[](int n)
 {
 	assert(n >= 0 && n < 4);
-	if (n == 0) return w;
-	if (n == 1) return x;
-	if (n == 2) return y;
-	return z;
+	if (n == 0) return x;
+	if (n == 1) return y;
+	if (n == 2) return z;
+	return w;
 }
 
 const glm::vec4 Vector4::toVec4() const
 {
-	return Vector4::SCALE * glm::vec4(w,x,y,z);
+	return Vector4::SCALE * glm::vec4(x,y,z,w);
 }
 
 Vector4 operator*(Vector4 v1, Vector4 v2)
@@ -61,15 +61,15 @@ Vector4 operator*(Vector4 v1, Vector4 v2)
 Vector4 operator+(Vector4 v1, Vector4 v2)
 {
 	return Vector4(
-			v1.w + v2.w,
-			v1.x + v2.x,
-			v1.y + v2.y,
-			v1.z + v2.z);
+		v1.x + v2.x,
+		v1.y + v2.y,
+		v1.z + v2.z,
+		v1.w + v2.w);
 }
 
 Vector4 operator*(float c, Vector4 v)
 {
-	return Vector4(c * v.w, c * v.x, c * v.y, c * v.z);
+	return Vector4(c * v.x, c * v.y, c * v.z, c * v.w);
 }
 
 bool operator==(Vector4 v1, Vector4 v2)
