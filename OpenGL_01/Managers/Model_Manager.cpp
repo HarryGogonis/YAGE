@@ -5,8 +5,8 @@ Models_Manager::Models_Manager()
 	//TODO more elegant solution, AKA method for creating models
 	// triangle game object
 	Transform t2 = Transform(
-		Vector3(0, 0, 0),
-		Vector3(0.5, 0.5, 1),
+		Vector4(0, 0, 0),
+		Vector4(0.5, 0.5, 1),
 		Quaternion(1.0, 0.5, 0.5, 0.5)
 	);
 

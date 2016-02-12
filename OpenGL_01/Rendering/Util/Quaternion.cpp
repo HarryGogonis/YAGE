@@ -20,9 +20,9 @@ Quaternion::~Quaternion()
 {
 }
 
-Matrix3 Quaternion::rotationMatrix()
+Matrix4 Quaternion::rotationMatrix()
 {
-	Matrix3 m;
+	Matrix4 m;
 	m(0, 0) = w * w + x * x - y * y - z * z;
 	m(0, 1) = 2 * x * y - 2 * w * z;
 	m(0, 2) = 2 * x * z + 2 * w * y;

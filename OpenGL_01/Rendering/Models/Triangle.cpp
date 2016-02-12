@@ -59,22 +59,22 @@ std::vector<VertexFormat> Triangle::GetVertices()
 {
 	std::vector<VertexFormat> vertices;
 	float bScale = 50.0;
-	Vector3 c = this->transform.position;
-	Matrix3 scale = this->transform.getScaleMatrix();
-	Matrix3 rotation = this->transform.getRotationMatrix();
+	Vector4 c = this->transform.position;
+	Matrix4 scale = this->transform.getScaleMatrix();
+	Matrix4 rotation = this->transform.getRotationMatrix();
 
 	std::cout << "c:\n" << c << std::endl;
 
 	/* base vertices */
-	Vector3 v1 = Vector3(
+	Vector4 v1 = Vector4(
 		c.x, 
 		c.y + bScale / 0.8660254f,
 		0.0f);
-	Vector3 v2 = Vector3(
+	Vector4 v2 = Vector4(
 		c.x - bScale,
 		c.y - bScale * 0.5773503f,
 		0.0f);
-	Vector3 v3 = Vector3(
+	Vector4 v3 = Vector4(
 		c.x + bScale,
 		c.y - bScale * 0.5773503f,
 		0.0f);

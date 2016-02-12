@@ -59,15 +59,15 @@ std::vector<VertexFormat> Quad::GetVertices()
 {
 	std::vector<VertexFormat> vertices;
 	float bScale = 50.0;
-	Vector3 c = this->transform.position;
-	Matrix3 scale = this->transform.getScaleMatrix();
-	Matrix3 rotation = this->transform.getRotationMatrix();
+	Vector4 c = this->transform.position;
+	Matrix4 scale = this->transform.getScaleMatrix();
+	Matrix4 rotation = this->transform.getRotationMatrix();
 	Camera camera = Camera::GetInstance();
 
-	Vector3 v1 = Vector3(c.x - bScale, c.y + bScale, 0);
-	Vector3 v2 = Vector3(c.x + bScale, c.y + bScale, 0);
-	Vector3 v3 = Vector3(c.x - bScale, c.y - bScale, 0);
-	Vector3 v4 = Vector3(c.x + bScale, c.y - bScale, 0);
+	Vector4 v1 = Vector4(c.x - bScale, c.y + bScale, 0);
+	Vector4 v2 = Vector4(c.x + bScale, c.y + bScale, 0);
+	Vector4 v3 = Vector4(c.x - bScale, c.y - bScale, 0);
+	Vector4 v4 = Vector4(c.x + bScale, c.y - bScale, 0);
 
 	v1 = rotation.dot(scale.dot(v1));
 	v2 = rotation.dot(scale.dot(v2));

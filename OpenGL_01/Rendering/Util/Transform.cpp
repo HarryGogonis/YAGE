@@ -2,35 +2,35 @@
 
 Transform::Transform()
 {
-	this->position = Vector3();
-	this->scale = Vector3(1.0, 1.0, 1.0);
+	this->position = Vector4();
+	this->scale = Vector4(1.0, 1.0, 1.0, 1.0);
 	this->rotation = Quaternion();
 }
 
-Transform::Transform(Vector3 position, Vector3 scale, Quaternion rotation)
+Transform::Transform(Vector4 position, Vector4 scale, Quaternion rotation)
 {
 	this->position = position;
 	this->scale = scale;
 	this->rotation = rotation;
 }
 
-Transform::Transform(Vector3 position)
+Transform::Transform(Vector4 position)
 {
 	this->position = position;
-	this->scale = Vector3(1.0, 1.0, 1.0);
+	this->scale = Vector4(1.0, 1.0, 1.0, 1.0);
 	this->rotation = Quaternion();
 }
 
-Matrix3 Transform::getScaleMatrix()
+Matrix4 Transform::getScaleMatrix()
 {
-	Matrix3 m = Matrix3::Zeroes();
+	Matrix4 m = Matrix4::Zeroes();
 	m(0, 0) = scale.x;
 	m(1, 1) = scale.y;
 	m(2, 2) = scale.z;
 	return m;
 }
 
-Matrix3 Transform::getRotationMatrix()
+Matrix4 Transform::getRotationMatrix()
 {
 	return rotation.rotationMatrix();
 }

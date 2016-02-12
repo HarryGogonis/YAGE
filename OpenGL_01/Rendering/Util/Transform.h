@@ -1,19 +1,19 @@
 #pragma once
-#include "Vector3.h"
+#include "Vector4.h"
 #include "Quaternion.h"
-#include "Matrix3.h"
+#include "Matrix4.h"
 class Transform
 {
 public:
-	Vector3 position, scale;
+	Vector4 position, scale;
 	Quaternion rotation;
 
 	Transform();
-	Transform(Vector3 position, Vector3 scale, Quaternion rotation);
-	Transform(Vector3 position);
+	Transform(Vector4 position, Vector4 scale, Quaternion rotation);
+	Transform(Vector4 position);
 
-	Matrix3 getScaleMatrix();
-	Matrix3 getRotationMatrix();
+	Matrix4 getScaleMatrix();
+	Matrix4 getRotationMatrix();
 
 	~Transform();
 };
