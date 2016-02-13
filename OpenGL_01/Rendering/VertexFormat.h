@@ -19,6 +19,11 @@ struct VertexFormat
 		position = inPos.toVec4();
 		color = inColor.toVec4();
 	}
+	VertexFormat(const glm::vec3 &inPos, const Color &inColor)
+	{
+		position = glm::vec4(inPos, 1.0);
+		color = inColor.toVec4();
+	}
 
 	//VertexFormat() {}
 

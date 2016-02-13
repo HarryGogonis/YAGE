@@ -6,6 +6,7 @@ class Quaternion
 public:
 	Quaternion();
 	Quaternion(float, float, float, float);
+	Quaternion(float, float, float);
 	~Quaternion();
 	float w, x, y, z;
 	Matrix4 rotationMatrix();

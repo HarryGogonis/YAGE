@@ -1,11 +1,13 @@
 #pragma once
 #include "Vector4.h"
+#include <glm\mat4x4.hpp>
 #define ROWS 4
 #define COLS 4
 class Matrix4
 {
 public:
 	Matrix4();
+	Matrix4(const glm::mat4&);
 	~Matrix4();
 	static Matrix4 Identity();
 	float& operator()(int, int);

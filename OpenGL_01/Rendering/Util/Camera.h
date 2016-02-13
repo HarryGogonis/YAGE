@@ -1,6 +1,8 @@
 #pragma once
 #include "Transform.h"
 #include "Matrix4.h"
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 
 class Camera
 {
@@ -12,9 +14,10 @@ public:
 		return instance;
 	}
 
-	static Matrix4 Perspective();
+	static glm::mat4 GetProjectionMatrix();
+	static glm::mat4 GetViewMatrix();
+	static void ComputeMatrices();
 
-	static Transform transform;
 	static float fov;
 	static float aspect;
 	static float zNear;
@@ -24,5 +27,7 @@ public:
 	void operator=(Camera const&) = delete;
 private:
 	Camera() {};
+	//static glm::mat4 ViewMatrix;
+	//static glm::mat4 ProjectionMatrix;
 };
 

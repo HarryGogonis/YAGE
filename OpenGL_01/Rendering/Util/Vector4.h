@@ -2,6 +2,7 @@
 #include <string>
 #include <iostream>
 #include <glm\vec4.hpp>
+#include <glm\vec3.hpp>
 /* Ref: http://docs.unity3d.com/ScriptReference/Vector4.html */
 class Vector4
 {
@@ -16,6 +17,7 @@ public:
 	
 	float& operator[](int);
 	const glm::vec4 toVec4() const;
+	const glm::vec3 toVec3() const;
 
 	float w, x, z, y;
 

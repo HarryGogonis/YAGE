@@ -63,8 +63,6 @@ std::vector<VertexFormat> Triangle::GetVertices()
 	Vector4 c = this->transform.position;
 	Matrix4 scale = this->transform.getScaleMatrix();
 	Matrix4 rotation = this->transform.getRotationMatrix();
-	Vector4 camV = Camera::GetInstance().transform.getRotationMatrix().dot(
-		Camera::GetInstance().transform.position);
 
 	std::cout << "c:\n" << c << std::endl;
 
@@ -84,9 +82,9 @@ std::vector<VertexFormat> Triangle::GetVertices()
 
 	/* rotate and scale vertices */
 	Matrix4 m = scale * rotation;
-	v1 = m.dot(v1) - camV;
-	v2 = m.dot(v2) - camV;
-	v3 = m.dot(v3) - camV;
+	v1 = m.dot(v1);
+	v2 = m.dot(v2);
+	v3 = m.dot(v3);
 
 	vertices.push_back(VertexFormat(v1, this->color));
 	vertices.push_back(VertexFormat(v2, this->color));

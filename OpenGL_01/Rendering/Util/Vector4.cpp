@@ -52,6 +52,11 @@ const glm::vec4 Vector4::toVec4() const
 	return Vector4::SCALE * glm::vec4(x,y,z,w);
 }
 
+const glm::vec3 Vector4::toVec3() const
+{
+	return glm::vec3(x,y,z);
+}
+
 Vector4 operator*(Vector4 v1, Vector4 v2)
 {
 	//TODO implement vector multiplication

@@ -4,6 +4,17 @@ Matrix4::Matrix4()
 {
 }
 
+Matrix4::Matrix4(const glm::mat4 &A)
+{
+	for (int i = 0; i < ROWS; i++)
+	{
+		for (int j = 0; j < COLS; j++)
+		{
+			m[i][j] = A[i][j];
+		}
+	}
+}
+
 Matrix4::~Matrix4()
 {
 }

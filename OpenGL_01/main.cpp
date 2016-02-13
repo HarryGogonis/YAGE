@@ -13,7 +13,7 @@ int main(int argc, char **argv)
 	WindowInfo window(
 		std::string("Beginner tutorial"), // name
 		400, 200, // position
-		800, 600, // size
+		1024, 768,
 		true	 // resize
 	);
 
