@@ -1,6 +1,6 @@
 #include "Quad.h"
 #include "..\Util\Color.h"
-#include "../Util/Camera.h"
+#include "..\Util\Camera.h"
 
 Quad::Quad(Transform t, Color c): Model(t,c)
 {}
@@ -45,14 +45,10 @@ void Quad::Create()
 
 void Quad::Update()
 {
-	std::cout << "UPDATE CALLED" << std::endl;
-//	transform.rotation.x = transform.rotation.x > 1 ? 0 : transform.rotation.x + 0.001;
-	transform.rotation.y = transform.rotation.y > 1 ? 0 : transform.rotation.y + 0.001;
-//	transform.rotation.z = transform.rotation.z > 1 ? 0 : transform.rotation.z + 0.001;
+	//const Camera& camera = Camera::GetInstance();
+	//camera.transform.position.x = camera.transform.position.x + 1;
 	std::vector<VertexFormat> vertices = GetVertices();
 	glBufferData(GL_ARRAY_BUFFER, sizeof(VertexFormat) * 4, &vertices[0], GL_STATIC_DRAW);
-
-	
 }
 
 std::vector<VertexFormat> Quad::GetVertices()
@@ -62,19 +58,27 @@ std::vector<VertexFormat> Quad::GetVertices()
 	Vector4 c = this->transform.position;
 	Matrix4 scale = this->transform.getScaleMatrix();
 	Matrix4 rotation = this->transform.getRotationMatrix();
-	Matrix4 camera = Camera::GetInstance().Perspective();
+	const Camera& camera = Camera::GetInstance();
 
 	Vector4 v1 = Vector4(c.x - bScale, c.y + bScale, 0);
 	Vector4 v2 = Vector4(c.x + bScale, c.y + bScale, 0);
 	Vector4 v3 = Vector4(c.x - bScale, c.y - bScale, 0);
 	Vector4 v4 = Vector4(c.x + bScale, c.y - bScale, 0);
 
-	//TODO matrix multiply, THEN dot product final matrix w/ position vector
-	Matrix4 m = rotation * scale - camera;
-	v1 = m.dot(v1);
-	v2 = m.dot(v2);
-	v3 = m.dot(v3);
-	v4 = m.dot(v4);
+	Vector4 camV = camera.transform.getRotationMatrix().dot(camera.transform.position);
+	std::cout << "camV\t" << camV << std::endl;
+
+	/* TODO - Camera effects position
+		* Camera is like a global rotation/translation 
+		* Idea: m = (rotation - cameraRotation) * scale * cameraTranslation
+		*
+		*/
+	
+	Matrix4 m = scale * rotation * camera.transform.getRotationMatrix();
+	v1 = m.dot(v1 - camera.transform.position);
+	v2 = m.dot(v2 - camV);
+	v3 = m.dot(v3) - camV;
+	v4 = m.dot(v4) - camV;
 
 	std::cout << "V1: " << v1 << std::endl;
 	

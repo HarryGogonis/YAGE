@@ -9,5 +9,6 @@ public:
 	~Quaternion();
 	float w, x, y, z;
 	Matrix4 rotationMatrix();
+	friend std::ostream& operator<<(std::ostream&, const Quaternion&);
 
 };

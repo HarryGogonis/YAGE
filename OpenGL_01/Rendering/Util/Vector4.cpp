@@ -67,6 +67,11 @@ Vector4 operator+(Vector4 v1, Vector4 v2)
 		v1.w + v2.w);
 }
 
+Vector4 operator-(Vector4 A, Vector4 B)
+{
+	return A + (-1.0f) * B;
+}
+
 Vector4 operator*(float c, Vector4 v)
 {
 	return Vector4(c * v.x, c * v.y, c * v.z, c * v.w);

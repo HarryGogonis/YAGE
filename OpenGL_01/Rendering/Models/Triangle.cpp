@@ -1,5 +1,6 @@
 #include "Triangle.h"
 #include "..\Util\Color.h"
+#include "..\Util\Camera.h"
 #include <iostream>
 
 Triangle::Triangle(Transform t, Color c): Model(t, c)
@@ -62,6 +63,8 @@ std::vector<VertexFormat> Triangle::GetVertices()
 	Vector4 c = this->transform.position;
 	Matrix4 scale = this->transform.getScaleMatrix();
 	Matrix4 rotation = this->transform.getRotationMatrix();
+	Vector4 camV = Camera::GetInstance().transform.getRotationMatrix().dot(
+		Camera::GetInstance().transform.position);
 
 	std::cout << "c:\n" << c << std::endl;
 
@@ -80,9 +83,10 @@ std::vector<VertexFormat> Triangle::GetVertices()
 		0.0f);
 
 	/* rotate and scale vertices */
-	v1 = rotation.dot(scale.dot(v1));
-	v2 = rotation.dot(scale.dot(v2));
-	v3 = rotation.dot(scale.dot(v3));
+	Matrix4 m = scale * rotation;
+	v1 = m.dot(v1) - camV;
+	v2 = m.dot(v2) - camV;
+	v3 = m.dot(v3) - camV;
 
 	vertices.push_back(VertexFormat(v1, this->color));
 	vertices.push_back(VertexFormat(v2, this->color));

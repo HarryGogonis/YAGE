@@ -20,8 +20,9 @@ public:
 	float w, x, z, y;
 
 	friend Vector4 operator* (Vector4, Vector4);
-	friend Vector4 operator+ (Vector4, Vector4);
 	friend Vector4 operator* (float, Vector4);
+	friend Vector4 operator+ (Vector4, Vector4);
+	friend Vector4 operator- (Vector4, Vector4);
 	friend bool operator== (Vector4, Vector4);
 	
 	friend std::ostream& operator<<(std::ostream& os, const Vector4& v);

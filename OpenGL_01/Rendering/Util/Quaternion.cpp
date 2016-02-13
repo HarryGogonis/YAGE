@@ -37,3 +37,9 @@ Matrix4 Quaternion::rotationMatrix()
 
 	return m;
 }
+
+std::ostream & operator<<(std::ostream & os, const Quaternion & v)
+{
+	os << "w:" << v.w << "\tx:" << v.x << "\ty:" << v.y << "\tz:" << v.z << std::endl;
+	return os;
+}

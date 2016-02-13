@@ -12,6 +12,7 @@ public:
 	Transform(Vector4 position, Vector4 scale, Quaternion rotation);
 	Transform(Vector4 position);
 
+	Matrix4 getTranslationMatrix();
 	Matrix4 getScaleMatrix();
 	Matrix4 getRotationMatrix();
 
