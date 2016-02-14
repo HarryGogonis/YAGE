@@ -1,6 +1,5 @@
 #include "Triangle.h"
 #include "..\Util\Color.h"
-#include <iostream>
 
 Triangle::Triangle(Transform t, Color c): Model(t, c)
 {}
@@ -59,30 +58,26 @@ std::vector<VertexFormat> Triangle::GetVertices()
 {
 	std::vector<VertexFormat> vertices;
 	float bScale = 50.0;
-	Vector3 c = this->transform.position;
-	Matrix3 scale = this->transform.getScaleMatrix();
-	Matrix3 rotation = this->transform.getRotationMatrix();
-
-	std::cout << "c:\n" << c << std::endl;
+	glm::vec4 c = this->transform.position;
+	glm::mat4 scale = this->transform.getScaleMatrix();
+	glm::mat4 rotation = this->transform.getRotationMatrix();
 
 	/* base vertices */
-	Vector3 v1 = Vector3(
+	glm::vec4 v1 = glm::vec4(
 		c.x, 
 		c.y + bScale / 0.8660254f,
-		0.0f);
-	Vector3 v2 = Vector3(
+		0.0f,
+		1.0f);
+	glm::vec4 v2 = glm::vec4(
 		c.x - bScale,
 		c.y - bScale * 0.5773503f,
-		0.0f);
-	Vector3 v3 = Vector3(
+		0.0f,
+		1.0f);
+	glm::vec4 v3 = glm::vec4(
 		c.x + bScale,
 		c.y - bScale * 0.5773503f,
-		0.0f);
-
-	/* rotate and scale vertices */
-	v1 = rotation.dot(scale.dot(v1));
-	v2 = rotation.dot(scale.dot(v2));
-	v3 = rotation.dot(scale.dot(v3));
+		0.0f,
+		1.0f);
 
 	vertices.push_back(VertexFormat(v1, this->color));
 	vertices.push_back(VertexFormat(v2, this->color));

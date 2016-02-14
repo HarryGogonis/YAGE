@@ -16,7 +16,6 @@ public:
 	virtual void Destroy() override;
 
 	virtual std::vector<VertexFormat> GetVertices() = 0;
-
 	virtual GLuint GetVao() const override;
 	virtual const std::vector<GLuint>& GetVbos() const override;
 	Transform transform;
