@@ -111,6 +111,7 @@ std::vector<VertexFormat> Quad::GetVertices()
 	glm::mat4 ProjectionMatrix = Camera::GetProjectionMatrix();
 	glm::mat4 ModelMatrix = scale * rotation;
 	glm::mat4 MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+	GLuint MatrixID = glGetUniformLocation(program, "MVP");
 
 	vertices.push_back(VertexFormat(v1, this->color));
 	vertices.push_back(VertexFormat(v2, this->color));
