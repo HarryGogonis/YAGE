@@ -1,19 +1,20 @@
 #pragma once
-#include "Vector3.h"
 #include "Quaternion.h"
-#include "Matrix3.h"
+#include <glm/glm.hpp>
+
 class Transform
 {
 public:
-	Vector3 position, scale;
+	glm::vec4 position, scale;
 	Quaternion rotation;
 
 	Transform();
-	Transform(Vector3 position, Vector3 scale, Quaternion rotation);
-	Transform(Vector3 position);
+	Transform(glm::vec4 position, glm::vec4 scale, Quaternion rotation);
+	Transform(glm::vec4 position);
 
-	Matrix3 getScaleMatrix();
-	Matrix3 getRotationMatrix();
+	glm::mat4 getTranslationMatrix();
+	glm::mat4 getScaleMatrix();
+	glm::mat4 getRotationMatrix();
 
 	~Transform();
 };

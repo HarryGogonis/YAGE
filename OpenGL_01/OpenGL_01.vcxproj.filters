@@ -45,21 +45,20 @@
     <ClCompile Include="Rendering\Util\Color.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Rendering\Util\Vector3.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Rendering\Util\Transform.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Rendering\Util\Quaternion.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Rendering\Util\Matrix3.cpp">
+    <ClCompile Include="Rendering\Util\Camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="Shaders\Fragment_Shader.glsl" />
+    <None Include="Shaders\Vertex_Shader.glsl" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Managers\Shader_Manager.h">
@@ -107,16 +106,13 @@
     <ClInclude Include="Rendering\Util\Color.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Rendering\Util\Vector3.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Rendering\Util\Transform.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Rendering\Util\Quaternion.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Rendering\Util\Matrix3.h">
+    <ClInclude Include="Rendering\Util\Camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

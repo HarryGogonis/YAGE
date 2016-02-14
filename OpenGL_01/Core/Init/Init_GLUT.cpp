@@ -24,6 +24,9 @@ void Init_GLUT::init(const WindowInfo& windowInfo,
 		glutInitContextProfile(GLUT_COMPATIBILITY_PROFILE);
 	}
 
+	glEnable(GL_DEPTH_TEST);
+	glDepthFunc(GL_LESS);
+	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 	glutInitDisplayMode(frameBufferInfo.flags);
 	glutInitWindowPosition(windowInfo.position_x, windowInfo.position_y);
 	glutInitWindowSize(windowInfo.width, windowInfo.height);
@@ -44,7 +47,6 @@ void Init_GLUT::init(const WindowInfo& windowInfo,
 
 void Init_GLUT::run()
 {
-	std::cout << "GLUT:\t Start Running" << std::endl;
 	glutMainLoop();
 }
 

@@ -2,29 +2,32 @@
 
 Models_Manager::Models_Manager()
 {
-	//TODO more elegant solution, AKA method for creating models
-	// triangle game object
-	Transform t1 = Transform(
-		Vector3(0, 0, 0),
-		Vector3(1, 1, 1),
+	Quad* quad1 = new Quad(Transform(
+		glm::vec4(0, 0, 0, 1),
+		glm::vec4(1, 1, 1, 1),
 		Quaternion()
-	);
+		), Color::RED);
+	quad1->SetProgram(Shader_Manager::GetShader("colorShader"));
+	quad1->Create();
+	gameModelList["quad1"] = quad1;
 
-	Triangle* triangle = new Triangle(t1, Color::RED);
-	triangle->SetProgram(Shader_Manager::GetShader("colorShader"));
-	triangle->Create();
-	gameModelList["triangle"] = triangle;
+	Quad* quad2 = new Quad(Transform(
+		glm::vec4(5, 0, 0, 1),
+		glm::vec4(1, 1, 1, 1),
+		Quaternion()
+		), Color::RED);
+	quad2->SetProgram(Shader_Manager::GetShader("colorShader"));
+	quad2->Create();
+	gameModelList["quad2"] = quad2;
 
-	Transform t2 = Transform(
-		Vector3(0, 0, 0),
-		Vector3(0.5, 0.5, 1),
-		Quaternion(1.0, 0.5, 0.5, 0.5)
-	);
-
-	Quad* quad = new Quad(t2, Color::RED);
-	quad->SetProgram(Shader_Manager::GetShader("colorShader"));
-	quad->Create();
-	gameModelList["quad"] = quad;
+	Quad* quad3 = new Quad(Transform(
+		glm::vec4(-5, 0, 0, 1),
+		glm::vec4(1, 1, 1, 1),
+		Quaternion()
+		), Color::RED);
+	quad3->SetProgram(Shader_Manager::GetShader("colorShader"));
+	quad3->Create();
+	gameModelList["quad3"] = quad3;
 }
 
 Models_Manager::~Models_Manager()
