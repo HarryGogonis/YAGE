@@ -5,8 +5,8 @@ Models_Manager::Models_Manager()
 	//TODO more elegant solution, AKA method for creating models
 	// triangle game object
 	Transform t2 = Transform(
-		Vector4(0, 0, 0),
-		Vector4(1, 1, 1),
+		glm::vec4(0, 0, 0, 1),
+		glm::vec4(1, 1, 1, 1),
 		Quaternion()
 	);
 

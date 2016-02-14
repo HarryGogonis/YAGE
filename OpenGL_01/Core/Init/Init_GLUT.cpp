@@ -44,7 +44,6 @@ void Init_GLUT::init(const WindowInfo& windowInfo,
 
 void Init_GLUT::run()
 {
-	int i;
 	glutMainLoop();
 }
 

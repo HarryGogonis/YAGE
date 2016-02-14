@@ -1,5 +1,6 @@
 #pragma once
-#include "Matrix4.h"
+#include <glm/glm.hpp>
+#include <iostream>
 
 class Quaternion
 {
@@ -9,7 +10,7 @@ public:
 	Quaternion(float, float, float);
 	~Quaternion();
 	float w, x, y, z;
-	Matrix4 rotationMatrix();
+	glm::mat4 rotationMatrix();
 	friend std::ostream& operator<<(std::ostream&, const Quaternion&);
 
 };
