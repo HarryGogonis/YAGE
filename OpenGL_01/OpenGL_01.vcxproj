@@ -118,6 +118,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Rendering\Util\Camera.cpp" />
     <ClCompile Include="Core\Init\Init_GLEW.cpp" />
     <ClCompile Include="Core\Init\Init_GLUT.cpp" />
     <ClCompile Include="Managers\Model_Manager.cpp" />
@@ -128,15 +129,16 @@
     <ClCompile Include="Rendering\Models\Model.cpp" />
     <ClCompile Include="Rendering\Models\Quad.cpp" />
     <ClCompile Include="Rendering\Models\Triangle.cpp" />
-    <ClCompile Include="Rendering\Util\Matrix3.cpp" />
     <ClCompile Include="Rendering\Util\Quaternion.cpp" />
     <ClCompile Include="Rendering\Util\Transform.cpp" />
-    <ClCompile Include="Rendering\Util\Vector3.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="Shaders\Fragment_Shader.glsl" />
+    <None Include="Shaders\Vertex_Shader.glsl" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Rendering\Util\Camera.h" />
     <ClInclude Include="Core\Init\ContextInfo.h" />
     <ClInclude Include="Core\Init\FrameBufferInfo.h" />
     <ClInclude Include="Core\Init\IListener.h" />
@@ -150,10 +152,8 @@
     <ClInclude Include="Rendering\Models\Model.h" />
     <ClInclude Include="Rendering\Models\Quad.h" />
     <ClInclude Include="Rendering\Models\Triangle.h" />
-    <ClInclude Include="Rendering\Util\Matrix3.h" />
     <ClInclude Include="Rendering\Util\Quaternion.h" />
     <ClInclude Include="Rendering\Util\Transform.h" />
-    <ClInclude Include="Rendering\Util\Vector3.h" />
     <ClInclude Include="Rendering\VertexFormat.h" />
     <ClInclude Include="Rendering\IGameObject.h" />
   </ItemGroup>

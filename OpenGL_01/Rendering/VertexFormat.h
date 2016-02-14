@@ -1,6 +1,5 @@
 #pragma once
-#include "Util\Color.h"
-#include "Util\Vector4.h"
+#include "Util/Color.h"
 #include <iostream>
 
 struct VertexFormat
@@ -14,9 +13,14 @@ struct VertexFormat
 		color = inColor;
 	}
 
-	VertexFormat(const Vector4 &inPos, const Color &inColor)
+	VertexFormat(const glm::vec4 &inPos, const Color &inColor)
 	{
-		position = inPos.toVec4();
+		position = inPos;
+		color = inColor.toVec4();
+	}
+	VertexFormat(const glm::vec3 &inPos, const Color &inColor)
+	{
+		position = glm::vec4(inPos, 1.0);
 		color = inColor.toVec4();
 	}
 

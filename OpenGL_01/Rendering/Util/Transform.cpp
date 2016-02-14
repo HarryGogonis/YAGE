@@ -2,35 +2,44 @@
 
 Transform::Transform()
 {
-	this->position = Vector3();
-	this->scale = Vector3(1.0, 1.0, 1.0);
+	this->position = glm::vec4(0.0, 0.0, 0.0, 1.0);
+	this->scale = glm::vec4(1.0, 1.0, 1.0, 1.0);
 	this->rotation = Quaternion();
 }
 
-Transform::Transform(Vector3 position, Vector3 scale, Quaternion rotation)
+Transform::Transform(glm::vec4 position, glm::vec4 scale, Quaternion rotation)
 {
 	this->position = position;
 	this->scale = scale;
 	this->rotation = rotation;
 }
 
-Transform::Transform(Vector3 position)
+Transform::Transform(glm::vec4 position)
 {
 	this->position = position;
-	this->scale = Vector3(1.0, 1.0, 1.0);
+	this->scale = glm::vec4(1.0, 1.0, 1.0, 1.0);
 	this->rotation = Quaternion();
 }
 
-Matrix3 Transform::getScaleMatrix()
+glm::mat4 Transform::getTranslationMatrix()
 {
-	Matrix3 m = Matrix3::Zeroes();
-	m(0, 0) = scale.x;
-	m(1, 1) = scale.y;
-	m(2, 2) = scale.z;
+	glm::mat4 m = glm::mat4(1.0f);
+	m[0][3] = position.x;
+	m[1][3] = position.y;
+	m[2][3] = position.z;
 	return m;
 }
 
-Matrix3 Transform::getRotationMatrix()
+glm::mat4 Transform::getScaleMatrix()
+{
+	glm::mat4 m = glm::mat4(1.0f);
+	m[0][0] = scale.x;
+	m[1][1] = scale.y;
+	m[2][2] = scale.z;
+	return m;
+}
+
+glm::mat4 Transform::getRotationMatrix()
 {
 	return rotation.rotationMatrix();
 }

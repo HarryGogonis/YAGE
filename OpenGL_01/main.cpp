@@ -8,13 +8,16 @@ int main(int argc, char **argv)
 	/* http://in2gpu.com/opengl-3/ */
 
 	/* GLUT Parameters */
+
+	int i;
 	WindowInfo window(
 		std::string("Beginner tutorial"), // name
 		400, 200, // position
-		800, 600, // size
+		1024, 768,
 		true	 // resize
 	);
-	ContextInfo context(4, 3, true); // OpenGL major, minor, core
+
+	ContextInfo context(3, 0, true); // OpenGL major, minor, core
 	FrameBufferInfo frameBufferinfo(true, true, true, true); // OpenGL buffer flags
 
 	Init_GLUT::init(window, context, frameBufferinfo);
@@ -23,7 +26,6 @@ int main(int argc, char **argv)
 	Init_GLUT::setListener(scene);
 
 	Init_GLUT::run();
-	
 	// clean up
 	delete scene;
 	return 0;

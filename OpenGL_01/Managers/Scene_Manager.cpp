@@ -1,4 +1,5 @@
 #include "Scene_Manager.h"
+#include "../Rendering/Util/Camera.h"
 
 Scene_Manager::Scene_Manager()
 {
@@ -20,6 +21,7 @@ Scene_Manager::~Scene_Manager()
 
 void Scene_Manager::notifyBeginFrame()
 {
+	Camera::ComputeMatrices();
 	models_manager->Update();
 }
 
