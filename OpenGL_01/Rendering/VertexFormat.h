@@ -4,27 +4,21 @@
 
 struct VertexFormat
 {
-	glm::vec4 position; // first vertex attrib
+	glm::vec3 position; // first vertex attrib
+	glm::vec2 uv;
 	glm::vec4 color;
 
-	VertexFormat(const glm::vec4 &inPos, const glm::vec4 &inColor)
+	VertexFormat(const glm::vec3 &inPos, const glm::vec2& inUV)
 	{
 		position = inPos;
-		color = inColor;
+		uv = inUV;
 	}
 
-	VertexFormat(const glm::vec4 &inPos, const Color &inColor)
+	VertexFormat(const glm::vec4 &inPos, const Color inColor)
 	{
-		position = inPos;
+		position = glm::vec3(inPos.x, inPos.y, inPos.z);
 		color = inColor.toVec4();
 	}
-	VertexFormat(const glm::vec3 &inPos, const Color &inColor)
-	{
-		position = glm::vec4(inPos, 1.0);
-		color = inColor.toVec4();
-	}
-
-	//VertexFormat() {}
 
 	friend std::ostream& operator<<(std::ostream& os, const VertexFormat& v) {
 		os << "x:" << v.position.x << "\ty:" << v.position.y << "\tz:" << v.position.z << std::endl;

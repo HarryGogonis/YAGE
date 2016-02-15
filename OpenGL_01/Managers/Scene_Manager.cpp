@@ -6,9 +6,13 @@ Scene_Manager::Scene_Manager()
 	glEnable(GL_DEPTH_TEST);
 
 	shader_manager = new Shader_Manager();
+
 	shader_manager->CreateProgram("colorShader",
 		"Shaders\\Vertex_Shader.glsl",
 		"Shaders\\Fragment_Shader.glsl");
+	shader_manager->CreateProgram("textureShader",
+		"Shaders\\TextureVertexShader.glsl",
+		"Shaders\\TextureFragmentShader.glsl");
 
 	models_manager = new Models_Manager();
 }

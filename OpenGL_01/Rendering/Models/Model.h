@@ -2,6 +2,7 @@
 #include <vector>
 #include "../IGameObject.h"
 #include "../VertexFormat.h"
+#include "../Util/Camera.h"
 
 class Model :public IGameObject
 {
@@ -24,6 +25,7 @@ protected:
 	GLuint vao;
 	GLuint program;
 	std::vector<GLuint> vbos;
+	std::vector<GLuint> uvbos;
 
 
 };

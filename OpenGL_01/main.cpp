@@ -8,8 +8,6 @@ int main(int argc, char **argv)
 	/* http://in2gpu.com/opengl-3/ */
 
 	/* GLUT Parameters */
-
-	int i;
 	WindowInfo window(
 		std::string("Beginner tutorial"), // name
 		400, 200, // position
@@ -26,6 +24,7 @@ int main(int argc, char **argv)
 	Init_GLUT::setListener(scene);
 
 	Init_GLUT::run();
+
 	// clean up
 	delete scene;
 	return 0;

@@ -10,5 +10,5 @@ public:
 	void Create();
 	virtual void Draw() override final;
 	virtual void Update() override final;
-	virtual std::vector<VertexFormat> GetVertices() override;
+	virtual std::vector<VertexFormat> GetVertices() override final;
 };
