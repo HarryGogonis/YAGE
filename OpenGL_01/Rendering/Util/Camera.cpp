@@ -8,13 +8,13 @@ float Camera::aspect = 1.0f;
 float hAngle = 3.14f;
 float vAngle = 0.0f;
 float speed = 3.0f;
-float mouseSpeed = 0.05f;
+float mouseSpeed = 0.5f;
 
-glm::vec3 position = glm::vec3(4, 3, 3);
+glm::vec3 position = glm::vec3(0, 0, 5);
 glm::vec3 direction, right, up;
 
 float deltaTime = 0.0f;
-double cursor_x, cursor_y;
+double x_origin, y_origin;
 bool hRotationEnabled, vRotationEnabled;
 
 glm::mat4 ViewMatrix;
@@ -31,11 +31,16 @@ glm::mat4 Camera::GetViewMatrix()
 
 void updateMouseLocation(int x, int y)
 {
-	std::cout << "x=" << x << "y=" << y << std::endl;
+	double dx = x - x_origin;
+	double dy = y - y_origin;
+	std::cout << "deltaTime" << deltaTime <<  std::endl;
 	if (hRotationEnabled)
-		hAngle += mouseSpeed * deltaTime * float(1024 / 2 - cursor_x);
+		hAngle += mouseSpeed * deltaTime * float(dx);
 	if (vRotationEnabled)
-		vAngle += mouseSpeed * deltaTime * float(768 / 2 - cursor_y);
+		vAngle += mouseSpeed * deltaTime * float(dy);
+
+	x_origin = x;
+	y_origin = y;
 }
 
 /*
@@ -44,18 +49,29 @@ void updateMouseLocation(int x, int y)
 */
 void onMouseButton(int button, int state, int x, int y)
 {
-	std::cout << "button: " << button << "\tstate: " << state << std::endl;
 	hRotationEnabled = false;
 	vRotationEnabled = false;
 	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
 	{
+		x_origin = x;
+		y_origin = y;
 		hRotationEnabled = true;
 		vRotationEnabled = true;
+	}
+	else if (button == 3 && state == GLUT_DOWN) // Mouse wheel down
+	{
+		position += direction * speed;
+	}
+	else if (button == 4 && state == GLUT_DOWN) // Mouse wheel up
+	{
+		position -= direction * speed;
 	}
 }
 
 void onKeyPressed(int key, int x, int y)
 {
+
+	std::cout << "deltaTime" << deltaTime << std::endl;
 	if (key == GLUT_KEY_UP)
 		position += direction * speed;
 	if (key == GLUT_KEY_DOWN)
@@ -87,7 +103,7 @@ void Camera::ComputeMatrices()
 		0,
 		cos(hAngle - 3.14/2.0f));
 
-	up = glm::cross(right, direction);
+	up = cross(right, direction);
 
 	// listen for mouse events
 	//TODO call outside of this class
@@ -95,9 +111,9 @@ void Camera::ComputeMatrices()
 	glutMouseFunc(onMouseButton);
 
 	ProjectionMatrix = glm::perspective(glm::radians(fov), 4.0f / 3.0f, 0.1f, 100.0f);
-	ViewMatrix = glm::lookAt(
+	ViewMatrix = lookAt(
 			position, // camera position
-			direction, // camera looks here
+			position + direction, // camera looks here
 			up
 		);
 	pTime = cTime; // update "previous" time
