@@ -73,9 +73,9 @@ void onKeyPressed(int key, int x, int y)
 
 	std::cout << "deltaTime" << deltaTime << std::endl;
 	if (key == GLUT_KEY_UP)
-		position += direction * speed;
+		position += up * speed;
 	if (key == GLUT_KEY_DOWN)
-		position -= direction * speed;
+		position -= up * speed;
 	if (key == GLUT_KEY_RIGHT)
 		position += right * speed;
 	if (key == GLUT_KEY_LEFT)
