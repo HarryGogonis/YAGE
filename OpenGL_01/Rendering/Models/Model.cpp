@@ -5,10 +5,9 @@ Model::Model()
 
 }
 
-Model::Model(Transform t, Color c)
+Model::Model(Transform t)
 {
 	this->transform = t;
-	this->color = c;
 }
 
 Model::~Model()
@@ -41,9 +40,34 @@ const std::vector<GLuint>& Model::GetVbos() const
 	return vbos;
 }
 
+const GLuint Model::GetTexture(const std::string& textureName) const
+{
+	if (textures.count(textureName) == 0)
+	{
+		std::cout << "Error finding texture " << textureName << std::endl;
+		return 0;
+	}
+	return textures.at(textureName);
+}
+
+void Model::SetTexture(const std::string& textureName, GLuint texture)
+{
+	if (texture == 0) return;
+	textures[textureName] = texture;
+}
+
 void Model::Destroy()
 {
 	glDeleteVertexArrays(1, &vao);
 	glDeleteBuffers(vbos.size(), &vbos[0]);
 	vbos.clear();
+
+	if (textures.size() > 0)
+	{
+		for (auto t: textures)
+		{
+			glDeleteTextures(1, &t.second);
+		}
+		textures.clear();
+	}
 }

@@ -1,6 +1,10 @@
 #include "Scene_Manager.h"
 #include "../Rendering/Util/Camera.h"
 
+double currentTime;
+double lastTime = 0;
+int numFrames;
+
 Scene_Manager::Scene_Manager()
 {
 	glEnable(GL_DEPTH_TEST);
@@ -25,6 +29,13 @@ Scene_Manager::~Scene_Manager()
 
 void Scene_Manager::notifyBeginFrame()
 {
+	currentTime = glutGet(GLUT_ELAPSED_TIME);
+	numFrames++;
+	if (currentTime - lastTime >= 1.0)
+	{
+		printf("\rms/frame= %f", 1000.0 / double(numFrames));
+		numFrames = 0;
+	}
 	Camera::ComputeMatrices();
 	models_manager->Update();
 }
@@ -40,6 +51,7 @@ void Scene_Manager::notifyDisplayFrame()
 void Scene_Manager::notifyEndFrame()
 {
 	//TODO implement
+	lastTime = glutGet(GLUT_ELAPSED_TIME);
 }
 
 void Scene_Manager::notifyReshape(int width, int height,

@@ -4,25 +4,37 @@
 #include <string>
 #include "Models_Manager.h"
 #include "../Rendering/Models/CustomObject.h"
-#include "../Rendering/Models/Quad.h"
+#include "../Rendering/Models/Cube.h"
+#include "SOIL.h"
 
 Models_Manager::Models_Manager()
 {
-	CustomObject* cubeObj = new CustomObject("cube.obj", "uvmap.DDS");
+	CustomObject* cubeObj = new CustomObject("Examples\\cube.obj", "Examples\\Crate.bmp");
 	cubeObj->SetProgram(Shader_Manager::GetShader("textureShader"));
+	cubeObj->transform.position = glm::vec4(0, 0, -50, 1);
+	cubeObj->transform.scale = glm::vec4(0.25, 0.25, 0.25, 1);
 	cubeObj->Create();
 	gameModelList["cubeObj"] = cubeObj;
-
-	Quad* quad = new Quad(
+	
+	CustomObject* suzanne = new CustomObject("Examples\\suzanne.obj", "Examples\\suzanne.dds");
+	suzanne->SetProgram(Shader_Manager::GetShader("textureShader"));
+	suzanne->transform.position = glm::vec4(0, 0, 0.5, 1);
+	suzanne->Create();
+	gameModelList["suzanne"] = suzanne;
+	/*
+	Cube* cube = new Cube(
 		Transform(
-			glm::vec4(0, 0, 0, 0),
-			glm::vec4(5, 5, 1, 1),
-			Quaternion(0.5, 0.25, 0.25, 0.25)
-			),
-		Color::WHITE);
-	quad->SetProgram(Shader_Manager::GetShader("colorShader"));
-	quad->Create();
-	gameModelList["quad"] = quad;
+			glm::vec3(1,1,1),
+			glm::vec3(1,1,1),
+			Quaternion()));
+	cube->SetProgram(Shader_Manager::GetShader("textureShader"));
+	cube->SetTexture("Crate", SOIL_load_OGL_texture(
+			"Examples\\Crate.bmp",
+			SOIL_LOAD_AUTO,
+			SOIL_CREATE_NEW_ID,
+			SOIL_FLAG_MIPMAPS));
+	cube->Create();
+	gameModelList["cube"] = cube; */
 }
 
 Models_Manager::~Models_Manager()
@@ -60,7 +72,7 @@ std::vector<std::string> &split(const std::string &s, char delim, std::vector<st
  * Read in blender object (.obj) file
  * http://www.opengl-tutorial.org/beginners-tutorials/tutorial-7-model-loading/
  */
-bool Models_Manager::LoadObject(const char * path, std::vector<glm::vec3>& out_vertices, std::vector<glm::vec2>& out_uvs, std::vector<glm::vec3>& out_normals)
+bool Models_Manager::LoadObject(const std::string& path, std::vector<glm::vec3>& out_vertices, std::vector<glm::vec2>& out_uvs, std::vector<glm::vec3>& out_normals)
 {
 	// temp storage
 	std::vector<unsigned int> vertexIndices, uvIndices, normalIndices;

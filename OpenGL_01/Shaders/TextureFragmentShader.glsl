@@ -1,12 +1,12 @@
 #version 430 core
+layout(location = 0) out vec4 out_color;
 
-in vec2 UV;
+uniform sampler2D texture1;
 
-out vec3 color;
-
-uniform sampler2D myTextureSampler;
+in vec2 texcoord;
 
 void main(void)
 {
-	color = texture(myTextureSampler, UV).rgb;
+	vec4 color = texture(texture1, texcoord).rgba;
+	out_color = color;
 }
