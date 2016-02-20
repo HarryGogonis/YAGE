@@ -34,7 +34,6 @@ void updateMouseLocation(int x, int y)
 {
 	double dx = x - x_origin;
 	double dy = y - y_origin;
-	std::cout << "deltaTime" << deltaTime <<  std::endl;
 	if (hRotationEnabled)
 		hAngle += mouseSpeed * deltaTime * float(dx);
 	if (vRotationEnabled)
@@ -72,7 +71,6 @@ void onMouseButton(int button, int state, int x, int y)
 void onKeyPressed(int key, int x, int y)
 {
 
-	std::cout << "deltaTime" << deltaTime << std::endl;
 	if (key == GLUT_KEY_UP)
 		position += up * speed * deltaTime;
 	if (key == GLUT_KEY_DOWN)

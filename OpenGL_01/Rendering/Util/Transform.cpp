@@ -16,7 +16,7 @@ Transform::Transform(glm::vec4 position, glm::vec4 scale, Quaternion rotation)
 
 Transform::Transform(glm::vec3 position, glm::vec3 scale, Quaternion rotation)
 {
-	this->position = glm::vec4(position,1.0);
+	this->position = glm::vec4(position, 1.0);
 	this->scale = glm::vec4(scale, 1.0);
 	this->rotation = rotation;
 }

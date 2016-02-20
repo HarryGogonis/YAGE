@@ -123,7 +123,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Rendering\Models\CustomObject.cpp" />
-    <ClCompile Include="Rendering\Models\Quad.cpp" />
+    <ClCompile Include="Rendering\Models\Cube.cpp" />
     <ClCompile Include="Rendering\Util\Camera.cpp" />
     <ClCompile Include="Core\Init\Init_GLEW.cpp" />
     <ClCompile Include="Core\Init\Init_GLUT.cpp" />
@@ -135,6 +135,7 @@
     <ClCompile Include="Rendering\Models\Model.cpp" />
     <ClCompile Include="Rendering\Util\Quaternion.cpp" />
     <ClCompile Include="Rendering\Util\Transform.cpp" />
+    <ClCompile Include="Rendering\Util\VboIndexer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -145,7 +146,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Rendering\Models\CustomObject.h" />
-    <ClInclude Include="Rendering\Models\Quad.h" />
+    <ClInclude Include="Rendering\Models\Cube.h" />
     <ClInclude Include="Rendering\Util\Camera.h" />
     <ClInclude Include="Core\Init\ContextInfo.h" />
     <ClInclude Include="Core\Init\FrameBufferInfo.h" />
@@ -162,6 +163,19 @@
     <ClInclude Include="Rendering\Util\Transform.h" />
     <ClInclude Include="Rendering\VertexFormat.h" />
     <ClInclude Include="Rendering\IGameObject.h" />
+    <ClInclude Include="Rendering\Util\VboIndexer.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Examples\Crate.bmp" />
+    <Image Include="Examples\cube.dds" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Examples\cube.obj">
+      <DeploymentContent>true</DeploymentContent>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</DeploymentContent>
+      <FileType>Document</FileType>
+    </None>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
