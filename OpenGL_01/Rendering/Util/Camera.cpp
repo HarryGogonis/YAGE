@@ -7,13 +7,14 @@ float Camera::aspect = 1.0f;
 
 float hAngle = 3.14f;
 float vAngle = 0.0f;
-float speed = 3.0f;
+float speed = 100.0f;
 float mouseSpeed = 0.5f;
 
 glm::vec3 position = glm::vec3(0, 0, 5);
 glm::vec3 direction, right, up;
 
 float deltaTime = 0.0f;
+int startTime = glutGet(GLUT_ELAPSED_TIME);
 double x_origin, y_origin;
 bool hRotationEnabled, vRotationEnabled;
 
@@ -60,11 +61,11 @@ void onMouseButton(int button, int state, int x, int y)
 	}
 	else if (button == 3 && state == GLUT_DOWN) // Mouse wheel down
 	{
-		position += direction * speed;
+		position += direction * speed * deltaTime;
 	}
 	else if (button == 4 && state == GLUT_DOWN) // Mouse wheel up
 	{
-		position -= direction * speed;
+		position -= direction * speed * deltaTime;
 	}
 }
 
@@ -73,21 +74,20 @@ void onKeyPressed(int key, int x, int y)
 
 	std::cout << "deltaTime" << deltaTime << std::endl;
 	if (key == GLUT_KEY_UP)
-		position += up * speed;
+		position += up * speed * deltaTime;
 	if (key == GLUT_KEY_DOWN)
-		position -= up * speed;
+		position -= up * speed * deltaTime;
 	if (key == GLUT_KEY_RIGHT)
-		position += right * speed;
+		position += right * speed * deltaTime;
 	if (key == GLUT_KEY_LEFT)
-		position -= right * speed;
+		position -= right * speed * deltaTime;
 }
 
 //TODO switch from hardcoding in 1024/768, aspect, etc
 void Camera::ComputeMatrices()
 {
-	static int pTime = glutGet(GLUT_ELAPSED_TIME); // called once. Wrong! TODO: Fix
-	int cTime = glutGet(GLUT_ELAPSED_TIME);
-	deltaTime = float(cTime - pTime)/1000.0f; // time elapsed in seconds
+	int endTime = glutGet(GLUT_ELAPSED_TIME);
+	deltaTime = float(endTime - startTime)/1000.0f; // time elapsed in seconds
 
 	// listen for mouse input
 	//TODO call outside of this class
@@ -116,7 +116,7 @@ void Camera::ComputeMatrices()
 			position + direction, // camera looks here
 			up
 		);
-	pTime = cTime; // update "previous" time
+	startTime = endTime; // update "previous" time
 
 }
 
