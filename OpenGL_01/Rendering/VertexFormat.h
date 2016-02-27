@@ -1,16 +1,17 @@
 #pragma once
-#include "Util/Color.h"
 #include <iostream>
 
 struct VertexFormat
 {
 	glm::vec3 position; // first vertex attrib
 	glm::vec2 uv;
+	glm::vec3 normal;
 
-	VertexFormat(const glm::vec3 &inPos, const glm::vec2& inUV)
+	VertexFormat(const glm::vec3 &inPos, const glm::vec2& inUV, const  glm::vec3& inNormal)
 	{
 		position = inPos;
 		uv = inUV;
+		normal = inNormal;
 	}
 
 	friend std::ostream& operator<<(std::ostream& os, const VertexFormat& v) {

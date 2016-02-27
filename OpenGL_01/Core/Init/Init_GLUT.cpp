@@ -119,7 +119,7 @@ void Init_GLUT::exitFullscreen()
 
 void Init_GLUT::printOpenGLInfo(const WindowInfo& windowInfo, const ContextInfo& contextInfo)
 {
-	const unsigned char* renderer = glGetString(GL_RENDER);
+	const unsigned char* renderer = glGetString(GL_RENDERER);
 	const unsigned char* vendor = glGetString(GL_VENDOR);
 	const unsigned char* version = glGetString(GL_VERSION);
 

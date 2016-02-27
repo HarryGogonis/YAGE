@@ -20,18 +20,20 @@ public:
 
 	virtual std::vector<VertexFormat> GetVertices() = 0;
 
-	virtual GLuint GetVao() const override;
-	virtual const std::vector<GLuint>& GetVbos() const override;
+	GLuint GetVao() const;
+	const std::vector<GLuint>& GetVbos() const;
 	
 	virtual const GLuint GetTexture(const std::string&) const override;
 	virtual void SetTexture(const std::string&, GLuint) override;
-
+	
 	Transform transform;
+
 protected:
 	GLuint vao;
 	GLuint program;
 	std::vector<GLuint> vbos;
 	std::map<std::string, GLuint> textures;
+	
 
 
 };

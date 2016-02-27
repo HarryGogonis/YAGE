@@ -15,18 +15,21 @@ public:
 
 	static glm::mat4 GetProjectionMatrix();
 	static glm::mat4 GetViewMatrix();
+	static glm::vec3 GetEyeDirection();
 	static void ComputeMatrices();
 
 	static float fov;
 	static float aspect;
 	static float zNear;
 	static float zFar;
+	//static Transform transform;
 
 	Camera(Camera const&) = delete;
 	void operator=(Camera const&) = delete;
+
 private:
-	Camera() {};
-	//static glm::mat4 ViewMatrix;
-	//static glm::mat4 ProjectionMatrix;
+	Camera();
+	//static glm::mat4 viewMatrix;
+	//static glm::mat4 projMatrix;
 };
 

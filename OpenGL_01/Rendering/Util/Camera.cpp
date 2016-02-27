@@ -1,43 +1,50 @@
 #include "Camera.h"
 #include <GL\freeglut.h>
-#include <iostream>
 
 float Camera::fov = 45.0f;
 float Camera::aspect = 1.0f;
 
-float hAngle = 3.14f;
-float vAngle = 0.0f;
-float speed = 100.0f;
-float mouseSpeed = 0.5f;
+float speed = 10.0f;
+float mouseSpeed = 1.0f;
 
-glm::vec3 position = glm::vec3(0, 0, 5);
-glm::vec3 direction, right, up;
+glm::mat4 viewMatrix;
+glm::mat4 projMatrix;
+
+glm::vec3 eyeVector = glm::vec3(0, 0, 5);
+float pitch, yaw = 0.0f;
 
 float deltaTime = 0.0f;
 int startTime = glutGet(GLUT_ELAPSED_TIME);
+
 double x_origin, y_origin;
-bool hRotationEnabled, vRotationEnabled;
 
-glm::mat4 ViewMatrix;
-glm::mat4 ProjectionMatrix;
+bool leftMouseDown;
 
-glm::mat4 Camera::GetProjectionMatrix() {
-	return ProjectionMatrix;
+glm::mat4 Camera::GetProjectionMatrix()
+{
+	return projMatrix;
 }
 
 glm::mat4 Camera::GetViewMatrix()
 {
-	return ViewMatrix;
+	return viewMatrix;
+}
+
+glm::vec3 Camera::GetEyeDirection()
+{
+	return eyeVector;
 }
 
 void updateMouseLocation(int x, int y)
 {
 	double dx = x - x_origin;
 	double dy = y - y_origin;
-	if (hRotationEnabled)
-		hAngle += mouseSpeed * deltaTime * float(dx);
-	if (vRotationEnabled)
-		vAngle += mouseSpeed * deltaTime * float(dy);
+
+	if (leftMouseDown)
+	{
+		yaw += mouseSpeed * dx * deltaTime;
+		pitch += mouseSpeed * dy * deltaTime;
+	}
 
 	x_origin = x;
 	y_origin = y;
@@ -49,37 +56,82 @@ void updateMouseLocation(int x, int y)
 */
 void onMouseButton(int button, int state, int x, int y)
 {
-	hRotationEnabled = false;
-	vRotationEnabled = false;
+	leftMouseDown = false;
+	
 	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
 	{
 		x_origin = x;
 		y_origin = y;
-		hRotationEnabled = true;
-		vRotationEnabled = true;
+		leftMouseDown = true;
+	}
+	if (button == GLUT_RIGHT_BUTTON && state == GLUT_DOWN)
+	{
+		x_origin = x;
+		y_origin = y;
 	}
 	else if (button == 3 && state == GLUT_DOWN) // Mouse wheel down
 	{
-		position += direction * speed * deltaTime;
+		// Zoom out
+		Camera::fov -= 20.0 * speed * deltaTime;
 	}
 	else if (button == 4 && state == GLUT_DOWN) // Mouse wheel up
 	{
-		position -= direction * speed * deltaTime;
+		// Zoom in
+		Camera::fov += 20.0 * speed * deltaTime;
 	}
 }
 
-void onKeyPressed(int key, int x, int y)
+void onKeyPressed(const unsigned char key, int x, int y)
 {
+	float dx = 0;
+	float dz = 0; 
+	float dy = 0; 
 
-	if (key == GLUT_KEY_UP)
-		position += up * speed * deltaTime;
-	if (key == GLUT_KEY_DOWN)
-		position -= up * speed * deltaTime;
-	if (key == GLUT_KEY_RIGHT)
-		position += right * speed * deltaTime;
-	if (key == GLUT_KEY_LEFT)
-		position -= right * speed * deltaTime;
+	switch (key)
+	{
+	case 'w':
+	{
+		dz = 2;
+		break;
+	}
+	case 's':
+	{
+		dz = -2;
+		break;
+	}
+	case 'a':
+	{
+		dx = -2;
+		break;
+	}
+	case 'd':
+	{
+		dx = 2;
+		break;
+	}
+	case 'e':
+	{
+		dy = 2;
+		break;
+	}
+	case 'q':
+	{
+		dy = -2;
+		break;
+	}
+	default:
+		break;
+	}
+
+	glm::mat4 mat = viewMatrix;
+	glm::vec3 right(mat[0][0], mat[1][0], mat[2][0]);
+	glm::vec3 forward(mat[0][2], mat[1][2], mat[2][2]);
+	glm::vec3 up(mat[0][1], mat[1][1], mat[2][1]);
+
+	eyeVector += (-dz * forward + dx * right + dy * up) * speed * deltaTime;
 }
+
+
 
 //TODO switch from hardcoding in 1024/768, aspect, etc
 void Camera::ComputeMatrices()
@@ -91,30 +143,28 @@ void Camera::ComputeMatrices()
 	//TODO call outside of this class
 	glutMotionFunc(updateMouseLocation);
 
-	direction = glm::vec3(
-		cos(vAngle) * sin(hAngle),
-		sin(vAngle),
-		cos(vAngle) * cos(hAngle));
-
-	right = glm::vec3(
-		sin(hAngle - 3.14f/2.0f),
-		0,
-		cos(hAngle - 3.14/2.0f));
-
-	up = cross(right, direction);
+	// Build rotation matrix
+	glm::quat matPitch = glm::quat();
+	glm::quat matYaw = glm::quat();
+	matPitch = glm::rotate(matPitch, pitch, glm::vec3(1.0f, 0, 0));
+	matYaw = glm::rotate(matYaw, yaw, glm::vec3(0, 1.0f, 0));
+	glm::mat4 rotate = glm::mat4_cast(matPitch * matYaw);
+	
+	// Build translation matrix
+	glm::mat4 translate = glm::mat4(1.0f);
+	translate = glm::translate(translate, -eyeVector);
 
 	// listen for mouse events
 	//TODO call outside of this class
-	glutSpecialFunc(onKeyPressed);
+	glutKeyboardFunc(onKeyPressed);
 	glutMouseFunc(onMouseButton);
 
-	ProjectionMatrix = glm::perspective(glm::radians(fov), 4.0f / 3.0f, 0.1f, 100.0f);
-	ViewMatrix = lookAt(
-			position, // camera position
-			position + direction, // camera looks here
-			up
-		);
-	startTime = endTime; // update "previous" time
+	projMatrix = glm::perspective(glm::radians(fov), 4.0f / 3.0f, 0.1f, 100.0f);
 
+	viewMatrix = rotate * translate;
+	startTime = endTime; // update "previous" time
 }
 
+Camera::Camera()
+{
+}

@@ -69,8 +69,8 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>C:\Users\Harry\Projects\opengl-tutorial\packages\Simple OpenGL Image Library\src;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\Harry\Projects\opengl-tutorial\packages\Simple OpenGL Image Library\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)packages\Simple OpenGL Image Library\src;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)packages\Simple OpenGL Image Library\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -122,8 +122,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Rendering\Util\Light.cpp" />
     <ClCompile Include="Rendering\Models\CustomObject.cpp" />
-    <ClCompile Include="Rendering\Models\Cube.cpp" />
     <ClCompile Include="Rendering\Util\Camera.cpp" />
     <ClCompile Include="Core\Init\Init_GLEW.cpp" />
     <ClCompile Include="Core\Init\Init_GLUT.cpp" />
@@ -131,9 +131,7 @@
     <ClCompile Include="Managers\Scene_Manager.cpp" />
     <ClCompile Include="Managers\Shader_Manager.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Rendering\Util\Color.cpp" />
     <ClCompile Include="Rendering\Models\Model.cpp" />
-    <ClCompile Include="Rendering\Util\Quaternion.cpp" />
     <ClCompile Include="Rendering\Util\Transform.cpp" />
     <ClCompile Include="Rendering\Util\VboIndexer.cpp" />
   </ItemGroup>
@@ -142,11 +140,12 @@
     <None Include="Shaders\Fragment_Shader.glsl" />
     <None Include="Shaders\TextureFragmentShader.glsl" />
     <None Include="Shaders\TextureVertexShader.glsl" />
+    <None Include="Shaders\VertexShader.glsl" />
     <None Include="Shaders\Vertex_Shader.glsl" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Rendering\Util\Light.h" />
     <ClInclude Include="Rendering\Models\CustomObject.h" />
-    <ClInclude Include="Rendering\Models\Cube.h" />
     <ClInclude Include="Rendering\Util\Camera.h" />
     <ClInclude Include="Core\Init\ContextInfo.h" />
     <ClInclude Include="Core\Init\FrameBufferInfo.h" />
@@ -157,33 +156,24 @@
     <ClInclude Include="Managers\Models_Manager.h" />
     <ClInclude Include="Managers\Scene_Manager.h" />
     <ClInclude Include="Managers\Shader_Manager.h" />
-    <ClInclude Include="Rendering\Util\Color.h" />
     <ClInclude Include="Rendering\Models\Model.h" />
-    <ClInclude Include="Rendering\Util\Quaternion.h" />
+    <ClInclude Include="Rendering\Util\Material.h" />
     <ClInclude Include="Rendering\Util\Transform.h" />
     <ClInclude Include="Rendering\VertexFormat.h" />
     <ClInclude Include="Rendering\IGameObject.h" />
     <ClInclude Include="Rendering\Util\VboIndexer.h" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="Examples\checkerboard.dds" />
     <Image Include="Examples\Crate.bmp" />
-    <Image Include="Examples\cube.dds" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Examples\cube.obj">
-      <DeploymentContent>true</DeploymentContent>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</DeploymentContent>
-      <FileType>Document</FileType>
-    </None>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
     <Import Project="..\packages\glm.0.9.7.1\build\native\glm.targets" Condition="Exists('..\packages\glm.0.9.7.1\build\native\glm.targets')" />
     <Import Project="..\packages\nupengl.core.redist.0.1.0.1\build\native\nupengl.core.redist.targets" Condition="Exists('..\packages\nupengl.core.redist.0.1.0.1\build\native\nupengl.core.redist.targets')" />
     <Import Project="..\packages\nupengl.core.0.1.0.1\build\native\nupengl.core.targets" Condition="Exists('..\packages\nupengl.core.0.1.0.1\build\native\nupengl.core.targets')" />
-    <Import Project="..\packages\DevIL.redist.1.7.8\build\native\DevIL.redist.targets" Condition="Exists('..\packages\DevIL.redist.1.7.8\build\native\DevIL.redist.targets')" />
-    <Import Project="..\packages\DevIL.1.7.8\build\native\DevIL.targets" Condition="Exists('..\packages\DevIL.1.7.8\build\native\DevIL.targets')" />
+    <Import Project="..\packages\Assimp.redist.3.0.0\build\native\Assimp.redist.targets" Condition="Exists('..\packages\Assimp.redist.3.0.0\build\native\Assimp.redist.targets')" />
+    <Import Project="..\packages\Assimp.3.0.0\build\native\Assimp.targets" Condition="Exists('..\packages\Assimp.3.0.0\build\native\Assimp.targets')" />
   </ImportGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
@@ -192,7 +182,7 @@
     <Error Condition="!Exists('..\packages\glm.0.9.7.1\build\native\glm.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\glm.0.9.7.1\build\native\glm.targets'))" />
     <Error Condition="!Exists('..\packages\nupengl.core.redist.0.1.0.1\build\native\nupengl.core.redist.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\nupengl.core.redist.0.1.0.1\build\native\nupengl.core.redist.targets'))" />
     <Error Condition="!Exists('..\packages\nupengl.core.0.1.0.1\build\native\nupengl.core.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\nupengl.core.0.1.0.1\build\native\nupengl.core.targets'))" />
-    <Error Condition="!Exists('..\packages\DevIL.redist.1.7.8\build\native\DevIL.redist.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\DevIL.redist.1.7.8\build\native\DevIL.redist.targets'))" />
-    <Error Condition="!Exists('..\packages\DevIL.1.7.8\build\native\DevIL.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\DevIL.1.7.8\build\native\DevIL.targets'))" />
+    <Error Condition="!Exists('..\packages\Assimp.redist.3.0.0\build\native\Assimp.redist.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Assimp.redist.3.0.0\build\native\Assimp.redist.targets'))" />
+    <Error Condition="!Exists('..\packages\Assimp.3.0.0\build\native\Assimp.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Assimp.3.0.0\build\native\Assimp.targets'))" />
   </Target>
 </Project>

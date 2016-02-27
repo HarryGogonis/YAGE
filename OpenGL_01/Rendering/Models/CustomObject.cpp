@@ -14,11 +14,15 @@ CustomObject::~CustomObject()
 
 std::vector<VertexFormat> CustomObject::GetVertices()
 {
+	// Multiply each vertex by transform (rotate, scale, translate)
+	glm::mat4 transform = this->transform.getTransformMatrix();
+
 	std::vector<VertexFormat> out;
 	for (int i = 0; i < vertices.size(); i++)
 	{
+		glm::vec4 vert = transform * glm::vec4(vertices[i],1);
 		out.push_back(
-			VertexFormat(vertices[i], uvs[i])
+			VertexFormat(glm::vec3(vert), uvs[i], normals[i])
 		);
 	}
 	return out;
@@ -27,10 +31,7 @@ std::vector<VertexFormat> CustomObject::GetVertices()
 CustomObject::CustomObject(const std::string& objectPath, const std::string& texturePath)
 {
 	//TODO pass in transform
-	this->transform = Transform(
-		glm::vec3(0, 0, 0),
-		glm::vec3(1, 1, 1),
-		Quaternion());
+	this->transform = Transform();
 	this->objectPath = objectPath;
 	this->texturePath = texturePath;
 
@@ -39,22 +40,33 @@ CustomObject::CustomObject(const std::string& objectPath, const std::string& tex
 		SOIL_LOAD_AUTO,
 		SOIL_CREATE_NEW_ID,
 		SOIL_FLAG_MIPMAPS));
+	this->shininess = 5;
+	this->strength = 10;
 }
 
 void CustomObject::Update()
 {
-	glm::mat4 scale = this->transform.getScaleMatrix();
-	glm::mat4 rotation = this->transform.getRotationMatrix();
-	glm::mat4 translation = this->transform.getTranslationMatrix();
+	glm::mat4 ModelMatrix = glm::mat4(1.0f); 
 	glm::mat4 ViewMatrix = Camera::GetViewMatrix();
 	glm::mat4 ProjectionMatrix = Camera::GetProjectionMatrix();
-	glm::mat4 ModelMatrix = scale * rotation;
+
+	//TODO send uniforms via buffer??
+
+	// Send mvp to currently bound shader
+	glm::mat4 mv = ViewMatrix * ModelMatrix;
 	glm::mat4 mvp = ProjectionMatrix * ViewMatrix * ModelMatrix;
+	glUniformMatrix4fv(MV_ID, 1, GL_FALSE, &mv[0][0]);
+	glUniformMatrix4fv(MVP_ID, 1, GL_FALSE, &mvp[0][0]);
 
-	std::cout << glm::to_string(ModelMatrix) << std::endl;
+	// Send normal matrix to currently bound shader
+	glm::mat3 NormalMatrix = glm::mat3(glm::transpose(glm::inverse(ModelMatrix)));
+	glUniformMatrix3fv(NormalMatrix_ID, 1, GL_FALSE, &NormalMatrix[0][0]);
 
-	// Send transformation to currently bound shader
-	glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &mvp[0][0]);
+	// Send EyeDirection to currently bound shader
+	//glm::vec3 EyeDirection = Camera::GetEyeDirection();
+	glm::vec3 EyeDirection = glm::vec3(0, 0, 1);
+	glUniform3fv(EyeDirection_ID, 1, &EyeDirection[0]);
+
 }
 
 void CustomObject::SetTexture(const std::string& textureName, GLuint texture)
@@ -71,10 +83,13 @@ void CustomObject::Draw()
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, this->GetTexture(texturePath));
-	glUniform1i(glGetUniformLocation(program, "texture1"), 0);
+	glUniform1i(Texture_ID, 0);
+
+	//TODO use material properties
+	glUniform1f(glGetUniformLocation(program, "Shininess"), shininess);
+	glUniform1f(glGetUniformLocation(program, "Strength"), strength);
 
 	// Draw triangles
-	//glDrawArrays(GL_TRIANGLES, 0, vertices.size());
 	glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_SHORT, nullptr);
 }
 
@@ -89,9 +104,12 @@ void CustomObject::Create()
 	GLuint vbo;
 	GLuint ibo;
 
-
 	// Get handlers
-	MatrixID = glGetUniformLocation(program, "MVP");
+	MVP_ID = glGetUniformLocation(program, "MVP");
+	MV_ID = glGetUniformLocation(program, "MV");
+	NormalMatrix_ID = glGetUniformLocation(program, "NormalMatrix");
+	Texture_ID = glGetUniformLocation(program, "texture1");
+	EyeDirection_ID = glGetUniformLocation(program, "EyeDirection");
 
 	glGenVertexArrays(1, &vao);
 	glBindVertexArray(vao);
@@ -102,8 +120,9 @@ void CustomObject::Create()
 	std::vector<glm::vec3> temp_normals;
 	Models_Manager::LoadObject(objectPath, temp_vertices, temp_uvs, temp_normals);
 	
-	// Generate VBO indices
+	// Generate IBO indices
 	VboIndexer::indexVBO(temp_vertices, temp_uvs, temp_normals, indices, vertices, uvs, normals);
+	// Generate VBO vertices
 	std::vector<VertexFormat> vertices = GetVertices();
 
 	glGenBuffers(1, &vbo);
@@ -120,14 +139,24 @@ void CustomObject::Create()
 		&indices[0],
 		GL_STATIC_DRAW);
 
+	// Attribute buffer - Vertex
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE,
 		sizeof(VertexFormat), nullptr);
 
+	// Attribute buffer - UV
 	glEnableVertexAttribArray(1);
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE,
 		sizeof(VertexFormat),
 		(void*)(offsetof(VertexFormat, VertexFormat::uv)));
+
+	// Attribute buffer - Normal
+	glEnableVertexAttribArray(2);
+	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE,
+		sizeof(VertexFormat),
+		(void*)(offsetof(VertexFormat, VertexFormat::normal)));
+
+
 	glBindVertexArray(0);
 
 	//here we assign the values

@@ -11,13 +11,9 @@ Scene_Manager::Scene_Manager()
 
 	shader_manager = new Shader_Manager();
 
-	shader_manager->CreateProgram("colorShader",
-		"Shaders\\Vertex_Shader.glsl",
-		"Shaders\\Fragment_Shader.glsl");
 	shader_manager->CreateProgram("textureShader",
 		"Shaders\\TextureVertexShader.glsl",
 		"Shaders\\TextureFragmentShader.glsl");
-
 	models_manager = new Models_Manager();
 }
 
@@ -33,7 +29,7 @@ void Scene_Manager::notifyBeginFrame()
 	numFrames++;
 	if (currentTime - lastTime >= 1.0)
 	{
-		printf("\rms/frame= %f", 1000.0 / double(numFrames));
+		//printf("\rms/frame= %f", 1000.0 / double(numFrames));
 		numFrames = 0;
 	}
 	Camera::ComputeMatrices();

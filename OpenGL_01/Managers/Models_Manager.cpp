@@ -4,37 +4,87 @@
 #include <string>
 #include "Models_Manager.h"
 #include "../Rendering/Models/CustomObject.h"
-#include "../Rendering/Models/Cube.h"
-#include "SOIL.h"
+#include "../Rendering/Util/Light.h"
 
 Models_Manager::Models_Manager()
 {
-	CustomObject* cubeObj = new CustomObject("Examples\\cube.obj", "Examples\\Crate.bmp");
-	cubeObj->SetProgram(Shader_Manager::GetShader("textureShader"));
-	cubeObj->transform.position = glm::vec4(0, 0, -50, 1);
-	cubeObj->transform.scale = glm::vec4(0.25, 0.25, 0.25, 1);
-	cubeObj->Create();
-	gameModelList["cubeObj"] = cubeObj;
 	
 	CustomObject* suzanne = new CustomObject("Examples\\suzanne.obj", "Examples\\suzanne.dds");
 	suzanne->SetProgram(Shader_Manager::GetShader("textureShader"));
-	suzanne->transform.position = glm::vec4(0, 0, 0.5, 1);
+	suzanne->transform.SetScale(glm::vec3(0.5f));
+	suzanne->transform.SetPosition(glm::vec3(0.0, 0.5, 0.0));
 	suzanne->Create();
 	gameModelList["suzanne"] = suzanne;
-	/*
-	Cube* cube = new Cube(
-		Transform(
-			glm::vec3(1,1,1),
-			glm::vec3(1,1,1),
-			Quaternion()));
-	cube->SetProgram(Shader_Manager::GetShader("textureShader"));
-	cube->SetTexture("Crate", SOIL_load_OGL_texture(
-			"Examples\\Crate.bmp",
-			SOIL_LOAD_AUTO,
-			SOIL_CREATE_NEW_ID,
-			SOIL_FLAG_MIPMAPS));
-	cube->Create();
-	gameModelList["cube"] = cube; */
+
+	CustomObject* cube1 = new CustomObject("Examples\\cube.obj", "Examples\\Crate.bmp");
+	cube1->SetProgram(Shader_Manager::GetShader("textureShader"));
+	cube1->transform.SetScale(glm::vec3(0.2f));
+	cube1->transform.SetPosition(glm::vec3(1.0, 0.2, -2.5));
+	cube1->Create();
+	gameModelList["cube1"] = cube1;
+
+	CustomObject* cube2 = new CustomObject("Examples\\cube.obj", "Examples\\Crate.bmp");
+	cube2->SetProgram(Shader_Manager::GetShader("textureShader"));
+	cube2->transform.SetScale(glm::vec3(0.2f));
+	cube2->transform.SetPosition(glm::vec3(1.0, 0.2, 2.5));
+	cube2->Create();
+	gameModelList["cube2"] = cube2;
+
+	CustomObject* cube3 = new CustomObject("Examples\\cube.obj", "Examples\\Crate.bmp");
+	cube3->SetProgram(Shader_Manager::GetShader("textureShader"));
+	cube3->transform.SetScale(glm::vec3(0.2f));
+	cube3->transform.SetPosition(glm::vec3(-1.0, 0.2, -2.5));
+	cube3->Create();
+	gameModelList["cube3"] = cube3;
+
+	CustomObject* cube4 = new CustomObject("Examples\\cube.obj", "Examples\\Crate.bmp");
+	cube4->SetProgram(Shader_Manager::GetShader("textureShader"));
+	cube4->transform.SetScale(glm::vec3(0.2f));
+	cube4->transform.SetPosition(glm::vec3(-1.0, 0.2, 2.5));
+	cube4->Create();
+	gameModelList["cube4"] = cube4;
+
+	// floor
+	CustomObject* cube5 = new CustomObject("Examples\\cube.obj", "Examples\\checkerboard.dds");
+	cube5->SetProgram(Shader_Manager::GetShader("textureShader"));
+	cube5->transform.SetPosition(glm::vec3(0.0, 0.0, 0.0));
+	cube5->transform.SetScale(glm::vec3(5.0, 0.0001, 5.0));
+	cube5->shininess = 0.5;
+	cube5->Create();
+	gameModelList["cube5"] = cube5;
+
+	// back wall
+	CustomObject* cube6 = new CustomObject("Examples\\cube.obj", "Examples\\checkerboard.dds");
+	cube6->SetProgram(Shader_Manager::GetShader("textureShader"));
+	cube6->transform.SetPosition(glm::vec3(0.0, 0.0, -5.0));
+	cube6->transform.RotateX(90);
+	cube5->shininess = 0.5;
+	cube6->transform.SetScale(glm::vec3(5.0, 0.0001, 5.0));
+	cube6->Create();
+	gameModelList["cube6"] = cube6;
+
+	Light* pointLight1 = new PointLight(
+		glm::vec3(0.6, 0.5, 0.5), // color
+		glm::vec3(0.0, 4.0, 0.0) // position
+		); 
+	pointLight1->SetProgram(Shader_Manager::GetShader("textureShader"));
+	pointLight1->SetAttenuation(0.0, 0.0, 1.0);
+	pointLight1->Create();
+	gameModelList["light1"] = pointLight1;
+
+	Light* directionalLight1 = new DirectionalLight(
+		glm::vec3(0.2, 0.2, 0.2), // color
+		glm::vec3(0.0, 0.0, 1.0), // direction
+		glm::vec3(0.5, 0.5, 0.5) // half vec
+		);
+	directionalLight1->SetProgram(Shader_Manager::GetShader("textureShader"));
+	directionalLight1->Create();
+	gameModelList["light2"] = directionalLight1;
+
+	Light* ambientLight1 = new AmbientLight(glm::vec3(1.0, 1.0, 1.0), 0.05);
+	ambientLight1->SetProgram(Shader_Manager::GetShader("textureShader"));
+	ambientLight1->Create();
+	gameModelList["light3"] = ambientLight1;
 }
 
 Models_Manager::~Models_Manager()
