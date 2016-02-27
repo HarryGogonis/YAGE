@@ -5,36 +5,36 @@
 #include "Models_Manager.h"
 #include "../Rendering/Models/CustomObject.h"
 #include "../Rendering/Models/Cube.h"
+#include "../Rendering/Util/Light.h"
 #include "SOIL.h"
 
 Models_Manager::Models_Manager()
 {
-	CustomObject* cubeObj = new CustomObject("Examples\\cube.obj", "Examples\\Crate.bmp");
-	cubeObj->SetProgram(Shader_Manager::GetShader("textureShader"));
-	cubeObj->transform.position = glm::vec4(0, 0, -50, 1);
-	cubeObj->transform.scale = glm::vec4(0.25, 0.25, 0.25, 1);
-	cubeObj->Create();
-	gameModelList["cubeObj"] = cubeObj;
-	
 	CustomObject* suzanne = new CustomObject("Examples\\suzanne.obj", "Examples\\suzanne.dds");
 	suzanne->SetProgram(Shader_Manager::GetShader("textureShader"));
-	suzanne->transform.position = glm::vec4(0, 0, 0.5, 1);
 	suzanne->Create();
 	gameModelList["suzanne"] = suzanne;
-	/*
-	Cube* cube = new Cube(
-		Transform(
-			glm::vec3(1,1,1),
-			glm::vec3(1,1,1),
-			Quaternion()));
-	cube->SetProgram(Shader_Manager::GetShader("textureShader"));
-	cube->SetTexture("Crate", SOIL_load_OGL_texture(
-			"Examples\\Crate.bmp",
-			SOIL_LOAD_AUTO,
-			SOIL_CREATE_NEW_ID,
-			SOIL_FLAG_MIPMAPS));
-	cube->Create();
-	gameModelList["cube"] = cube; */
+
+	Light* directionalLight1 = new DirectionalLight(
+		glm::vec3(0.5, 0.0, 0.0), // color
+		glm::vec3(1.0, 1.0, 1.0), // position
+		glm::vec3(0.5, 0.5, 0.5)); // half vector
+	directionalLight1->SetProgram(Shader_Manager::GetShader("textureShader"));
+	directionalLight1->Create();
+	gameModelList["light1"] = directionalLight1;
+
+	Light* directionalLight2 = new DirectionalLight(
+		glm::vec3(0.5, 0.5, 0.5), // color
+		glm::vec3(0.0, -1.0, 1.0), // position
+		glm::vec3(0.2, 0.2, 0.2)); // half vector
+	directionalLight2->SetProgram(Shader_Manager::GetShader("textureShader"));
+	directionalLight2->Create();
+	gameModelList["light2"] = directionalLight2;
+
+	Light* ambientLight = new AmbientLight(glm::vec3(1.0, 1.0, 1.0), 0.1);
+	ambientLight->SetProgram(Shader_Manager::GetShader("textureShader"));
+	ambientLight->Create();
+	gameModelList["light3"] = ambientLight;
 }
 
 Models_Manager::~Models_Manager()
