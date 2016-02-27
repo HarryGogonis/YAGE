@@ -10,14 +10,21 @@ public:
 	~Light() {};
 
 	void Create();
+<<<<<<< 5ab299ee2ef219105217cb98da4996847147610c
 	void Create(GLuint program);
 	virtual void Draw() override;
 	virtual void Update() override;
 	virtual void SetProgram(GLuint program) override;
+=======
+	virtual void Draw() override;
+	virtual void Update() override;
+	virtual void SetProgram(GLuint shaderName) override;
+>>>>>>> Directional and Ambient lighting fully implemented and quickly tested
 	virtual void Destroy() override;
 
 	virtual void SetTexture(const std::string&, GLuint) override;
 	virtual const GLuint GetTexture(const std::string&) const override;
+<<<<<<< 5ab299ee2ef219105217cb98da4996847147610c
 
 	glm::vec3 ambient; // light's contribution to ambient light
 	glm::vec3 color;
@@ -31,6 +38,8 @@ public:
 	float quadraticAttenuation;
 	void SetAttenuation(float constant, float linear, float quadratic);
 
+=======
+>>>>>>> Directional and Ambient lighting fully implemented and quickly tested
 protected:
 	GLuint program;
 	GLuint texture;
@@ -39,14 +48,33 @@ protected:
 	bool isEnabled;
 	int type; 
 
+<<<<<<< 5ab299ee2ef219105217cb98da4996847147610c
 	// Holds shader locations
 	struct LightUniformLocations
+=======
+	glm::vec3 ambient; // light's contribution to ambient light
+	glm::vec3 color;
+	glm::vec3 position; // location of light if isLocal is true
+	glm::vec3 halfVector; // direction of headlights for directional light
+	glm::vec3 coneDirection; // spotlight cone
+	glm::vec3 spotCosCutoff; // spotlight cosine cutoff
+	glm::vec3 spotExponent;
+	float constantAttenuation;
+	float linearAttenuation;
+	float quadradicAttenuation;
+
+	struct UniformLocations
+>>>>>>> Directional and Ambient lighting fully implemented and quickly tested
 	{
 		GLuint isEnabled, type,
 				ambient, color, position,
 				halfVector,
 				coneDirection, spotCosCutoff, spotExponent,
+<<<<<<< 5ab299ee2ef219105217cb98da4996847147610c
 				constantAttenuation, linearAttenuation, quadraticAttenuation;
+=======
+				constantAttenuation, linearAttenuation, quadradicAttenuation;
+>>>>>>> Directional and Ambient lighting fully implemented and quickly tested
 	} ids;
 private:
 	static unsigned int count;
@@ -68,6 +96,7 @@ public:
 
 	virtual void Draw() override final;
 };
+<<<<<<< 5ab299ee2ef219105217cb98da4996847147610c
 
 class PointLight : public Light
 {
@@ -88,3 +117,5 @@ public:
 	virtual void Draw() override final;
 
 };
+=======
+>>>>>>> Directional and Ambient lighting fully implemented and quickly tested

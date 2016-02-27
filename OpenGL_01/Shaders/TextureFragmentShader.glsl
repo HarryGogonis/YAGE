@@ -22,8 +22,8 @@ uniform sampler2D texture1;
 const int MaxLights = 5; 
 uniform LightProperties Lights[MaxLights];
 
-uniform float Shininess; //TODO pass in via material
-uniform float Strength; //TODO pass in via material
+uniform float Shininess;
+uniform float Strength;
 uniform vec3 EyeDirection; // camera position
 uniform mat4 MVP;
 uniform mat4 MV;

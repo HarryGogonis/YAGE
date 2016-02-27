@@ -28,13 +28,7 @@ void Light::Create()
 	ids.spotExponent = glGetUniformLocation(program, (prefix + "spotExponent").c_str());
 	ids.constantAttenuation = glGetUniformLocation(program, (prefix + "constantAttenuation").c_str());
 	ids.linearAttenuation = glGetUniformLocation(program, (prefix + "linearAttenuation").c_str());
-	ids.quadraticAttenuation = glGetUniformLocation(program, (prefix + "quadraticAttenuation").c_str());
-}
-
-void Light::Create(GLuint program)
-{
-	this->program = program;
-	this->Create();
+	ids.quadradicAttenuation = glGetUniformLocation(program, (prefix + "quadradicAttenuation").c_str());
 }
 
 void Light::Draw()
@@ -56,7 +50,6 @@ void Light::Destroy()
 {
 	//TODO what happens when a light is destroyed?
 	this->isEnabled = false;
-	count--;
 }
 
 void Light::SetTexture(const std::string&, GLuint texture)
@@ -70,13 +63,6 @@ const GLuint Light::GetTexture(const std::string&) const
 {
 	throw "Textures not supported with Lights";
 	return texture;
-}
-
-void Light::SetAttenuation(float constant, float linear, float quadratic)
-{
-	this->constantAttenuation = constant;
-	this->linearAttenuation = linear;
-	this->quadraticAttenuation = quadratic;
 }
 
 DirectionalLight::DirectionalLight(glm::vec3 color, glm::vec3 direction, glm::vec3 halfVector): Light()
@@ -109,59 +95,4 @@ void AmbientLight::Draw()
 {
 	glUniform1i(ids.isEnabled, isEnabled);
 	glUniform3fv(ids.ambient, 1, &color[0]);
-}
-
-PointLight::PointLight(glm::vec3 color, glm::vec3 position,
-	float constantAttenuation, float linearAttenuation, float quadraticAttenuation) : Light()
-{
-	this->type = POINT_LIGHT;
-	this->ambient = glm::vec3(0.0, 0.0, 0.0);
-	this->color = color;
-	this->position = position;
-	this->constantAttenuation = constantAttenuation;
-	this->linearAttenuation = linearAttenuation;
-	this->quadraticAttenuation = quadraticAttenuation;
-}
-
-void PointLight::Draw()
-{
-	glUniform1i(ids.isEnabled, isEnabled);
-	glUniform1i(ids.type, type);
-	glUniform3fv(ids.ambient, 1, &ambient[0]);
-	glUniform3fv(ids.color, 1, &color[0]);
-	glUniform3fv(ids.position, 1, &position[0]);
-	glUniform1f(ids.constantAttenuation, constantAttenuation);
-	glUniform1f(ids.linearAttenuation, linearAttenuation);
-	glUniform1f(ids.quadraticAttenuation, quadraticAttenuation);
-}
-
-SpotLight::SpotLight(glm::vec3 color, glm::vec3 position,
-	glm::vec3 coneDirection, float spotCosCutoff, float spotExponent,
-	float constantAttenuation, float linearAttenuation, float quadraticAttenuation) : Light()
-{
-	this->type = SPOT_LIGHT;
-	this->ambient = glm::vec3(0.0, 0.0, 0.0);
-	this->color = color;
-	this->position = position;
-	this->constantAttenuation = constantAttenuation;
-	this->linearAttenuation = linearAttenuation;
-	this->quadraticAttenuation = quadraticAttenuation;
-	this->coneDirection = coneDirection;
-	this->spotCosCutoff = spotCosCutoff;
-	this->spotExponent = spotExponent;
-}
-
-void SpotLight::Draw()
-{
-	glUniform1i(ids.isEnabled, isEnabled);
-	glUniform1i(ids.type, type);
-	glUniform3fv(ids.ambient, 1, &ambient[0]);
-	glUniform3fv(ids.color, 1, &color[0]);
-	glUniform3fv(ids.position, 1, &position[0]);
-	glUniform3fv(ids.coneDirection, 1, &coneDirection[0]);
-	glUniform1f(ids.spotCosCutoff, spotCosCutoff);
-	glUniform1f(ids.spotExponent, spotExponent);
-	glUniform1f(ids.constantAttenuation, constantAttenuation);
-	glUniform1f(ids.linearAttenuation, linearAttenuation);
-	glUniform1f(ids.quadraticAttenuation, quadraticAttenuation);
 }

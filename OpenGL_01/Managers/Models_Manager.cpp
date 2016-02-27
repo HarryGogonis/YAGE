@@ -8,7 +8,6 @@
 
 Models_Manager::Models_Manager()
 {
-	
 	CustomObject* suzanne = new CustomObject("Examples\\suzanne.obj", "Examples\\suzanne.dds");
 	suzanne->SetProgram(Shader_Manager::GetShader("textureShader"));
 	suzanne->transform.SetScale(glm::vec3(0.5f));
