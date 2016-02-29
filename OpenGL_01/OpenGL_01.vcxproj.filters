@@ -33,9 +33,6 @@
     <ClCompile Include="Rendering\Models\Model.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Rendering\Util\Color.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Rendering\Util\Transform.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -54,7 +51,7 @@
     <ClCompile Include="Rendering\Util\VboIndexer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Rendering\Models\Cube.cpp">
+    <ClCompile Include="Rendering\Util\Light.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -64,7 +61,6 @@
     <None Include="Shaders\Vertex_Shader.glsl" />
     <None Include="Shaders\TextureVertexShader.glsl" />
     <None Include="Shaders\TextureFragmentShader.glsl" />
-    <None Include="Examples\cube.obj" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Managers\Shader_Manager.h">
@@ -103,9 +99,6 @@
     <ClInclude Include="Managers\Models_Manager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Rendering\Util\Color.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Rendering\Util\Transform.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -121,7 +114,7 @@
     <ClInclude Include="Rendering\Util\VboIndexer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Rendering\Models\Cube.h">
+    <ClInclude Include="Rendering\Util\Light.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -129,6 +122,5 @@
     <Image Include="Examples\Crate.bmp">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Examples\cube.dds" />
   </ItemGroup>
 </Project>
