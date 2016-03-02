@@ -118,11 +118,8 @@ void CustomObject::Create()
 	std::vector<glm::vec3> temp_vertices;
 	std::vector<glm::vec2> temp_uvs;
 	std::vector<glm::vec3> temp_normals;
-	Models_Manager::LoadObject(objectPath, temp_vertices, temp_uvs, temp_normals);
+	Models_Manager::LoadObject(objectPath, vertices, uvs, normals, indices);
 	
-	// Generate IBO indices
-	VboIndexer::indexVBO(temp_vertices, temp_uvs, temp_normals, indices, vertices, uvs, normals);
-	// Generate VBO vertices
 	std::vector<VertexFormat> vertices = GetVertices();
 
 	glGenBuffers(1, &vbo);

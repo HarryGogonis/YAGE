@@ -5,6 +5,9 @@
 #include "Models_Manager.h"
 #include "../Rendering/Models/CustomObject.h"
 #include "../Rendering/Util/Light.h"
+#include <assimp/Importer.hpp>      // C++ importer interface
+#include <assimp/scene.h>           // Output data structure
+#include <assimp/postprocess.h>     // Post processing flags
 
 Models_Manager::Models_Manager()
 {
@@ -117,103 +120,64 @@ std::vector<std::string> &split(const std::string &s, char delim, std::vector<st
 	return elems;
 }
 
-/*
- * Read in blender object (.obj) file
- * http://www.opengl-tutorial.org/beginners-tutorials/tutorial-7-model-loading/
- */
-bool Models_Manager::LoadObject(const std::string& path, std::vector<glm::vec3>& out_vertices, std::vector<glm::vec2>& out_uvs, std::vector<glm::vec3>& out_normals)
+glm::vec3 assimpToGLM3D(const aiVector3D &vec)
 {
-	// temp storage
-	std::vector<unsigned int> vertexIndices, uvIndices, normalIndices;
-	std::vector<glm::vec3> temp_vertices;
-	std::vector<glm::vec2> temp_uvs;
-	std::vector<glm::vec3> temp_normals;
+	return glm::vec3(vec.x, vec.y, vec.z);
+}
 
-	// open file
-	std::ifstream file(path);
-	std::string line;
+glm::vec2 assimpToGLM2D(const aiVector3D &vec)
+{
+	return glm::vec2(vec.x, vec.y);
+}
 
-	// read file
-	while (std::getline(file, line))
+/*
+ * Read in any file format with assimp
+ */
+bool Models_Manager::LoadObject(const std::string& path, 
+	std::vector<glm::vec3>& out_vertices, 
+	std::vector<glm::vec2>& out_uvs, 
+	std::vector<glm::vec3>& out_normals, 
+	std::vector<unsigned short>& out_indices)
+{
+	Assimp::Importer importer;
+
+	const aiScene *scene = importer.ReadFile(path,
+		aiProcess_CalcTangentSpace		|
+		aiProcess_Triangulate			|
+		aiProcess_JoinIdenticalVertices	|
+		aiProcess_SortByPType);
+
+	if (!scene)
 	{
-		std::istringstream iss(line);
-		std::string lineHeader;
-
-		iss >> lineHeader;
-
-		// v is a vertex
-		if (lineHeader == "v")
-		{
-			double x, y, z;
-			iss >> x >> y >> z;
-			temp_vertices.push_back(glm::vec3(x,y,z));
-		}
-		// vt is a texture coordinate
-		else if (lineHeader == "vt")
-		{
-			glm::vec2 uv;
-			double x, y;
-			iss >> x >> y;
-			temp_uvs.push_back(glm::vec2(x,y));
-		}
-		// vn is a texture normal
-		else if (lineHeader == "vn")
-		{
-			double x, y, z;
-			iss >> x >> y >> z;
-			temp_normals.push_back(glm::vec3(x,y,z));
-		}
-		// f is a face
-		else if (lineHeader == "f")
-		{
-			std::string t1, t2, t3;
-			std::vector<std::string> buffer1, buffer2, buffer3;
-			char delim = '/';
-
-			iss >> t1 >> t2 >> t3;
-
-			split(t1,delim, buffer1);
-			split(t2,delim, buffer2);
-			split(t3,delim, buffer3);
-
-			vertexIndices.push_back( 
-				std::stoi(buffer1[0]));
-			uvIndices.push_back(
-				std::stoi(buffer1[1]));
-			normalIndices.push_back(
-				std::stoi(buffer1[2]));
-
-			vertexIndices.push_back( 
-				std::stoi(buffer2[0]));
-			uvIndices.push_back(
-				std::stoi(buffer2[1]));
-			normalIndices.push_back(
-				std::stoi(buffer2[2]));
-			
-			vertexIndices.push_back( 
-				std::stoi(buffer3[0]));
-			uvIndices.push_back(
-				std::stoi(buffer3[1]));
-			normalIndices.push_back(
-				std::stoi(buffer3[2]));
-		}
-		// Most likely a comment or some other garbage
-		else
-		{
-		}
+		perror(importer.GetErrorString());
+		return false;
 	}
 
-	// Iterate through each vertex of each triangle
-	for (unsigned int i = 0; i < vertexIndices.size(); i++)
+	// Does not keep track of separate meshes for material rendering
+	// TODO: Fix http://www.mbsoftworks.sk/index.php?page=tutorials&series=1&tutorial=23
+	for (int i = 0; i != scene->mNumMeshes; ++i)
 	{
-		unsigned int vertexIndex = vertexIndices[i];
-		unsigned int uvIndex = uvIndices[i];
-		unsigned int normalIndex = normalIndices[i];
-
-		// Put the attributes in buffers
-		out_vertices.push_back(temp_vertices[vertexIndex - 1]);
-		out_uvs.push_back(temp_uvs[uvIndex - 1]);
-		out_normals.push_back(temp_normals[normalIndex - 1]);
+		aiMesh *mesh = scene->mMeshes[i];
+		for (int j = 0; j != mesh->mNumFaces; ++j)
+		{
+			const aiFace &face = mesh->mFaces[j];
+			for (int k = 0; k != 3; ++k)
+			{
+				out_indices.push_back(face.mIndices[k]);
+			}
+		}
+		for (int j = 0; j != mesh->mNumVertices; ++j) {
+			out_vertices.push_back(assimpToGLM3D(mesh->mVertices[j]));
+			if (mesh->HasNormals())
+			{
+				out_normals.push_back(assimpToGLM3D(mesh->mNormals[j]));
+			}
+			else
+			{
+				out_normals.push_back(glm::vec3(1.0f, 1.0f, 1.0f));
+			}
+			out_uvs.push_back(assimpToGLM2D(mesh->mTextureCoords[0][j]));
+		}
 	}
 
 	return true;
