@@ -12,10 +12,8 @@ public:
 	std::vector<VertexFormat> GetVertices() override final;
 	
 	void Create();
-	virtual void Draw() override final;
-	virtual void Update() override final;
-	virtual void SetTexture(const std::string&, GLuint) override;
-	void SetDiffuseTexture(GLuint);
+	void Draw() override final;
+	void Update() override final;
 
 	float shininess;
 	float strength;

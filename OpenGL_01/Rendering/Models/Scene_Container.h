@@ -5,22 +5,19 @@
 #include <assimp/scene.h>           // Output data structure
 #include <assimp/postprocess.h>     // Post processing flags
 
-class Scene_Container : public Model
+class Scene_Container : public IGameObject
 {
 public:
 	Scene_Container(const std::string&);
 	~Scene_Container();
 
-	virtual void Draw() override;
-	virtual void Update() override;
-	virtual void Destroy() override;
+	void Draw() override;
+	void Update() override;
+	void Destroy() override;
+	void SetProgram(GLuint) override;
 
-	// Should not be used; we need to redefine what a model entails
-	virtual std::vector<VertexFormat> GetVertices() override;
-
-	void SetMeshPrograms(GLuint program);
-
-	void SetUniformTexture(const std::string&);
+	void SetTexture(const std::string&,const TextureType&, const GLuint&) override;
+	const GLuint GetTexture(const std::string&) const override;
 
 private:
 	std::vector<Mesh*> meshes;

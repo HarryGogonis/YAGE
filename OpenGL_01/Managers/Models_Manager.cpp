@@ -1,20 +1,28 @@
 #include <iostream>
 #include <sstream>
 #include <string>
-#include "Models_Manager.h"
-#include "../Rendering/Util/Light.h"
+
 #include <assimp/Importer.hpp>      // C++ importer interface
 #include <assimp/scene.h>           // Output data structure
 #include <assimp/postprocess.h>     // Post processing flags
+#include <SOIL.h>
+
+#include "Models_Manager.h"
+#include "../Rendering/Util/Light.h"
 #include "../Rendering/Models/Scene_Container.h"
 #include "Shader_Manager.h"
 
 Models_Manager::Models_Manager()
 {
-	Scene_Container* suzanne = new Scene_Container("Examples\\suzanne.obj");
+	Scene_Container* suzanne = new Scene_Container("Examples\\high_poly.obj");
 	// Pay attention to these order of operations (Are they important? I don't know...)
-	suzanne->SetMeshPrograms(Shader_Manager::GetShader("textureShader"));
-	suzanne->SetUniformTexture("Examples\\suzanne.dds");
+	suzanne->SetProgram(Shader_Manager::GetShader("textureShader"));
+	GLuint textureID = SOIL_load_OGL_texture(
+		"Examples\\test_texture.png",
+		SOIL_LOAD_AUTO,
+		1,
+		SOIL_FLAG_MIPMAPS);
+	suzanne->SetTexture("suzanne", Texture_Diffuse, textureID);
 	gameModelList["suzanne"] = suzanne;
 
 	CustomObject* cube1 = new CustomObject("Examples\\cube.obj", "Examples\\Crate.bmp");

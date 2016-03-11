@@ -1,5 +1,4 @@
 #include "Scene_Container.h"
-#include <SOIL.h>
 
 
 Scene_Container::Scene_Container(const std::string &path)
@@ -7,10 +6,10 @@ Scene_Container::Scene_Container(const std::string &path)
 	Assimp::Importer importer;
 
 	scene = importer.ReadFile(path,
-		aiProcess_CalcTangentSpace |
-		aiProcess_Triangulate |
+		aiProcess_CalcTangentSpace		|
+		aiProcess_Triangulate			|
 		aiProcess_JoinIdenticalVertices |
-		aiProcess_SortByPType |
+		aiProcess_SortByPType			|
 		aiProcess_GenSmoothNormals);
 
 	if (!scene)
@@ -45,6 +44,36 @@ Scene_Container::~Scene_Container()
 void Scene_Container::Destroy()
 {}
 
+void Scene_Container::SetProgram(GLuint program)
+{
+	for (int i = 0; i != meshes.size(); ++i)
+	{
+		meshes[i]->SetProgram(program);
+		meshes[i]->Create();
+	}
+}
+
+void Scene_Container::SetTexture(const std::string& textureName, const TextureType& textureType, const GLuint& id)
+{
+	for (int i = 0; i != meshes.size(); ++i)
+	{
+		meshes[i]->SetTexture(textureName, textureType, id);
+	}
+}
+
+const GLuint Scene_Container::GetTexture(const std::string &name) const
+{
+	GLuint retval = 0;
+	Texture *t = nullptr;
+	for (int i = 0; i != meshes.size(); ++i)
+	{
+		retval = meshes[i]->GetTexture(name);
+		if (retval)
+			return retval;
+	}
+	std::cout << "ERROR: Scene_Container cannot find texture" << std::endl;
+	return retval;
+}
 
 void Scene_Container::Draw()
 {
@@ -59,35 +88,6 @@ void Scene_Container::Update()
 	for (int i = 0; i != meshes.size(); ++i)
 	{
 		meshes[i]->Update();
-	}
-}
-
-std::vector<VertexFormat> Scene_Container::GetVertices()
-{
-	// do absolutely nothing; meshes keep track of vertices
-	std::vector<VertexFormat> ret;
-	return ret;
-}
-
-
-void Scene_Container::SetMeshPrograms(GLuint program)
-{
-	for (int i = 0; i != meshes.size(); ++i)
-	{
-		meshes[i]->SetProgram(program);
-		meshes[i]->Create();
-	}
-}
-
-void Scene_Container::SetUniformTexture(const std::string & fPath)
-{
-	for (int i = 0; i != meshes.size(); ++i)
-	{
-		meshes[i]->SetTexture(fPath.c_str(), SOIL_load_OGL_texture(
-			fPath.c_str(),
-			SOIL_LOAD_AUTO,
-			1,
-			SOIL_FLAG_MIPMAPS));
 	}
 }
 

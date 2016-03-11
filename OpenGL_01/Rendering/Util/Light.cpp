@@ -52,17 +52,15 @@ void Light::Destroy()
 	this->isEnabled = false;
 }
 
-void Light::SetTexture(const std::string&, GLuint texture)
+void Light::SetTexture(const std::string&, const TextureType&, const GLuint&)
 {
 	//TODO support textures on lights? probably not!
 	throw "Textures not supported with Lights";
-	this->texture = texture;
 }
 
 const GLuint Light::GetTexture(const std::string&) const
 {
 	throw "Textures not supported with Lights";
-	return texture;
 }
 
 DirectionalLight::DirectionalLight(glm::vec3 color, glm::vec3 direction, glm::vec3 halfVector): Light()

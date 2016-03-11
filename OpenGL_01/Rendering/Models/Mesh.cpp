@@ -44,11 +44,13 @@ Mesh::Mesh(const aiMesh* ai_mesh, const aiMaterial* ai_mat, const std::string& s
 					&path) == AI_SUCCESS)
 			{
 				// Add texture to total textures for this mesh
-				SetTexture(path.C_Str(), SOIL_load_OGL_texture(
+				// Note: Automatically assume diffuse (TODO: CHANGE!)
+				GLuint textureID = SOIL_load_OGL_texture(
 					path.C_Str(),
 					SOIL_LOAD_AUTO,
 					1,
-					SOIL_FLAG_MIPMAPS));
+					SOIL_FLAG_MIPMAPS);
+				SetTexture("diffuse_" + textureID, Texture_Diffuse, textureID);
 			}
 			if (ai_mat->Get(AI_MATKEY_SHININESS, shininess) != AI_SUCCESS)
 			{
@@ -98,32 +100,9 @@ void Mesh::Update()
 	glUniformMatrix3fv(NormalMatrix_ID, 1, GL_FALSE, &NormalMatrix[0][0]);
 }
 
-// Obsolete?
-void Mesh::SetTexture(const std::string& textureName, GLuint texture)
-{
-	if (texture == 0) return;
-	// Assuming this is a diffuse texture... (TODO: Change?)
-	this->texturePath = textureName;
-	Texture t = {
-		texture,
-		"texture_diffuse"
-	};
-	textures.push_back(t);
-}
-
-void Mesh::SetDiffuseTexture(GLuint texture)
-{
-	if (texture == 0) return;
-	Texture t = {
-		texture,
-		"texture_diffuse"
-	};
-}
-
 void Mesh::Draw()
 {	
 	glUseProgram(program);
-	glBindVertexArray(vao);
 
 	GLuint diffuseNr = 1;
 	GLuint specularNr = 1;
@@ -150,19 +129,22 @@ void Mesh::Draw()
 		// Retrieve texture number
 		std::stringstream ss;
 		std::string number;
-		std::string name = textures[i].type;
-		if (name == "texture_diffuse")
+		std::string type_string;
+		TextureType ttype = textures[i].type;
+		if (ttype == Texture_Diffuse)
 		{
 			ss << diffuseNr++;
+			type_string = "texture_diffuse";
 		}
 		// We don't actually have real support for specular textures yet
-		else if (name == "texture_specular")
+		else if (ttype == Texture_Specular)
 		{
 			ss << specularNr++;
+			type_string = "texture_specular";
 		}
 		number = ss.str();
 		// Find appropriate diffuse or specular texture handle
-		glUniform1f(glGetUniformLocation(program, (name + number).c_str()), i);
+		glUniform1f(glGetUniformLocation(program, (type_string + number).c_str()), i);
 		glBindTexture(GL_TEXTURE_2D, textures[i].id);
 	}
 
@@ -172,7 +154,9 @@ void Mesh::Draw()
 	glUniform1f(glGetUniformLocation(program, "Strength"), strength);
 
 	// Draw triangles
+	glBindVertexArray(vao);
 	glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_SHORT, nullptr);
+	glBindVertexArray(0);
 }
 
 void Mesh::Create()
