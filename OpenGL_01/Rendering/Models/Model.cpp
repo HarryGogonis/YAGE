@@ -42,32 +42,36 @@ const std::vector<GLuint>& Model::GetVbos() const
 
 const GLuint Model::GetTexture(const std::string& textureName) const
 {
-	if (textures.count(textureName) == 0)
-	{
-		std::cout << "Error finding texture " << textureName << std::endl;
-		return 0;
-	}
-	return textures.at(textureName);
+//	if (textures.count(textureName) == 0)
+//	{
+//		std::cout << "Error finding texture " << textureName << std::endl;
+//		return 0;
+//	}
+//	return textures.at(textureName);
+	return 0;
 }
 
 void Model::SetTexture(const std::string& textureName, GLuint texture)
 {
 	if (texture == 0) return;
-	textures[textureName] = texture;
+	//textures[textureName] = texture;
 }
 
 void Model::Destroy()
 {
-	glDeleteVertexArrays(1, &vao);
-	glDeleteBuffers(vbos.size(), &vbos[0]);
-	vbos.clear();
-
-	if (textures.size() > 0)
+	if (!vbos.empty())
 	{
-		for (auto t: textures)
+		glDeleteVertexArrays(1, &vao);
+		glDeleteBuffers(vbos.size(), &vbos[0]);
+		vbos.clear();
+
+		if (textures.size() > 0)
 		{
-			glDeleteTextures(1, &t.second);
+			for (auto t : textures)
+			{
+				glDeleteTextures(1, &t.id);
+			}
+			textures.clear();
 		}
-		textures.clear();
 	}
 }

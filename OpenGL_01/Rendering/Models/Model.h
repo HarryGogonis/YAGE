@@ -4,9 +4,10 @@
 #include <map>
 #include "../IGameObject.h"
 #include "../VertexFormat.h"
+#include "../Texture.h"
 #include "../Util/Camera.h"
 
-class Model :public IGameObject
+class Model : public IGameObject
 {
 public:
 	Model();
@@ -32,8 +33,8 @@ protected:
 	GLuint vao;
 	GLuint program;
 	std::vector<GLuint> vbos;
-	std::map<std::string, GLuint> textures;
-	
+	std::vector<Texture> textures;
+	//std::map<std::string, GLuint> textures;
 
 
 };
