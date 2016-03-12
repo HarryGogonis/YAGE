@@ -29,7 +29,7 @@ void Scene_Manager::notifyBeginFrame()
 	numFrames++;
 	if (currentTime - lastTime >= 1.0)
 	{
-		//printf("\rms/frame= %f", 1000.0 / double(numFrames));
+		printf("\rms/frame= %f", 1000.0 / double(numFrames));
 		numFrames = 0;
 	}
 	Camera::ComputeMatrices();

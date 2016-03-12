@@ -17,4 +17,5 @@ void main(void)
 	Normal = normalize(NormalMatrix * in_normal);
 	Position = MV * vec4(in_position,1);
 	gl_Position = MVP * vec4(in_position,1);
+	UV = in_uv;
 }

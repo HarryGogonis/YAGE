@@ -5,8 +5,8 @@
 class Transform
 {
 public:
-	glm::vec3 position, scale;
-	glm::quat rotation;
+	glm::vec4 position, scale;
+	Quaternion rotation;
 
 	Transform();
 	Transform(glm::vec3 position, glm::vec3 scale, glm::quat rotation);

@@ -1,7 +1,5 @@
 #pragma once
 #include <vector>
-#include <string>
-#include <map>
 #include "../IGameObject.h"
 #include "../VertexFormat.h"
 #include "../Util/Camera.h"

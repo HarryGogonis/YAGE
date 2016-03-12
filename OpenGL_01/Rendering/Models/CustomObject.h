@@ -7,11 +7,10 @@ class CustomObject : public Model
 {
 public:
 	CustomObject();
-	CustomObject(const std::string&, const std::string&);
+	CustomObject(const char*, const char*);
 	~CustomObject();
 
-	std::vector<VertexFormat> GetVertices() override final;
-	
+	std::vector<VertexFormat> GetVertices();
 	void Create();
 	virtual void Draw() override final;
 	virtual void Destroy() override final;

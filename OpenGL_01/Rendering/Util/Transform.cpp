@@ -1,11 +1,10 @@
 #include "Transform.h"
-#include <glm/gtx/transform.hpp>
 
 Transform::Transform()
 {
-	this->position = glm::vec3(0.0, 0.0, 0.0);
-	this->scale = glm::vec3(1.0, 1.0, 1.0);
-	this->rotation = glm::quat();
+	this->position = glm::vec4(0.0, 0.0, 0.0, 1.0);
+	this->scale = glm::vec4(1.0, 1.0, 1.0, 1.0);
+	this->rotation = Quaternion();
 }
 
 Transform::Transform(glm::vec3 position, glm::vec3 scale, glm::quat rotation)
@@ -27,43 +26,26 @@ void Transform::SetPosition(const glm::vec3& position)
 
 void Transform::SetRotation(float angle, glm::vec3 axis)
 {
-	this->rotation = glm::angleAxis(angle, axis);
+	glm::mat4 m = glm::mat4(1.0f);
+	m[0][3] = position.x;
+	m[1][3] = position.y;
+	m[2][3] = position.z;
+	return m;
 }
 
 // Rotate along X Axis - Angle is in degrees
 void Transform::RotateX(float angle)
 {
-	this->SetRotation(glm::radians(angle), glm::vec3(1.0, 0.0, 0.0));
+	glm::mat4 m = glm::mat4(1.0f);
+	m[0][0] = scale.x;
+	m[1][1] = scale.y;
+	m[2][2] = scale.z;
+	return m;
 }
 
-void Transform::RotateY(float angle)
+glm::mat4 Transform::getRotationMatrix()
 {
-	this->SetRotation(glm::radians(angle), glm::vec3(0.0, 1.0, 0.0));
-}
-
-void Transform::RotateZ(float angle)
-{
-	this->SetRotation(glm::radians(angle), glm::vec3(0.0, 0.0, 1.0));
-}
-
-glm::mat4 Transform::getTranslationMatrix() const
-{
-	return glm::translate(glm::mat4(1.0f), this->position);
-}
-
-glm::mat4 Transform::getScaleMatrix() const
-{
-	return glm::scale(glm::mat4(1.0f), this->scale);
-}
-
-glm::mat4 Transform::getRotationMatrix() const
-{
-	return glm::mat4_cast(rotation);
-}
-
-glm::mat4 Transform::getTransformMatrix() const
-{
-	return getTranslationMatrix() * getRotationMatrix() * getScaleMatrix();
+	return rotation.rotationMatrix();
 }
 
 Transform::~Transform()

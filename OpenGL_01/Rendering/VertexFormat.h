@@ -7,7 +7,7 @@ struct VertexFormat
 	glm::vec2 uv;
 	glm::vec3 normal;
 
-	VertexFormat(const glm::vec3 &inPos, const glm::vec2& inUV, const  glm::vec3& inNormal)
+	VertexFormat(const glm::vec3 &inPos, const glm::vec2& inUV)
 	{
 		position = inPos;
 		uv = inUV;
