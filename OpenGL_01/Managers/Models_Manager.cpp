@@ -2,9 +2,6 @@
 #include <sstream>
 #include <string>
 
-#include <assimp/Importer.hpp>      // C++ importer interface
-#include <assimp/scene.h>           // Output data structure
-#include <assimp/postprocess.h>     // Post processing flags
 #include <SOIL.h>
 
 #include "Models_Manager.h"
@@ -14,63 +11,27 @@
 
 Models_Manager::Models_Manager()
 {
-	Scene_Container* suzanne = new Scene_Container("Examples\\high_poly.obj");
+	Transform t = Transform();
+	Transform t2 = Transform(glm::vec3(-10.0f, 5.0f, 4.0f), glm::vec3(1.0f), glm::quat());
+	Scene_Container* suzanne = new Scene_Container("Examples\\suzanne.obj", t);
+	Scene_Container* raptor_2 = new Scene_Container("Examples\\Raptor.obj", t2);
 	// Pay attention to these order of operations (Are they important? I don't know...)
 	suzanne->SetProgram(Shader_Manager::GetShader("textureShader"));
-	GLuint textureID = SOIL_load_OGL_texture(
+	raptor_2->SetProgram(Shader_Manager::GetShader("textureShader"));
+	GLuint uvTexture = SOIL_load_OGL_texture(
 		"Examples\\test_texture.png",
 		SOIL_LOAD_AUTO,
 		1,
 		SOIL_FLAG_MIPMAPS);
-	suzanne->SetTexture("suzanne", Texture_Diffuse, textureID);
-	gameModelList["suzanne"] = suzanne;
-
-	CustomObject* cube1 = new CustomObject("Examples\\cube.obj", "Examples\\Crate.bmp");
-	cube1->SetProgram(Shader_Manager::GetShader("textureShader"));
-	cube1->transform.SetScale(glm::vec3(0.2f));
-	cube1->transform.SetPosition(glm::vec3(1.0, 0.2, -2.5));
-	cube1->Create();
-	gameModelList["cube1"] = cube1;
-
-	CustomObject* cube2 = new CustomObject("Examples\\cube.obj", "Examples\\Crate.bmp");
-	cube2->SetProgram(Shader_Manager::GetShader("textureShader"));
-	cube2->transform.SetScale(glm::vec3(0.2f));
-	cube2->transform.SetPosition(glm::vec3(1.0, 0.2, 2.5));
-	cube2->Create();
-	gameModelList["cube2"] = cube2;
-
-	CustomObject* cube3 = new CustomObject("Examples\\cube.obj", "Examples\\Crate.bmp");
-	cube3->SetProgram(Shader_Manager::GetShader("textureShader"));
-	cube3->transform.SetScale(glm::vec3(0.2f));
-	cube3->transform.SetPosition(glm::vec3(-1.0, 0.2, -2.5));
-	cube3->Create();
-	gameModelList["cube3"] = cube3;
-
-	CustomObject* cube4 = new CustomObject("Examples\\cube.obj", "Examples\\Crate.bmp");
-	cube4->SetProgram(Shader_Manager::GetShader("textureShader"));
-	cube4->transform.SetScale(glm::vec3(0.2f));
-	cube4->transform.SetPosition(glm::vec3(-1.0, 0.2, 2.5));
-	cube4->Create();
-	gameModelList["cube4"] = cube4;
-
-	// floor
-	CustomObject* cube5 = new CustomObject("Examples\\cube.obj", "Examples\\checkerboard.dds");
-	cube5->SetProgram(Shader_Manager::GetShader("textureShader"));
-	cube5->transform.SetPosition(glm::vec3(0.0, 0.0, 0.0));
-	cube5->transform.SetScale(glm::vec3(5.0, 0.0001, 5.0));
-	cube5->shininess = 0.5;
-	cube5->Create();
-	gameModelList["cube5"] = cube5;
-
-	// back wall
-	CustomObject* cube6 = new CustomObject("Examples\\cube.obj", "Examples\\checkerboard.dds");
-	cube6->SetProgram(Shader_Manager::GetShader("textureShader"));
-	cube6->transform.SetPosition(glm::vec3(0.0, 0.0, -5.0));
-	cube6->transform.RotateX(90);
-	cube5->shininess = 0.5;
-	cube6->transform.SetScale(glm::vec3(5.0, 0.0001, 5.0));
-	cube6->Create();
-	gameModelList["cube6"] = cube6;
+	GLuint raptor_skin = SOIL_load_OGL_texture(
+		"Examples\\raptor.jpg",
+		SOIL_LOAD_AUTO,
+		1,
+		SOIL_FLAG_MIPMAPS);
+	suzanne->SetTexture("suzanne", Texture_Diffuse, uvTexture);
+	raptor_2->SetTexture("raptor", Texture_Diffuse, raptor_skin);
+	gameModelList["suzanne"] = suzanne; 
+	gameModelList["raptor2"] = raptor_2;
 
 	Light* pointLight1 = new PointLight(
 		glm::vec3(0.6, 0.5, 0.5), // color

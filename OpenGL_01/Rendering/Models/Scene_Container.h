@@ -8,7 +8,7 @@
 class Scene_Container : public IGameObject
 {
 public:
-	Scene_Container(const std::string&);
+	Scene_Container(const std::string&, Transform);
 	~Scene_Container();
 
 	void Draw() override;
@@ -19,10 +19,11 @@ public:
 	void SetTexture(const std::string&,const TextureType&, const GLuint&) override;
 	const GLuint GetTexture(const std::string&) const override;
 
+	Transform transform;
 private:
 	std::vector<Mesh*> meshes;
 	const aiScene *scene;
 
-	void addMeshWithMat(const aiMesh*, const aiMaterial*, const std::string&);
+	void addMeshWithMat(const aiMesh*, const aiMaterial*, const Transform&);
 };
 

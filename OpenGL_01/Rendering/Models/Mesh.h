@@ -6,7 +6,7 @@
 class Mesh : public Model
 {
 public:
-	Mesh(const aiMesh*, const aiMaterial*, const std::string&);
+	Mesh(const aiMesh*, const aiMaterial*, const Transform&);
 	~Mesh();
 
 	std::vector<VertexFormat> GetVertices() override final;
@@ -25,7 +25,7 @@ private:
 
 	glm::mat4 ModelMatrix;
 	
-	GLuint MVP_ID, MV_ID;
+	GLuint MVP_ID, MV_ID, Trans_ID;
 	GLuint NormalMatrix_ID;
 
 	std::string objectPath;

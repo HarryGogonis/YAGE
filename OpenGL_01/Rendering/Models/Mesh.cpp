@@ -15,10 +15,11 @@ glm::vec2 assimpToGLM2D(const aiVector3D &vec)
 	return glm::vec2(vec.x, vec.y);
 }
 
-Mesh::Mesh(const aiMesh* ai_mesh, const aiMaterial* ai_mat, const std::string& sFilePath)
+Mesh::Mesh(const aiMesh* ai_mesh, const aiMaterial* ai_mat, const Transform& transform)
 {
 	shininess = 20;
 	strength = 10;
+	this->transform = transform;
 	for (auto i = 0; i < ai_mesh->mNumFaces; ++i)
 	{
 		const aiFace &face = ai_mesh->mFaces[i];
@@ -94,6 +95,7 @@ void Mesh::Update()
 	glm::mat4 mvp = ProjectionMatrix * ViewMatrix * ModelMatrix;
 	glUniformMatrix4fv(MV_ID, 1, GL_FALSE, &mv[0][0]);
 	glUniformMatrix4fv(MVP_ID, 1, GL_FALSE, &mvp[0][0]);
+	glUniformMatrix4fv(Trans_ID, 1, GL_FALSE, &translation[0][0]);
 
 	// Send normal matrix to currently bound shader
 	glm::mat3 NormalMatrix = glm::mat3(glm::transpose(glm::inverse(ModelMatrix)));
@@ -168,6 +170,7 @@ void Mesh::Create()
 	// Get handlers
 	MVP_ID = glGetUniformLocation(program, "MVP");
 	MV_ID = glGetUniformLocation(program, "MV");
+	Trans_ID = glGetUniformLocation(program, "TranslationMatrix");
 	NormalMatrix_ID = glGetUniformLocation(program, "NormalMatrix");
 
 	glGenVertexArrays(1, &vao);

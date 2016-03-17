@@ -1,10 +1,11 @@
 #include "Scene_Container.h"
 
 
-Scene_Container::Scene_Container(const std::string &path)
+Scene_Container::Scene_Container(const std::string &path, Transform transform)
 {
 	Assimp::Importer importer;
 
+	this->transform = transform;
 	scene = importer.ReadFile(path,
 		aiProcess_CalcTangentSpace		|
 		aiProcess_Triangulate			|
@@ -23,11 +24,11 @@ Scene_Container::Scene_Container(const std::string &path)
 		aiMesh *mesh = scene->mMeshes[i];
 		if (scene->mNumMaterials)
 		{
-			addMeshWithMat(mesh, scene->mMaterials[mesh->mMaterialIndex], path);
+			addMeshWithMat(mesh, scene->mMaterials[mesh->mMaterialIndex], transform);
 		}
 		else
 		{
-			addMeshWithMat(mesh, nullptr, path);
+			addMeshWithMat(mesh, nullptr, transform);
 		}
 	}
 }
@@ -91,9 +92,9 @@ void Scene_Container::Update()
 	}
 }
 
-void Scene_Container::addMeshWithMat(const aiMesh* ai_mesh, const aiMaterial* ai_mat, const std::string& path)
+void Scene_Container::addMeshWithMat(const aiMesh* ai_mesh, const aiMaterial* ai_mat, const Transform& t)
 {
-	Mesh *mesh = new Mesh(ai_mesh, ai_mat, path);
+	Mesh *mesh = new Mesh(ai_mesh, ai_mat, t);
 	meshes.push_back(mesh);
 }
 

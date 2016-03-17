@@ -9,6 +9,7 @@ out vec4 Position;
 
 uniform mat4 MVP;
 uniform mat4 MV;
+uniform mat4 TranslationMatrix;
 uniform mat3 NormalMatrix;
 
 void main(void)

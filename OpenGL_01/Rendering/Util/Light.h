@@ -14,12 +14,9 @@ public:
 	virtual void Draw() override;
 	virtual void Update() override;
 	virtual void SetProgram(GLuint program) override;
-	virtual void Draw() override;
-	virtual void Update() override;
-	virtual void SetProgram(GLuint shaderName) override;
 	virtual void Destroy() override;
 
-	virtual void SetTexture(const std::string&, GLuint) override;
+	virtual void SetTexture(const std::string&, const TextureType&, const GLuint&) override;
 	virtual const GLuint GetTexture(const std::string&) const override;
 
 	glm::vec3 ambient; // light's contribution to ambient light
@@ -43,26 +40,20 @@ protected:
 	int type; 
 
 	// Holds shader locations
-	//struct LightUniformLocations
-
-	glm::vec3 ambient; // light's contribution to ambient light
-	glm::vec3 color;
-	glm::vec3 position; // location of light if isLocal is true
-	glm::vec3 halfVector; // direction of headlights for directional light
-	glm::vec3 coneDirection; // spotlight cone
-	glm::vec3 spotCosCutoff; // spotlight cosine cutoff
-	glm::vec3 spotExponent;
-	float constantAttenuation;
-	float linearAttenuation;
-	float quadradicAttenuation;
-
-	struct UniformLocations
+	struct LightUniformLocations
 	{
-		GLuint isEnabled, type,
-				ambient, color, position,
+		GLuint isEnabled, 
+				type,
+				ambient, 
+				color, 
+				position,
 				halfVector,
-				coneDirection, spotCosCutoff, spotExponent,
-				constantAttenuation, linearAttenuation, quadradicAttenuation;
+				coneDirection, 
+				spotCosCutoff, 
+				spotExponent,
+				constantAttenuation, 
+				linearAttenuation, 
+				quadraticAttenuation;
 	} ids;
 private:
 	static unsigned int count;
