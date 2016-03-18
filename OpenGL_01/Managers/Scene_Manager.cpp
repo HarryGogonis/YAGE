@@ -8,8 +8,10 @@ int numFrames;
 Scene_Manager::Scene_Manager()
 {
 	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_BACK);
 
-	shader_manager = new Shader_Manager();
+	shader_manager = Shader_Factory::GetInstance();
 
 	shader_manager->CreateProgram("textureShader",
 		"Shaders\\TextureVertexShader.glsl",
@@ -29,7 +31,6 @@ void Scene_Manager::notifyBeginFrame()
 	numFrames++;
 	if (currentTime - lastTime >= 1.0)
 	{
-		//printf("\rms/frame= %f", 1000.0 / double(numFrames));
 		numFrames = 0;
 	}
 	Camera::ComputeMatrices();

@@ -16,14 +16,21 @@ struct LightProperties {
 	float quadraticAttenuation;
 };
 
-uniform sampler2D texture1;
+uniform sampler2D texture_diffuse1;
+uniform sampler2D texture_diffuse2;
+uniform sampler2D texture_diffuse3;
+uniform sampler2D texture_specular1;
+uniform sampler2D texture_specular2;
+
+uniform float texture_contributions[3];
+uniform float texture_count;
 
 // set of lights to apply, per invocation of this shader
 const int MaxLights = 5; 
 uniform LightProperties Lights[MaxLights];
 
-uniform float Shininess; //TODO pass in via material
-uniform float Strength; //TODO pass in via material
+uniform float Shininess;
+uniform float Strength;
 uniform vec3 EyeDirection; // camera position
 uniform mat4 MVP;
 uniform mat4 MV;
@@ -100,9 +107,23 @@ void main(void)
 						  Lights[light].color * diffuse * attenuation;
 		reflectedLight += Lights[light].color * specular * attenuation;
 	}
+	vec4 texture_color;
+	if (texture_count == 1)
+	{
+		texture_color = texture(texture_diffuse1, UV).rgba;
+	}
+	else if (texture_count == 2)
+	{
+		texture_color =	texture(texture_diffuse1, UV).rgba * texture_contributions[0] +
+						texture(texture_diffuse2, UV).rgba * texture_contributions[1];
+	}
+	else
+	{
+		texture_color =	texture(texture_diffuse1, UV).rgba * texture_contributions[0] +
+						texture(texture_diffuse2, UV).rgba * texture_contributions[1] +
+						texture(texture_diffuse3, UV).rgba * texture_contributions[2];
+	}
 
-	vec4 texcolor = texture(texture1, UV).rgba;
-
-	vec3 rgb = min(texcolor.rgb * scatteredLight + reflectedLight, vec3(1.0));
-	out_color = vec4(rgb, texcolor.a);
+	vec3 rgb = min(texture_color.rgb * scatteredLight + reflectedLight, vec3(1.0));
+	out_color = vec4(rgb, texture_color.a);
 }

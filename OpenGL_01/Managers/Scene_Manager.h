@@ -1,5 +1,5 @@
 #pragma once
-#include "Shader_Manager.h"
+#include "Shader_Factory.h"
 #include "Models_Manager.h"
 #include "../Core/Init/IListener.h"
 
@@ -9,13 +9,13 @@ public:
 	Scene_Manager();
 	~Scene_Manager();
 
-	virtual void notifyBeginFrame();
-	virtual void notifyDisplayFrame();
-	virtual void notifyEndFrame();
+	virtual void notifyBeginFrame() override;
+	virtual void notifyDisplayFrame() override;
+	virtual void notifyEndFrame() override;
 	virtual void notifyReshape(int width, int height,
-		int p_width, int p_height);
+		int p_width, int p_height) override;
 
 private:
-	Shader_Manager* shader_manager;
+	Shader_Factory* shader_manager;
 	Models_Manager* models_manager;
 };

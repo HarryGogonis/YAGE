@@ -14,13 +14,13 @@ Light::Light()
 	this->_id = count++;
 }
 
-void Light::Create()
+void Light::Draw(GLuint program)
 {
 	const std::string prefix = "Lights[" + std::to_string(_id) + "].";
 	ids.isEnabled = glGetUniformLocation(program, (prefix + "isEnabled").c_str());
 	ids.type = glGetUniformLocation(program, (prefix + "type").c_str());
 	ids.ambient = glGetUniformLocation(program, (prefix + "ambient").c_str());
-	ids.color= glGetUniformLocation(program, (prefix + "color").c_str());
+	ids.color = glGetUniformLocation(program, (prefix + "color").c_str());
 	ids.position = glGetUniformLocation(program, (prefix + "position").c_str());
 	ids.halfVector = glGetUniformLocation(program, (prefix + "halfVector").c_str());
 	ids.coneDirection = glGetUniformLocation(program, (prefix + "coneDirection").c_str());
@@ -28,23 +28,12 @@ void Light::Create()
 	ids.spotExponent = glGetUniformLocation(program, (prefix + "spotExponent").c_str());
 	ids.constantAttenuation = glGetUniformLocation(program, (prefix + "constantAttenuation").c_str());
 	ids.linearAttenuation = glGetUniformLocation(program, (prefix + "linearAttenuation").c_str());
-	ids.quadraticAttenuation = glGetUniformLocation(program, (prefix + "quadraticAttenuation").c_str());
-}
-
-void Light::Create(GLuint program)
-{
-	this->program = program;
-	this->Create();
-}
-
-void Light::Draw()
-{
-	// overload
+	ids.quadraticAttenuation = glGetUniformLocation(program, (prefix + "quadradicAttenuation").c_str());
 }
 
 void Light::Update()
 {
-	// overload
+	// override
 }
 
 void Light::SetProgram(GLuint program)
@@ -56,20 +45,17 @@ void Light::Destroy()
 {
 	//TODO what happens when a light is destroyed?
 	this->isEnabled = false;
-	count--;
 }
 
-void Light::SetTexture(const std::string&, GLuint texture)
+void Light::SetTexture(const std::string&, const TextureType&, const GLuint&)
 {
 	//TODO support textures on lights? probably not!
 	throw "Textures not supported with Lights";
-	this->texture = texture;
 }
 
 const GLuint Light::GetTexture(const std::string&) const
 {
 	throw "Textures not supported with Lights";
-	return texture;
 }
 
 void Light::SetAttenuation(float constant, float linear, float quadratic)
@@ -79,7 +65,7 @@ void Light::SetAttenuation(float constant, float linear, float quadratic)
 	this->quadraticAttenuation = quadratic;
 }
 
-DirectionalLight::DirectionalLight(glm::vec3 color, glm::vec3 direction, glm::vec3 halfVector): Light()
+DirectionalLight::DirectionalLight(glm::vec3 color, glm::vec3 direction, glm::vec3 halfVector) : Light()
 {
 	this->type = DIRECTIONAL_LIGHT;
 	this->ambient = glm::vec3(0.0, 0.0, 0.0);
@@ -88,9 +74,10 @@ DirectionalLight::DirectionalLight(glm::vec3 color, glm::vec3 direction, glm::ve
 	this->halfVector = halfVector;
 }
 
-void DirectionalLight::Draw()
+void DirectionalLight::Draw(GLuint program)
 {
 	//TODO Use Uniform Buffer Object? https://www.opengl.org/wiki/Uniform_Buffer_Object
+	Light::Draw(program);
 	glUniform1i(ids.isEnabled, isEnabled);
 	glUniform1i(ids.type, type);
 	glUniform3fv(ids.ambient, 1, &ambient[0]);
@@ -99,14 +86,15 @@ void DirectionalLight::Draw()
 	glUniform3fv(ids.halfVector, 1, &halfVector[0]);
 }
 
-AmbientLight::AmbientLight(glm::vec3 color, float strength): Light()
+AmbientLight::AmbientLight(glm::vec3 color, float strength) : Light()
 {
 	this->type = AMBIENT_LIGHT;
 	this->color = color * strength;
 }
 
-void AmbientLight::Draw()
+void AmbientLight::Draw(GLuint program)
 {
+	Light::Draw(program);
 	glUniform1i(ids.isEnabled, isEnabled);
 	glUniform3fv(ids.ambient, 1, &color[0]);
 }
@@ -123,8 +111,9 @@ PointLight::PointLight(glm::vec3 color, glm::vec3 position,
 	this->quadraticAttenuation = quadraticAttenuation;
 }
 
-void PointLight::Draw()
+void PointLight::Draw(GLuint program)
 {
+	Light::Draw(program);
 	glUniform1i(ids.isEnabled, isEnabled);
 	glUniform1i(ids.type, type);
 	glUniform3fv(ids.ambient, 1, &ambient[0]);
@@ -151,8 +140,9 @@ SpotLight::SpotLight(glm::vec3 color, glm::vec3 position,
 	this->spotExponent = spotExponent;
 }
 
-void SpotLight::Draw()
+void SpotLight::Draw(GLuint program)
 {
+	Light::Draw(program);
 	glUniform1i(ids.isEnabled, isEnabled);
 	glUniform1i(ids.type, type);
 	glUniform3fv(ids.ambient, 1, &ambient[0]);

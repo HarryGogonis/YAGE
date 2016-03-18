@@ -123,17 +123,18 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Rendering\Util\Light.cpp" />
-    <ClCompile Include="Rendering\Models\CustomObject.cpp" />
+    <ClCompile Include="Rendering\Models\Mesh.cpp" />
     <ClCompile Include="Rendering\Util\Camera.cpp" />
     <ClCompile Include="Core\Init\Init_GLEW.cpp" />
     <ClCompile Include="Core\Init\Init_GLUT.cpp" />
     <ClCompile Include="Managers\Models_Manager.cpp" />
     <ClCompile Include="Managers\Scene_Manager.cpp" />
-    <ClCompile Include="Managers\Shader_Manager.cpp" />
+    <ClCompile Include="Managers\Shader_Factory.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Rendering\Models\Model.cpp" />
     <ClCompile Include="Rendering\Util\Transform.cpp" />
     <ClCompile Include="Rendering\Util\VboIndexer.cpp" />
+    <ClCompile Include="Rendering\Models\Scene_Container.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -144,8 +145,9 @@
     <None Include="Shaders\Vertex_Shader.glsl" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Rendering\Texture.h" />
     <ClInclude Include="Rendering\Util\Light.h" />
-    <ClInclude Include="Rendering\Models\CustomObject.h" />
+    <ClInclude Include="Rendering\Models\Mesh.h" />
     <ClInclude Include="Rendering\Util\Camera.h" />
     <ClInclude Include="Core\Init\ContextInfo.h" />
     <ClInclude Include="Core\Init\FrameBufferInfo.h" />
@@ -155,13 +157,14 @@
     <ClInclude Include="Core\Init\WindowInfo.h" />
     <ClInclude Include="Managers\Models_Manager.h" />
     <ClInclude Include="Managers\Scene_Manager.h" />
-    <ClInclude Include="Managers\Shader_Manager.h" />
+    <ClInclude Include="Managers\Shader_Factory.h" />
     <ClInclude Include="Rendering\Models\Model.h" />
     <ClInclude Include="Rendering\Util\Material.h" />
     <ClInclude Include="Rendering\Util\Transform.h" />
     <ClInclude Include="Rendering\VertexFormat.h" />
     <ClInclude Include="Rendering\IGameObject.h" />
     <ClInclude Include="Rendering\Util\VboIndexer.h" />
+    <ClInclude Include="Rendering\Models\Scene_Container.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Examples\checkerboard.dds" />

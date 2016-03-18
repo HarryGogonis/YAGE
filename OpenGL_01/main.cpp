@@ -1,7 +1,7 @@
 #include "Core\Init\Init_GLUT.h"
 #include "Managers\Scene_Manager.h"
 
-Shader_Manager* shaderManager;
+Shader_Factory* shaderManager;
 
 int main(int argc, char **argv)
 {

@@ -1,8 +1,8 @@
 #pragma once
 #include <map>
 #include <iostream>
-#include "Shader_Manager.h"
-#include "../Rendering/IGameObject.h"
+#include "../Rendering/Util/Light.h"
+#include "../Rendering/Models/Scene_Container.h"
 
 class Models_Manager
 {
@@ -12,17 +12,21 @@ public:
 
 	void Draw();
 	void Update();
-	//void CreateModel(const std::string& gameModelName);
+	/*
+	 * We want a controlled creation method to prevent resources from leaking.
+	 */
+	void CreateModel(
+		const std::string& modelName,
+		const std::string& modelPath,
+		const Transform& transform,
+		const std::string& texturePath = "", 
+		const TextureType type = Texture_Diffuse);
 	void DeleteModel(const std::string& gameModelName);
 	const IGameObject& GetModel(const std::string& gameModelName);
-
-	static bool LoadObject(const std::string& path,
-		std::vector<glm::vec3>& out_vertices,
-		std::vector<glm::vec2>& out_uvs,
-		std::vector<glm::vec3>& out_normals);
 
 private:
 	// for big games, use a vector instead of a map
 	// map has slow iteration, fast lookup
-	std::map <const std::string, IGameObject*> gameModelList;
+	std::map <const std::string, Scene_Container*> gameModelList;
+	std::map <const std::string, Light*> gameLightList;
 };

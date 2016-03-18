@@ -15,16 +15,6 @@ Model::~Model()
 	Destroy();
 }
 
-void Model::Draw()
-{
-	// override this
-}
-
-void Model::Update()
-{
-	// override this
-}
-
 void Model::SetProgram(GLuint program)
 {
 	this->program = program;
@@ -42,32 +32,49 @@ const std::vector<GLuint>& Model::GetVbos() const
 
 const GLuint Model::GetTexture(const std::string& textureName) const
 {
-	if (textures.count(textureName) == 0)
+	const Texture *t = nullptr;
+	for (int i = 0; i != textures.size(); ++i)
+	{
+		if (textures[i].name == textureName)
+		{
+			t = &textures[i];
+			break;
+		}
+	}
+	if (!t)
 	{
 		std::cout << "Error finding texture " << textureName << std::endl;
 		return 0;
 	}
-	return textures.at(textureName);
+	return t->id;
 }
 
-void Model::SetTexture(const std::string& textureName, GLuint texture)
+void Model::SetTexture(const std::string& textureName, const TextureType& textureType, const GLuint& texture)
 {
 	if (texture == 0) return;
-	textures[textureName] = texture;
+	Texture t = {
+		texture,
+		textureName,
+		textureType
+	};
+	textures.push_back(t);
 }
 
 void Model::Destroy()
 {
-	glDeleteVertexArrays(1, &vao);
-	glDeleteBuffers(vbos.size(), &vbos[0]);
-	vbos.clear();
-
-	if (textures.size() > 0)
+	if (!vbos.empty())
 	{
-		for (auto t: textures)
+		glDeleteVertexArrays(1, &vao);
+		glDeleteBuffers(vbos.size(), &vbos[0]);
+		vbos.clear();
+
+		if (textures.size() > 0)
 		{
-			glDeleteTextures(1, &t.second);
+			for (auto t : textures)
+			{
+				glDeleteTextures(1, &t.id);
+			}
+			textures.clear();
 		}
-		textures.clear();
 	}
 }

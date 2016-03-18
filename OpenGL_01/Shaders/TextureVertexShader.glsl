@@ -9,12 +9,14 @@ out vec4 Position;
 
 uniform mat4 MVP;
 uniform mat4 MV;
+uniform mat4 TranslationMatrix;
 uniform mat3 NormalMatrix;
 
 void main(void)
 {
 	UV = in_texture;
 	Normal = normalize(NormalMatrix * in_normal);
-	Position = MV * vec4(in_position,1);
-	gl_Position = MVP * vec4(in_position,1);
+	vec4 mod_position = TranslationMatrix * vec4(in_position, 1);
+	Position = MV * mod_position;
+	gl_Position = MVP * mod_position;
 }
