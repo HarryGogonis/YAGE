@@ -15,13 +15,11 @@ int texture_id = 0;
 Models_Manager::Models_Manager()
 {
 	Shader_Factory* shaderFactory = Shader_Factory::GetInstance();
-	Transform t = Transform();
-	Transform t2 = Transform(glm::vec3(-1.0f, 2.0f, -2.0f), glm::vec3(0.6f), glm::quat());
-	Transform t3 = Transform(glm::vec3(-1.0f, 2.0f, 2.0f), glm::vec3(0.01f), glm::quat());
+	Transform t2 = Transform(glm::vec3(-1.0f, 2.0f, -2.0f), glm::vec3(1.4f), glm::quat());
+	Transform t3 = Transform(glm::vec3(-1.0f, 2.0f, -2.0f), glm::vec3(0.05f), glm::quat());
 
-	t3.RotateY(25);
-	CreateModel("suzanne", "Examples\\suzanne.obj", t2, "Examples\\test_texture.png");
-	CreateModel("raptor", "Examples\\Raptor.obj", t3, "Examples\\raptor.jpg");
+	CreateModel("suzanne", "Examples\\diablo.obj", t2, "Examples\\diablo_diffuse.tga");
+	//CreateModel("raptor", "Examples\\Raptor.obj", t3, "Examples\\test_texture.png");
 
 	Light* pointLight1 = new PointLight(
 		glm::vec3(0.6, 0.5, 0.5), // color
@@ -68,7 +66,7 @@ void Models_Manager::CreateModel(
 			texturePath.c_str(),
 			SOIL_LOAD_AUTO,
 			SOIL_CREATE_NEW_ID,
-			SOIL_FLAG_MIPMAPS);
+			SOIL_FLAG_INVERT_Y);
 		if (!texture)
 			std::cout << "ERROR: texture for model not loaded properly" << std::endl;
 		else

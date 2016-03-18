@@ -18,7 +18,7 @@ glm::vec2 assimpToGLM2D(const aiVector3D &vec)
 Mesh::Mesh(const aiMesh* ai_mesh, const aiMaterial* ai_mat, const Transform& transform)
 {
 	shininess = 20;
-	strength = 10;
+	strength = 2;
 	this->transform = transform;
 	for (auto i = 0; i < ai_mesh->mNumFaces; ++i)
 	{
@@ -59,7 +59,7 @@ Mesh::Mesh(const aiMesh* ai_mesh, const aiMaterial* ai_mat, const Transform& tra
 			}
 			if (ai_mat->Get(AI_MATKEY_SHININESS_STRENGTH, strength) != AI_SUCCESS)
 			{
-				strength = 10;
+				strength = 2;
 			}
 		}
 	}
@@ -87,19 +87,15 @@ std::vector<VertexFormat> Mesh::GetVertices()
 void Mesh::Update()
 {
 	glUseProgram(program);
-	glm::mat4 scale = this->transform.getScaleMatrix();
-	glm::mat4 rotation = this->transform.getRotationMatrix();
-	glm::mat4 translation = this->transform.getTranslationMatrix();
+	glm::mat4 transformMatrix = this->transform.getTransformMatrix();
 	glm::mat4 ViewMatrix = Camera::GetViewMatrix();
 	glm::mat4 ProjectionMatrix = Camera::GetProjectionMatrix();
-	glm::mat4 ModelMatrix = scale * rotation;
-
 	// Send mvp to currently bound shader
 	glm::mat4 mv = ViewMatrix * ModelMatrix;
 	glm::mat4 mvp = ProjectionMatrix * ViewMatrix * ModelMatrix;
 	glUniformMatrix4fv(MV_ID, 1, GL_FALSE, &mv[0][0]);
 	glUniformMatrix4fv(MVP_ID, 1, GL_FALSE, &mvp[0][0]);
-	glUniformMatrix4fv(Trans_ID, 1, GL_FALSE, &translation[0][0]);
+	glUniformMatrix4fv(Trans_ID, 1, GL_FALSE, &transformMatrix[0][0]);
 
 	// Send normal matrix to currently bound shader
 	glm::mat3 NormalMatrix = glm::mat3(glm::transpose(glm::inverse(ModelMatrix)));
@@ -173,7 +169,7 @@ void Mesh::Create()
 	// Get handlers
 	MVP_ID = glGetUniformLocation(program, "MVP");
 	MV_ID = glGetUniformLocation(program, "MV");
-	Trans_ID = glGetUniformLocation(program, "TranslationMatrix");
+	Trans_ID = glGetUniformLocation(program, "TransformMatrix");
 	NormalMatrix_ID = glGetUniformLocation(program, "NormalMatrix");
 
 	glGenVertexArrays(1, &vao);
