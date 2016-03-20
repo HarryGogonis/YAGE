@@ -15,26 +15,49 @@ int texture_id = 0;
 Models_Manager::Models_Manager()
 {
 	Shader_Factory* shaderFactory = Shader_Factory::GetInstance();
-	Transform t2 = Transform(glm::vec3(-1.0f, 2.0f, -2.0f), glm::vec3(1.4f), glm::quat());
-	Transform t3 = Transform(glm::vec3(-1.0f, 2.0f, -2.0f), glm::vec3(0.05f), glm::quat());
 
-	CreateModel("suzanne", "Examples\\diablo.obj", t2, "Examples\\diablo_diffuse.tga");
-	//CreateModel("raptor", "Examples\\Raptor.obj", t3, "Examples\\test_texture.png");
+	Transform t1 = Transform();
+	Transform t2 = Transform(glm::vec3(2.0, -1.0, 0.0), glm::vec3(0.02), glm::quat());
+	t2.RotateY(-30);
+	Transform t3 = Transform(glm::vec3(1.0, -1.0, 0.0), glm::vec3(2.0, 0.1, 1.0), glm::quat());
+
+	Scene_Container* diablo = CreateModel("diablo", "Examples\\diablo.obj", t1, "Examples\\diablo_diffuse.tga");
+	diablo->SetTexture("diablo_normal", Texture_Normal, SOIL_load_OGL_texture(
+		"Examples\\diablo_normal.tga",
+		SOIL_LOAD_AUTO,
+		SOIL_CREATE_NEW_ID,
+		SOIL_FLAG_INVERT_Y));
+	diablo->SetTexture("diablo_specular", Texture_Specular, SOIL_load_OGL_texture(
+		"Examples\\diablo_specular.tga",
+		SOIL_LOAD_AUTO,
+		SOIL_CREATE_NEW_ID,
+		SOIL_FLAG_INVERT_Y));
+	
+	Scene_Container* dog = CreateModel("dog", "Examples\\dog.obj", t2, "Examples\\dog_diffuse.tga");
+	dog->SetTexture("dog_normal", Texture_Normal, SOIL_load_OGL_texture(
+		"Examples\\dog_normal.tga",
+		SOIL_LOAD_AUTO,
+		SOIL_CREATE_NEW_ID,
+		SOIL_FLAG_INVERT_Y));
+	dog->SetTexture("dog_specular", Texture_Specular, SOIL_load_OGL_texture(
+		"Examples\\dog_specular.tga",
+		SOIL_LOAD_AUTO,
+		SOIL_CREATE_NEW_ID,
+		SOIL_FLAG_INVERT_Y));
 
 	Light* pointLight1 = new PointLight(
-		glm::vec3(0.6, 0.5, 0.5), // color
-		glm::vec3(0.0, 4.0, 0.0) // position
+		glm::vec3(1.0, 1.0, 1.0), // color
+		glm::vec3(0.0, 0.0, 1.0) // position
 		);
 	gameLightList["light1"] = pointLight1;
 
-	Light* directionalLight1 = new DirectionalLight(
-		glm::vec3(0.2, 0.2, 0.2), // color
-		glm::vec3(0.0, 0.0, 1.0), // direction
-		glm::vec3(0.5, 0.5, 0.5) // half vec
+	Light* pointLight2 = new PointLight(
+		glm::vec3(1.0, 1.0, 1.0), // color
+		glm::vec3(3.0, 0.0, 1.0) // position
 		);
-	gameLightList["light2"] = directionalLight1;
+	gameLightList["light2"] = pointLight2;
 
-	Light* ambientLight1 = new AmbientLight(glm::vec3(1.0, 1.0, 1.0), 0.2);
+	Light* ambientLight1 = new AmbientLight(glm::vec3(1.0), 0.1);
 	gameLightList["light3"] = ambientLight1;
 }
 
@@ -49,7 +72,7 @@ Models_Manager::~Models_Manager()
 }
 
 // TODO: Create Light method
-void Models_Manager::CreateModel(
+Scene_Container* Models_Manager::CreateModel(
 	const std::string& modelName,
 	const std::string& modelPath,
 	const Transform& transform,
@@ -61,7 +84,13 @@ void Models_Manager::CreateModel(
 	shaderFactory->SetTextureShader(*model);
 	if (!texturePath.empty())
 	{
-		std::string texture_name = "texture_" + texture_id;
+		std::string texture_name;
+		if (type == Texture_Diffuse)
+			texture_name = modelName + "_diffuse";
+		else if (type == Texture_Specular)
+			texture_name = modelName + "_specular";
+		else
+			texture_name = modelName + "_normal";
 		GLuint texture = SOIL_load_OGL_texture(
 			texturePath.c_str(),
 			SOIL_LOAD_AUTO,
@@ -73,6 +102,7 @@ void Models_Manager::CreateModel(
 			model->SetTexture(texture_name, type, texture);
 	}
 	gameModelList[modelName] = model;
+	return model;
 }
 
 void Models_Manager::DeleteModel(const std::string& gameModelName)

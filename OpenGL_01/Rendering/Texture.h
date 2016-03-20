@@ -4,7 +4,8 @@
 enum TextureType
 {
 	Texture_Diffuse,
-	Texture_Specular
+	Texture_Specular,
+	Texture_Normal
 };
 
 struct Texture

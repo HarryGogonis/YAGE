@@ -6,12 +6,16 @@ struct VertexFormat
 	glm::vec3 position; // first vertex attrib
 	glm::vec2 uv;
 	glm::vec3 normal;
+	glm::vec3 tangent;
+	glm::vec3 bitangent;
 
-	VertexFormat(const glm::vec3 &inPos, const glm::vec2& inUV, const  glm::vec3& inNormal)
+	VertexFormat(const glm::vec3 &inPos, const glm::vec2& inUV, const  glm::vec3& inNormal, const glm::vec3& inTangent, const glm::vec3& inBitangent)
 	{
 		position = inPos;
 		uv = inUV;
 		normal = inNormal;
+		tangent = inTangent;
+		bitangent = inBitangent;
 	}
 
 	friend std::ostream& operator<<(std::ostream& os, const VertexFormat& v) {
