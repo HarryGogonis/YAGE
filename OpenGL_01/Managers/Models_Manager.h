@@ -15,7 +15,7 @@ public:
 	/*
 	 * We want a controlled creation method to prevent resources from leaking.
 	 */
-	void CreateModel(
+	Scene_Container* CreateModel(
 		const std::string& modelName,
 		const std::string& modelPath,
 		const Transform& transform,

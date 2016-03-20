@@ -4,6 +4,7 @@
 #include "SOIL.h"
 #include <string>
 #include <sstream>
+#include <assert.h>
 
 glm::vec3 assimpToGLM3D(const aiVector3D &vec)
 {
@@ -20,6 +21,12 @@ Mesh::Mesh(const aiMesh* ai_mesh, const aiMaterial* ai_mat, const Transform& tra
 	shininess = 20;
 	strength = 2;
 	this->transform = transform;
+
+	assert(ai_mesh->HasTangentsAndBitangents());
+	assert(ai_mesh->HasNormals());
+	assert(ai_mesh->HasPositions());
+	assert(ai_mesh->HasTextureCoords(0));
+
 	for (auto i = 0; i < ai_mesh->mNumFaces; ++i)
 	{
 		const aiFace &face = ai_mesh->mFaces[i];
@@ -33,6 +40,8 @@ Mesh::Mesh(const aiMesh* ai_mesh, const aiMaterial* ai_mat, const Transform& tra
 		vertices.push_back(assimpToGLM3D(ai_mesh->mVertices[i]));
 		normals.push_back(assimpToGLM3D(ai_mesh->mNormals[i]));
 		uvs.push_back(assimpToGLM2D(ai_mesh->mTextureCoords[0][i]));
+		tangents.push_back(assimpToGLM3D(ai_mesh->mTangents[i]));
+		bitangents.push_back(assimpToGLM3D(ai_mesh->mBitangents[i]));
 	}
 	if (ai_mat)
 	{
@@ -78,7 +87,7 @@ std::vector<VertexFormat> Mesh::GetVertices()
 	for (int i = 0; i < vertices.size(); i++)
 	{
 		out.push_back(
-			VertexFormat(vertices[i], uvs[i], normals[i])
+			VertexFormat(vertices[i], uvs[i], normals[i], tangents[i],  bitangents[i])
 		);
 	}
 	return out;
@@ -98,54 +107,33 @@ void Mesh::Update()
 	glUniformMatrix4fv(Trans_ID, 1, GL_FALSE, &transformMatrix[0][0]);
 
 	// Send normal matrix to currently bound shader
-	glm::mat3 NormalMatrix = glm::mat3(glm::transpose(glm::inverse(ModelMatrix)));
-	glUniformMatrix3fv(NormalMatrix_ID, 1, GL_FALSE, &NormalMatrix[0][0]);
+	//glm::mat3 NormalMatrix = glm::mat3(glm::transpose(glm::inverse(ModelMatrix)));
+	//glUniformMatrix3fv(NormalMatrix_ID, 1, GL_FALSE, &NormalMatrix[0][0]);
 }
 
 void Mesh::Draw(GLuint program)
 {	
 	glUseProgram(program);
-	GLuint diffuseNr = 1;
-	GLuint specularNr = 1;
-	GLuint i = 0;
-	glUniform1f(glGetUniformLocation(program, "texture_count"), textures.size());
-	if (textures.size() >= 3)
-	{
-		GLfloat intensity[3] = { 0.33333f, 0.33333f, 0.33333f };
-		glUniform1fv(glGetUniformLocation(program, "diffuse_texture_contributions"), 3, intensity);
-	}
-	else if (textures.size() == 2)
-	{
-		GLfloat intensity[3] = { 0.5f, 0.5f, 0.0f };
-		glUniform1fv(glGetUniformLocation(program, "texture_contributions"), 3, intensity);
-	}
-	else
-	{
-		GLfloat intensity[3] = { 1.0f, 0.0f, 0.0f };
-		glUniform1fv(glGetUniformLocation(program, "texture_contributions"), 3, intensity);
-	}
-	for (; i < this->textures.size(); ++i)
+	for (int i=0; i < this->textures.size(); ++i)
 	{
 		glActiveTexture(GL_TEXTURE0 + i);
-		// Retrieve texture number
-		std::stringstream ss;
-		std::string number;
+
 		std::string type_string;
 		TextureType ttype = textures[i].type;
 		if (ttype == Texture_Diffuse)
 		{
-			ss << diffuseNr++;
 			type_string = "texture_diffuse";
 		}
-		// We don't actually have real support for specular textures yet
 		else if (ttype == Texture_Specular)
 		{
-			ss << specularNr++;
 			type_string = "texture_specular";
 		}
-		number = ss.str();
-		// Find appropriate diffuse or specular texture handle
-		glUniform1f(glGetUniformLocation(program, (type_string + number).c_str()), i);
+		else if (ttype == Texture_Normal)
+		{
+			type_string = "texture_normal";
+		}
+		// Find appropriate texture handler
+		glUniform1f(glGetUniformLocation(program, type_string.c_str()), i);
 		glBindTexture(GL_TEXTURE_2D, textures[i].id);
 	}
 
@@ -207,6 +195,18 @@ void Mesh::Create()
 	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE,
 		sizeof(VertexFormat),
 		(void*)(offsetof(VertexFormat, VertexFormat::normal)));
+
+	// Attribute buffer - Tangent
+	glEnableVertexAttribArray(3);
+	glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE,
+		sizeof(VertexFormat),
+		(void*)(offsetof(VertexFormat, VertexFormat::tangent)));
+
+	// Attribute buffer - Bitangent
+	glEnableVertexAttribArray(4);
+	glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE,
+		sizeof(VertexFormat),
+		(void*)(offsetof(VertexFormat, VertexFormat::bitangent)));
 
 	glBindVertexArray(0);
 
