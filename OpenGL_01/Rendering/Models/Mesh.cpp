@@ -114,30 +114,33 @@ void Mesh::Update()
 void Mesh::Draw(GLuint program)
 {	
 	glUseProgram(program);
+
 	for (int i=0; i < this->textures.size(); ++i)
 	{
-		glActiveTexture(GL_TEXTURE0 + i);
-
-		std::string type_string;
 		TextureType ttype = textures[i].type;
+		GLuint texLoc; 
 		if (ttype == Texture_Diffuse)
 		{
-			type_string = "texture_diffuse";
-		}
-		else if (ttype == Texture_Specular)
-		{
-			type_string = "texture_specular";
+			glUniform1i(glGetUniformLocation(program, "texture_diffuse"), 0);
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, textures[i].id);
 		}
 		else if (ttype == Texture_Normal)
 		{
-			type_string = "texture_normal";
+			glUniform1i(glGetUniformLocation(program, "texture_normal"), 1);
+			glActiveTexture(GL_TEXTURE1);
+			glBindTexture(GL_TEXTURE_2D, textures[i].id);
 		}
-		// Find appropriate texture handler
-		glUniform1f(glGetUniformLocation(program, type_string.c_str()), i);
-		glBindTexture(GL_TEXTURE_2D, textures[i].id);
+		else if (ttype == Texture_Specular)
+		{
+			glUniform1i(glGetUniformLocation(program, "texture_specular"), 2);
+			glActiveTexture(GL_TEXTURE2);
+			glBindTexture(GL_TEXTURE_2D, textures[i].id);
+		}
+		else
+		{
+		}
 	}
-
-	glActiveTexture(GL_TEXTURE0);
 
 	glUniform1f(glGetUniformLocation(program, "Shininess"), shininess);
 	glUniform1f(glGetUniformLocation(program, "Strength"), strength);

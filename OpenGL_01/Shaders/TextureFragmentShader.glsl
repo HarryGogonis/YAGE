@@ -17,8 +17,8 @@ struct LightProperties {
 };
 
 uniform sampler2D texture_diffuse;
-uniform sampler2D texture_specular;
 uniform sampler2D texture_normal;
+uniform sampler2D texture_specular;
 
 // set of lights to apply, per invocation of this shader
 const int MaxLights = 5; 
@@ -40,6 +40,7 @@ void main(void)
 	vec3 reflectedLight = vec3(0.0);
 
 	vec3 Normal = normalize(texture(texture_normal, UV).rgb * 2.0 - vec3(1.0));
+
 	for (int light = 0; light < MaxLights; ++light)
 	{
 		if (!Lights[light].isEnabled) continue; // don't use disabled lights
@@ -69,31 +70,16 @@ void main(void)
 				+ Lights[light].quadraticAttenuation * lightDistance * lightDistance);
 			
 			halfVector = normalize(lightDirection + EyeDirection);
+			//halfVector = reflect(-lightDirection, Normal);
 		}
 		else // Spot Light
 		{ 
-			lightDirection = lightDirection - vec3(Position);
-			lightDistance = length(lightDirection); //!warning! length does expensive SQRT
-			lightDirection = lightDirection / lightDistance;
-
-			attenuation = 1.0 /
-				(Lights[light].constantAttenuation
-				+ Lights[light].linearAttenuation * lightDistance
-				+ Lights[light].quadraticAttenuation * lightDistance * lightDistance);
-			
-			float spotCos = dot(lightDirection, -Lights[light].coneDirection);
-			if (spotCos < Lights[light].spotCosCutoff)
-				attenuation = 0.0;
-			else 
-				attenuation *= pow(spotCos, Lights[light].spotExponent);
-
-			//halfVector = normalize(lightDirection + EyeDirection);
-			halfVector = reflect(lightDirection, Normal);
+			// TODO Implement
 		}
 
-		float diffuseCoefficient = max(0.0, dot(Normal, lightDirection));
-		//float specularCoefficient = max(0.0, dot(Normal, halfVector)); // EyeDirection
-		float specularCoefficient = max(dot(EyeDirection, halfVector), 0.0);
+		float diffuseCoefficient = clamp(dot(Normal, lightDirection), 0, 1);
+		float specularCoefficient = max(0.0, dot(EyeDirection, halfVector));
+		//float specularCoefficient = max(0.0, dot(EyeDirection, halfVector));
 
 		if (diffuseCoefficient == 0.0)
 			specularCoefficient = 0.0;
@@ -109,7 +95,6 @@ void main(void)
 	vec4 MaterialDiffuse = texture(texture_diffuse, UV).rgba;
 	vec3 MaterialSpecular = texture(texture_specular, UV).rgb;
 
-	//vec3 rgb = min( vec3(MaterialDiffuse) * scatteredLight + MaterialSpecular * reflectedLight, vec3(1.0));
-	vec3 rgb = min( vec3(MaterialDiffuse) * scatteredLight + MaterialSpecular * reflectedLight, vec3(1.0));
+	vec3 rgb = min( MaterialDiffuse.rgb * scatteredLight + MaterialSpecular * reflectedLight, vec3(1.0));
 	out_color = vec4(rgb, MaterialDiffuse.a);
 }
