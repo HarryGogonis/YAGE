@@ -7,20 +7,42 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OpenGL_01", "OpenGL_01\Open
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|ARM = Debug|ARM
 		Debug|x64 = Debug|x64
 		Debug|x86 = Debug|x86
+		MinSizeRel|ARM = MinSizeRel|ARM
+		MinSizeRel|x64 = MinSizeRel|x64
+		MinSizeRel|x86 = MinSizeRel|x86
+		Release|ARM = Release|ARM
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
+		RelWithDebInfo|ARM = RelWithDebInfo|ARM
+		RelWithDebInfo|x64 = RelWithDebInfo|x64
+		RelWithDebInfo|x86 = RelWithDebInfo|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{73B7E0FD-7937-4AE7-ABEA-E513BD187E02}.Debug|ARM.ActiveCfg = Debug|Win32
 		{73B7E0FD-7937-4AE7-ABEA-E513BD187E02}.Debug|x64.ActiveCfg = Debug|x64
 		{73B7E0FD-7937-4AE7-ABEA-E513BD187E02}.Debug|x64.Build.0 = Debug|x64
 		{73B7E0FD-7937-4AE7-ABEA-E513BD187E02}.Debug|x86.ActiveCfg = Debug|Win32
 		{73B7E0FD-7937-4AE7-ABEA-E513BD187E02}.Debug|x86.Build.0 = Debug|Win32
+		{73B7E0FD-7937-4AE7-ABEA-E513BD187E02}.MinSizeRel|ARM.ActiveCfg = Release|Win32
+		{73B7E0FD-7937-4AE7-ABEA-E513BD187E02}.MinSizeRel|ARM.Build.0 = Release|Win32
+		{73B7E0FD-7937-4AE7-ABEA-E513BD187E02}.MinSizeRel|x64.ActiveCfg = Release|x64
+		{73B7E0FD-7937-4AE7-ABEA-E513BD187E02}.MinSizeRel|x64.Build.0 = Release|x64
+		{73B7E0FD-7937-4AE7-ABEA-E513BD187E02}.MinSizeRel|x86.ActiveCfg = Release|Win32
+		{73B7E0FD-7937-4AE7-ABEA-E513BD187E02}.MinSizeRel|x86.Build.0 = Release|Win32
+		{73B7E0FD-7937-4AE7-ABEA-E513BD187E02}.Release|ARM.ActiveCfg = Release|Win32
 		{73B7E0FD-7937-4AE7-ABEA-E513BD187E02}.Release|x64.ActiveCfg = Release|x64
 		{73B7E0FD-7937-4AE7-ABEA-E513BD187E02}.Release|x64.Build.0 = Release|x64
 		{73B7E0FD-7937-4AE7-ABEA-E513BD187E02}.Release|x86.ActiveCfg = Release|Win32
 		{73B7E0FD-7937-4AE7-ABEA-E513BD187E02}.Release|x86.Build.0 = Release|Win32
+		{73B7E0FD-7937-4AE7-ABEA-E513BD187E02}.RelWithDebInfo|ARM.ActiveCfg = Release|Win32
+		{73B7E0FD-7937-4AE7-ABEA-E513BD187E02}.RelWithDebInfo|ARM.Build.0 = Release|Win32
+		{73B7E0FD-7937-4AE7-ABEA-E513BD187E02}.RelWithDebInfo|x64.ActiveCfg = Release|x64
+		{73B7E0FD-7937-4AE7-ABEA-E513BD187E02}.RelWithDebInfo|x64.Build.0 = Release|x64
+		{73B7E0FD-7937-4AE7-ABEA-E513BD187E02}.RelWithDebInfo|x86.ActiveCfg = Release|Win32
+		{73B7E0FD-7937-4AE7-ABEA-E513BD187E02}.RelWithDebInfo|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

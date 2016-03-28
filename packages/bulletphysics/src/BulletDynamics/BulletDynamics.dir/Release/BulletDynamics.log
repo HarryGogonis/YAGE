@@ -1,0 +1,45 @@
+﻿  btKinematicCharacterController.cpp
+  btConeTwistConstraint.cpp
+C:\Projects\bullet\bullet3-2.83.7\bullet3-2.83.7\src\BulletDynamics\ConstraintSolver\btConeTwistConstraint.cpp(868): warning C4244: '=': conversion from 'double' to 'btScalar', possible loss of data
+C:\Projects\bullet\bullet3-2.83.7\bullet3-2.83.7\src\BulletDynamics\ConstraintSolver\btConeTwistConstraint.cpp(913): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Projects\bullet\bullet3-2.83.7\bullet3-2.83.7\src\BulletDynamics\ConstraintSolver\btConeTwistConstraint.cpp(973): warning C4244: '=': conversion from 'double' to 'btScalar', possible loss of data
+C:\Projects\bullet\bullet3-2.83.7\bullet3-2.83.7\src\BulletDynamics\ConstraintSolver\btConeTwistConstraint.cpp(975): warning C4244: '=': conversion from 'double' to 'btScalar', possible loss of data
+  btContactConstraint.cpp
+c:\projects\bullet\bullet3-2.83.7\bullet3-2.83.7\src\bulletdynamics\constraintsolver\btContactConstraint.h(25): warning C4359: 'btContactConstraint': Alignment specifier is less than actual alignment (128), and will be ignored.
+  btFixedConstraint.cpp
+  btGearConstraint.cpp
+  btGeneric6DofConstraint.cpp
+  btGeneric6DofSpringConstraint.cpp
+  btGeneric6DofSpring2Constraint.cpp
+C:\Projects\bullet\bullet3-2.83.7\bullet3-2.83.7\src\BulletDynamics\ConstraintSolver\btGeneric6DofSpring2Constraint.cpp(786): warning C4244: 'initializing': conversion from 'double' to 'btScalar', possible loss of data
+  btHinge2Constraint.cpp
+  btHingeConstraint.cpp
+  btPoint2PointConstraint.cpp
+  btSequentialImpulseConstraintSolver.cpp
+  btNNCGConstraintSolver.cpp
+  btSliderConstraint.cpp
+  btSolve2LinearConstraint.cpp
+  btTypedConstraint.cpp
+  btUniversalConstraint.cpp
+  btDiscreteDynamicsWorld.cpp
+C:\Projects\bullet\bullet3-2.83.7\bullet3-2.83.7\src\BulletDynamics/ConstraintSolver/btContactConstraint.h(25): warning C4359: 'btContactConstraint': Alignment specifier is less than actual alignment (128), and will be ignored.
+  btRigidBody.cpp
+  btSimpleDynamicsWorld.cpp
+  Generating Code...
+  Compiling...
+  btRaycastVehicle.cpp
+C:\Projects\bullet\bullet3-2.83.7\bullet3-2.83.7\src\BulletDynamics/ConstraintSolver/btContactConstraint.h(25): warning C4359: 'btContactConstraint': Alignment specifier is less than actual alignment (128), and will be ignored.
+  btWheelInfo.cpp
+  btMultiBody.cpp
+  btMultiBodyConstraintSolver.cpp
+  btMultiBodyDynamicsWorld.cpp
+  btMultiBodyJointLimitConstraint.cpp
+C:\Projects\bullet\bullet3-2.83.7\bullet3-2.83.7\src\BulletDynamics\Featherstone\btMultiBodyJointLimitConstraint.cpp(114): warning C4244: 'initializing': conversion from 'int' to 'btScalar', possible loss of data
+  btMultiBodyConstraint.cpp
+  btMultiBodyPoint2Point.cpp
+  btMultiBodyJointMotor.cpp
+  btDantzigLCP.cpp
+  btMLCPSolver.cpp
+  btLemkeAlgorithm.cpp
+  Generating Code...
+  BulletDynamics.vcxproj -> C:\Projects\YAGE\packages\bulletphysics\lib\Release\BulletDynamics.lib

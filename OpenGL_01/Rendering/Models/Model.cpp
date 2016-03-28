@@ -5,7 +5,7 @@ Model::Model()
 
 }
 
-Model::Model(Transform t)
+Model::Model(Transform* t)
 {
 	this->transform = t;
 }

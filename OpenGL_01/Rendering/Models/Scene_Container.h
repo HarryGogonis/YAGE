@@ -4,6 +4,7 @@
 #include <assimp/Importer.hpp>      // C++ importer interface
 #include <assimp/scene.h>           // Output data structure
 #include <assimp/postprocess.h>     // Post processing flags
+#include "btBulletDynamicsCommon.h"
 
 class Scene_Container : public IGameObject
 {
@@ -17,6 +18,8 @@ public:
 	void Update() override;
 	void Destroy() override;
 	void SetProgram(GLuint) override;
+	btRigidBody* getRigidBody();
+	virtual void InitRigidBody(btScalar mass);
 
 	void SetTexture(const std::string&,const TextureType&, const GLuint&) override;
 	const GLuint GetTexture(const std::string&) const override;
@@ -25,8 +28,12 @@ public:
 private:
 	std::vector<Mesh*> meshes;
 	const aiScene *scene;
+	btRigidBody *rigidBody; 
+	btConvexHullShape* collisionShape;
+	bool isDynamic;
 	int texture_id = 0;
 
-	void addMeshWithMat(const aiMesh*, const aiMaterial*, const Transform&);
+	void addMeshWithMat(const aiMesh*, const aiMaterial*);
+	void CreateCollisionShape();
 };
 

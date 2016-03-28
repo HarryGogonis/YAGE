@@ -26,5 +26,5 @@ public:
 					   const std::string&  VertexShaderFilename,
 					   const std::string&  FragmentShaderFilename);
 	const void SetTextureShader(IGameObject& model);
-
+	const GLuint& CreateDebugProgram();
 };

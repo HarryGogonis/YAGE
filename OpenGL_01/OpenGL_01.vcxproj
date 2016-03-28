@@ -69,8 +69,14 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(SolutionDir)packages\Simple OpenGL Image Library\src;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)packages\Simple OpenGL Image Library\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)packages\Simple OpenGL Image Library\src;$(SolutionDir)packages\bulletphysics\src;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)packages\Simple OpenGL Image Library\lib;$(SolutionDir)packages\bulletphysics\lib\Debug;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <IncludePath>$(VC_IncludePath);$(SolutionDir)packages\Simple OpenGL Image Library\src;$(SolutionDir)packages\bulletphysics\src; </IncludePath>
+    <LibraryPath>$(SolutionDir)packages\Simple OpenGL Image Library\lib;$(SolutionDir)packages\bulletphysics\lib\Release;$(LibraryPath)</LibraryPath>
+    <SourcePath>$(VC_SourcePath);</SourcePath>
+    <ReferencePath>$(VC_ReferencesPath_x64);</ReferencePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -87,10 +93,12 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>
+      </AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>SOIL.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SOIL.lib;BulletCollision_Debug.lib;BulletDynamics_Debug.lib;LinearMath_Debug.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -110,18 +118,28 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <Optimization>MaxSpeed</Optimization>
+      <Optimization>Disabled</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(WindowsSDK_IncludePath);</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalLibraryDirectories>
+      </AdditionalLibraryDirectories>
+      <AdditionalDependencies>SOIL.lib;BulletCollision.lib;BulletDynamics.lib;LinearMath.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <ProjectReference>
+      <UseLibraryDependencyInputs>false</UseLibraryDependencyInputs>
+    </ProjectReference>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Builders\GameObjectsBuilder.cpp" />
+    <ClCompile Include="Rendering\Util\DebugDrawer.cpp" />
+    <ClCompile Include="Managers\Physics_Manager.cpp" />
     <ClCompile Include="Rendering\Util\Light.cpp" />
     <ClCompile Include="Rendering\Models\Mesh.cpp" />
     <ClCompile Include="Rendering\Util\Camera.cpp" />
@@ -145,6 +163,10 @@
     <None Include="Shaders\Vertex_Shader.glsl" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Core\Options.h" />
+    <ClInclude Include="Builders\GameObjectsBuilder.h" />
+    <ClInclude Include="Rendering\Util\DebugDrawer.h" />
+    <ClInclude Include="Managers\Physics_Manager.h" />
     <ClInclude Include="Rendering\Texture.h" />
     <ClInclude Include="Rendering\Util\Light.h" />
     <ClInclude Include="Rendering\Models\Mesh.h" />

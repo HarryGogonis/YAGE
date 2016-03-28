@@ -6,7 +6,7 @@
 class Mesh : public Model
 {
 public:
-	Mesh(const aiMesh*, const aiMaterial*, const Transform&);
+	Mesh(const aiMesh*, const aiMaterial*, Transform*);
 	~Mesh();
 
 	std::vector<VertexFormat> GetVertices() override final;
@@ -14,6 +14,7 @@ public:
 	void Create();
 	void Draw(GLuint) override final;
 	void Update() override final;
+	std::vector<glm::vec3> GetPositionVertices();
 
 	float shininess;
 	float strength;
@@ -25,8 +26,7 @@ private:
 
 	glm::mat4 ModelMatrix;
 	
-	GLuint MVP_ID, MV_ID, Trans_ID;
-	GLuint NormalMatrix_ID;
+	GLuint MVP_ID, MV_ID, Trans_ID, NormalMatrix_ID, ScaleConst_ID;
 
 	std::string objectPath;
 	std::string texturePath;

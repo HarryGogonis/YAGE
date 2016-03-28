@@ -1,8 +1,13 @@
 #include "Camera.h"
 #include <GL\freeglut.h>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/quaternion.hpp>
+#include <algorithm>
 
 float Camera::fov = 45.0f;
-float Camera::aspect = 1.0f;
+float Camera::aspect;
+float Camera::width;
+float Camera::height;
 
 float speed = 10.0f;
 float mouseSpeed = 1.0f;
@@ -10,7 +15,7 @@ float mouseSpeed = 1.0f;
 glm::mat4 viewMatrix;
 glm::mat4 projMatrix;
 
-glm::vec3 eyeVector = glm::vec3(0, 0, 5);
+glm::vec3 eyeVector = glm::vec3(0, 0, 15);
 float pitch, yaw = 0.0f;
 
 float deltaTime = 0.0f;
@@ -33,6 +38,13 @@ glm::mat4 Camera::GetViewMatrix()
 glm::vec3 Camera::GetEyeDirection()
 {
 	return eyeVector;
+}
+
+void Camera::resizeWindow(float width, float height)
+{
+	Camera::width = width;
+	Camera::height = height;
+	Camera::aspect = width / height;
 }
 
 void updateMouseLocation(int x, int y)
@@ -72,12 +84,13 @@ void onMouseButton(int button, int state, int x, int y)
 	else if (button == 3 && state == GLUT_DOWN) // Mouse wheel down
 	{
 		// Zoom out
-		Camera::fov -= 20.0 * speed * deltaTime;
+		Camera::fov = std::max(Camera::fov - 20.0 * speed * deltaTime, static_cast<double>(10));
+
 	}
 	else if (button == 4 && state == GLUT_DOWN) // Mouse wheel up
 	{
 		// Zoom in
-		Camera::fov += 20.0 * speed * deltaTime;
+		Camera::fov = std::min(Camera::fov + 20.0 * speed * deltaTime, static_cast<double>(120));
 	}
 }
 
@@ -159,7 +172,7 @@ void Camera::ComputeMatrices()
 	glutKeyboardFunc(onKeyPressed);
 	glutMouseFunc(onMouseButton);
 
-	projMatrix = glm::perspective(glm::radians(fov), 4.0f / 3.0f, 0.1f, 100.0f);
+	projMatrix = glm::perspective(glm::radians(fov), aspect, 0.1f, 100.0f);
 
 	viewMatrix = rotate * translate;
 	startTime = endTime; // update "previous" time

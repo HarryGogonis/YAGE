@@ -1,5 +1,4 @@
-#include "Mesh.h"
-#include "../../Managers/Models_Manager.h"
+#include "Mesh.h" 
 #include "GL/glew.h"
 #include "SOIL.h"
 #include <string>
@@ -15,7 +14,7 @@ glm::vec2 assimpToGLM2D(const aiVector3D &vec)
 	return glm::vec2(vec.x, vec.y);
 }
 
-Mesh::Mesh(const aiMesh* ai_mesh, const aiMaterial* ai_mat, const Transform& transform)
+Mesh::Mesh(const aiMesh* ai_mesh, const aiMaterial* ai_mat, Transform* transform)
 {
 	shininess = 20;
 	strength = 2;
@@ -23,7 +22,7 @@ Mesh::Mesh(const aiMesh* ai_mesh, const aiMaterial* ai_mat, const Transform& tra
 	for (auto i = 0; i < ai_mesh->mNumFaces; ++i)
 	{
 		const aiFace &face = ai_mesh->mFaces[i];
-		for (int k = 0; k != 3; ++k) // We know face is always triangle
+		for (int k = 0; k != 3; ++k) // We know face is always triangle w/ how we import
 		{
 			indices.push_back(face.mIndices[k]);
 		}
@@ -49,9 +48,12 @@ Mesh::Mesh(const aiMesh* ai_mesh, const aiMaterial* ai_mat, const Transform& tra
 				GLuint textureID = SOIL_load_OGL_texture(
 					path.C_Str(),
 					SOIL_LOAD_AUTO,
-					1,
-					SOIL_FLAG_MIPMAPS);
-				SetTexture("diffuse_" + textureID, Texture_Diffuse, textureID);
+					SOIL_CREATE_NEW_ID,
+					SOIL_FLAG_INVERT_Y);
+				if (!textureID)
+					std::perror("ERROR: Mesh did not load material texture");
+				else
+					SetTexture("diffuse_" + textureID, Texture_Diffuse, textureID);
 			}
 			if (ai_mat->Get(AI_MATKEY_SHININESS, shininess) != AI_SUCCESS)
 			{
@@ -87,7 +89,7 @@ std::vector<VertexFormat> Mesh::GetVertices()
 void Mesh::Update()
 {
 	glUseProgram(program);
-	glm::mat4 transformMatrix = this->transform.getTransformMatrix();
+	glm::mat4 transformMatrix = transform->getTransformMatrix();
 	glm::mat4 ViewMatrix = Camera::GetViewMatrix();
 	glm::mat4 ProjectionMatrix = Camera::GetProjectionMatrix();
 	// Send mvp to currently bound shader
@@ -100,6 +102,11 @@ void Mesh::Update()
 	// Send normal matrix to currently bound shader
 	glm::mat3 NormalMatrix = glm::mat3(glm::transpose(glm::inverse(ModelMatrix)));
 	glUniformMatrix3fv(NormalMatrix_ID, 1, GL_FALSE, &NormalMatrix[0][0]);
+}
+
+std::vector<glm::vec3> Mesh::GetPositionVertices()
+{
+	return vertices;
 }
 
 void Mesh::Draw(GLuint program)
@@ -127,6 +134,7 @@ void Mesh::Draw(GLuint program)
 	for (; i < this->textures.size(); ++i)
 	{
 		glActiveTexture(GL_TEXTURE0 + i);
+
 		// Retrieve texture number
 		std::stringstream ss;
 		std::string number;
@@ -147,6 +155,8 @@ void Mesh::Draw(GLuint program)
 		// Find appropriate diffuse or specular texture handle
 		glUniform1f(glGetUniformLocation(program, (type_string + number).c_str()), i);
 		glBindTexture(GL_TEXTURE_2D, textures[i].id);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	}
 
 	glActiveTexture(GL_TEXTURE0);
@@ -171,6 +181,7 @@ void Mesh::Create()
 	MV_ID = glGetUniformLocation(program, "MV");
 	Trans_ID = glGetUniformLocation(program, "TransformMatrix");
 	NormalMatrix_ID = glGetUniformLocation(program, "NormalMatrix");
+	ScaleConst_ID = glGetUniformLocation(program, "ScaleConst");
 
 	glGenVertexArrays(1, &vao);
 	glBindVertexArray(vao);
