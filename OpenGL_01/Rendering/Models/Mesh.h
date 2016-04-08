@@ -12,6 +12,7 @@ public:
 	std::vector<VertexFormat> GetVertices() override final;
 	
 	void Create();
+	void DrawShadow(GLuint) override final;
 	void Draw(GLuint) override final;
 	void Update() override final;
 
@@ -27,8 +28,7 @@ private:
 
 	glm::mat4 ModelMatrix;
 	
-	GLuint MVP_ID, MV_ID, Trans_ID;
-	GLuint NormalMatrix_ID;
+	GLuint MVP_ID, MV_ID, Trans_ID, Depth_ID;
 
 	std::string objectPath;
 	std::string texturePath;

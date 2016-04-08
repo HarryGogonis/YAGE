@@ -9,10 +9,21 @@ out vec2 UV;
 out mat3 TBN;
 out vec4 Position;
 out vec3 EyeDirection;
+out vec4 ShadowCoord; 
+
+//TODO refactor to
+/* out VS_FS_INTERFACE
+{
+	vec4 shadow_coord;
+	vec3 world_coord; // position
+	vec3 eye_coord;
+	vec3 normal
+} vertex; */
 
 uniform mat4 MVP;
 uniform mat4 MV;
-uniform mat4 TransformMatrix;
+uniform mat4 TransformMatrix; //TODO Refactor to Transform
+uniform mat4 DepthMVP;
 
 void main(void)
 {
@@ -28,6 +39,8 @@ void main(void)
 	Position = TransformMatrix * vec4(in_position, 1);
 	
 	EyeDirection = normalize(TBN * vec3(MV * Position));
+
+	ShadowCoord = DepthMVP * Position;
 
 	gl_Position = MVP * Position;
 }

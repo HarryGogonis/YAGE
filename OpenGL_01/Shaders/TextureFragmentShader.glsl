@@ -19,6 +19,7 @@ struct LightProperties {
 uniform sampler2D texture_diffuse;
 uniform sampler2D texture_normal;
 uniform sampler2D texture_specular;
+uniform sampler2DShadow texture_shadow;
 
 // set of lights to apply, per invocation of this shader
 const int MaxLights = 5; 
@@ -33,6 +34,7 @@ in vec2 UV;
 in vec4 Position;
 in mat3 TBN;
 in vec3 EyeDirection;
+in vec4 ShadowCoord; //TODO ShadowCoord for EACH light???
 
 void main(void)
 {
@@ -92,9 +94,19 @@ void main(void)
 		reflectedLight += Lights[light].color * specularCoefficient * attenuation;
 	}
 
+	/*float visibility = 1.0;
+	if ( texture(texture_shadow, ShadowCoord.xy).z < ShadowCoord.z) {
+		visibility = 0.5;
+	}*/
+	float visibility = textureProj(texture_shadow, ShadowCoord);
+
 	vec4 MaterialDiffuse = texture(texture_diffuse, UV).rgba;
 	vec3 MaterialSpecular = texture(texture_specular, UV).rgb;
 
-	vec3 rgb = min( MaterialDiffuse.rgb * scatteredLight + MaterialSpecular * reflectedLight, vec3(1.0));
+	vec3 diffuse = visibility * MaterialDiffuse.rgb * scatteredLight;
+	vec3 specular = visibility * MaterialSpecular * reflectedLight;
+
+	vec3 rgb = min(diffuse + specular, vec3(1.0));
 	out_color = vec4(rgb, MaterialDiffuse.a);
+	//out_color = texture(texture_shadow, ShadowColor);
 }

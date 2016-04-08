@@ -1,5 +1,7 @@
 #include "Light.h"
 #include <string>
+#include <glm/gtc/matrix_transform.hpp>
+#include "../../Managers/Shadow_Manager.h"
 
 const static int AMBIENT_LIGHT = 0;
 const static int DIRECTIONAL_LIGHT = 1;
@@ -31,6 +33,33 @@ void Light::Draw(GLuint program)
 	ids.quadraticAttenuation = glGetUniformLocation(program, (prefix + "quadradicAttenuation").c_str());
 }
 
+void Light::DrawShadow(GLuint shadowProgram)
+{
+	if (!isEnabled || !castsShadow) return;
+
+	//TODO only supports point ligths
+	if (type != POINT_LIGHT) return;
+
+	const float FRUSTRUM_DEPTH = 100.0f; // maximum depth over light with influence
+
+									   // Setup depth MVP
+	glm::mat4 projection = glm::frustum(-1.0f, 1.0f, -1.0f, 1.0f,
+		1.0f, FRUSTRUM_DEPTH);
+	glm::mat4 view = glm::lookAt(position, glm::vec3(0.0f), glm::vec3(0.0, 1.0, 0.0));
+	glm::mat4 depth_mvp = projection * view;
+
+		//or, for spot light :
+		//glm::vec3 lightPos(5, 20, 20);
+		//glm::mat4 depthProjectionMatrix = glm::perspective<float>(45.0f, 1.0f, 2.0f, 50.0f);
+		//glm::mat4 depthViewMatrix = glm::lookAt(lightPos, lightPos-lightInvDir, glm::vec3(0,1,0));
+
+	Shadow_Manager::GetInstance()->SetDepthMatrix(depth_mvp);
+
+	// Render from light's position onto depth buffer
+	glUniformMatrix4fv(glGetUniformLocation(shadowProgram, "DepthMVP"),
+		1, GL_FALSE, &depth_mvp[0][0]);
+}
+
 void Light::Update()
 {
 	// override
@@ -39,6 +68,11 @@ void Light::Update()
 void Light::SetProgram(GLuint program)
 {
 	this->program = program;
+}
+
+void Light::SetShadowProgram(GLuint program)
+{
+	this->shadowProgram = program;
 }
 
 void Light::Destroy()
@@ -103,6 +137,7 @@ PointLight::PointLight(glm::vec3 color, glm::vec3 position,
 	float constantAttenuation, float linearAttenuation, float quadraticAttenuation) : Light()
 {
 	this->type = POINT_LIGHT;
+	this->castsShadow = true;
 	this->ambient = glm::vec3(0.0, 0.0, 0.0);
 	this->color = color;
 	this->position = position;

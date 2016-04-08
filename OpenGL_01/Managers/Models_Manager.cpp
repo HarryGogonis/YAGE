@@ -9,6 +9,7 @@
 #include "../Rendering/Util/Light.h"
 #include "../Rendering/Models/Scene_Container.h"
 #include "Shader_Factory.h"
+#include "Shadow_Manager.h"
 
 int texture_id = 0;
 
@@ -16,22 +17,9 @@ Models_Manager::Models_Manager()
 {
 	Shader_Factory* shaderFactory = Shader_Factory::GetInstance();
 
-	Transform t1 = Transform();
-	Transform t2 = Transform(glm::vec3(2.0, -1.0, 0.0), glm::vec3(0.02), glm::quat());
-	t2.RotateY(-30);
-	Transform t3 = Transform(glm::vec3(1.0, -1.0, 0.0), glm::vec3(2.0, 0.1, 1.0), glm::quat());
-
-	Scene_Container* diablo = CreateModel("diablo", "Examples\\diablo.obj", t1, "Examples\\diablo_diffuse.tga");
-	diablo->SetTexture("diablo_normal", Texture_Normal, SOIL_load_OGL_texture(
-		"Examples\\diablo_normal.tga",
-		SOIL_LOAD_AUTO,
-		SOIL_CREATE_NEW_ID,
-		SOIL_FLAG_INVERT_Y));
-	diablo->SetTexture("diablo_specular", Texture_Specular, SOIL_load_OGL_texture(
-		"Examples\\diablo_specular.tga",
-		SOIL_LOAD_AUTO,
-		SOIL_CREATE_NEW_ID,
-		SOIL_FLAG_INVERT_Y));
+	Transform t1 = Transform(glm::vec3(0.0f), glm::vec3(0.2f), glm::quat());
+	Transform t2 = Transform(glm::vec3(0.0f, 0.1f, 1.0f), glm::vec3(0.02), glm::quat());
+	Transform t3 = Transform(glm::vec3(0.0f), glm::vec3(2.0, 0.1, 2.0), glm::quat());
 	
 	Scene_Container* dog = CreateModel("dog", "Examples\\dog.obj", t2, "Examples\\dog_diffuse.tga");
 	dog->SetTexture("dog_normal", Texture_Normal, SOIL_load_OGL_texture(
@@ -45,20 +33,14 @@ Models_Manager::Models_Manager()
 		SOIL_CREATE_NEW_ID,
 		SOIL_FLAG_INVERT_Y));
 
-	Light* pointLight1 = new PointLight(
+	Scene_Container* floor = CreateModel("zfloor", "Examples\\cube.obj", t3, "Examples\\suzanne.dds");
+	Scene_Container* box = CreateModel("box", "Examples\\cube.obj", t1, "Examples\\test_texture.png");
+	AddLight("light1", new PointLight(
 		glm::vec3(1.0, 1.0, 1.0), // color
-		glm::vec3(0.0, 0.0, 1.0) // position
-		);
-	gameLightList["light1"] = pointLight1;
+		glm::vec3(0.0, 2.0, 2.0) // position
+	));
 
-	Light* pointLight2 = new PointLight(
-		glm::vec3(1.0, 1.0, 1.0), // color
-		glm::vec3(3.0, 0.0, 1.0) // position
-		);
-	gameLightList["light2"] = pointLight2;
-
-	Light* ambientLight1 = new AmbientLight(glm::vec3(1.0), 0.1);
-	gameLightList["light3"] = ambientLight1;
+	AddLight("ambient1", new AmbientLight(glm::vec3(1.0f), 0.1));
 }
 
 Models_Manager::~Models_Manager()
@@ -105,6 +87,11 @@ Scene_Container* Models_Manager::CreateModel(
 	return model;
 }
 
+void Models_Manager::AddLight(const std::string& name, Light* light)
+{
+	gameLightList[name] = light;
+}
+
 void Models_Manager::DeleteModel(const std::string& gameModelName)
 {
 	IGameObject* model = gameModelList[gameModelName];
@@ -117,26 +104,20 @@ const IGameObject& Models_Manager::GetModel(const std::string& gameModelName)
 	return (*gameModelList.at(gameModelName));
 }
 
-std::vector<std::string> &split(const std::string &s, char delim, std::vector<std::string> &elems) {
-	std::stringstream ss(s);
-	std::string item;
-	while (std::getline(ss, item, delim)) {
-		elems.push_back(item);
-	}
-	return elems;
-}
-
 void Models_Manager::Update()
 {
 	// iterate through model list and Update
 	for (auto model : gameModelList)
 	{
+		glUseProgram(model.second->GetProgram());
 		model.second->Update();
+
 		for (auto light : gameLightList)
 		{
 			light.second->Update();
 		}
 	}
+
 }
 
 void Models_Manager::Draw()
@@ -144,11 +125,42 @@ void Models_Manager::Draw()
 	// iterate through model list and Draw
 	for (auto model : gameModelList)
 	{
+		GLuint p = model.second->GetProgram();
+		glUseProgram(p);
 		model.second->Draw();
-		GLuint current_program = model.second->GetProgram();
 		for (auto light : gameLightList)
 		{
-			light.second->Draw(current_program);
+			light.second->Draw(p);
 		}
+	}
+}
+
+void Models_Manager::DrawShadows()
+{
+	/*glUseProgram(p);
+	for (auto light: gameLightList)
+	{
+		if (light.second->isEnabled && light.second->castsShadow)
+		{
+			// Draw scene from light's point of view
+			//light.second->DrawShadow(p);
+			for (auto model : gameModelList)
+			{
+				GLuint p = Shadow_Manager::GetProgram();
+				glUseProgram(p);
+				//model.second->DrawShadow(p);
+			}
+		}
+	}*/
+
+	for (auto model : gameModelList)
+	{
+		GLuint p = model.second->GetShadowProgram();
+		glUseProgram(p);
+		for (auto light : gameLightList)
+		{
+			light.second->DrawShadow(p);
+		}
+		model.second->DrawShadow();
 	}
 }

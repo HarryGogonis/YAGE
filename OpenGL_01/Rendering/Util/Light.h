@@ -10,8 +10,10 @@ public:
 	~Light() {};
 
 	virtual void Draw(GLuint) override;
+	void DrawShadow(GLuint) override;
 	virtual void Update() override;
 	virtual void SetProgram(GLuint program) override;
+	virtual void SetShadowProgram(GLuint program) override;
 	virtual void Destroy() override;
 
 	virtual void SetTexture(const std::string&, const TextureType&, const GLuint&) override;
@@ -29,11 +31,13 @@ public:
 	float quadraticAttenuation;
 	void SetAttenuation(float constant, float linear, float quadratic);
 
+	bool castsShadow = false;
+	bool isEnabled;
+
 protected:
 	GLuint texture;
 	unsigned int _id;
 
-	bool isEnabled;
 	int type; 
 
 	// Holds shader locations

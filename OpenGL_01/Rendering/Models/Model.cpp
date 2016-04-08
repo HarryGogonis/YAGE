@@ -20,6 +20,11 @@ void Model::SetProgram(GLuint program)
 	this->program = program;
 }
 
+void Model::SetShadowProgram(GLuint program)
+{
+	this->shadowProgram = program;
+}
+
 GLuint Model::GetVao() const
 {
 	return vao;
