@@ -9,43 +9,12 @@
 #include "../Rendering/Util/Light.h"
 #include "../Rendering/Models/Scene_Container.h"
 #include "Shader_Factory.h"
-#include "Shadow_Manager.h"
-#include <ctime>
 
 int texture_id = 0;
 
-float RandomNumber(float Min, float Max)
-{
-	return ((float(rand()) / float(RAND_MAX)) * (Max - Min)) + Min;
-}
-
 Models_Manager::Models_Manager()
 {
-	Shader_Factory* shaderFactory = Shader_Factory::GetInstance();
 
-	Transform t1 = Transform(glm::vec3(0.0f), glm::vec3(2.0, 0.1, 2.0), glm::quat());
-	
-	CreateModel("zfloor", "Examples\\cube.obj", t1, "Examples\\test.jpg");
-
-	const int NUM_BOXES = 5;
-	srand(time(NULL));
-	for (int i = 0; i < NUM_BOXES; i++)
-	{
-		double rand1 = RandomNumber(-1.0, 1.0);
-		double rand2 = RandomNumber(-1.0, 1.0);
-		Transform t = Transform(glm::vec3(rand1, 0.3, rand2), glm::vec3(0.2), glm::quat());
-		CreateModel("box" + i, "Examples\\cube.obj", t, "Examples\\test.jpg");
-	}
-
-	Light* DirLight = AddLight("light1", new DirectionalLight(
-		glm::vec3(1.0, 1.0, 1.0), // color
-		glm::vec3(1.0, 0.0, 0.0), // direction
-		glm::vec3(0.5, 0.5, 0.5)
-	));
-
-	DirLight->EnableShadows();
-
-	AddLight("ambient1", new AmbientLight(glm::vec3(1.0f), 0.15));
 }
 
 Models_Manager::~Models_Manager()
