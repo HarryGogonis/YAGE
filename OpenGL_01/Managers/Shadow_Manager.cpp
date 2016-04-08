@@ -1,8 +1,9 @@
 #include "Shadow_Manager.h"
 #include <glm/gtc/matrix_transform.hpp>
+#include <iostream>
 
 const int Shadow_Manager::DEPTH_TEXTURE_SIZE = 1024; // ??? Hardcode ???
-
+int count = 0;
 Shadow_Manager* Shadow_Manager::mShadowManager; // static instance for the singleton
 
 Shadow_Manager* Shadow_Manager::GetInstance()
@@ -12,24 +13,29 @@ Shadow_Manager* Shadow_Manager::GetInstance()
 	return mShadowManager;
 }
 
-void Shadow_Manager::SetProgram(GLuint p)
-{
-	program = p;
-}
-
-GLuint Shadow_Manager::GetProgram() const
-{
-	return program;
-}
-
 GLuint Shadow_Manager::GetShadowMap() const
 {
 	return depth_texture;
 }
 
+glm::mat4 Shadow_Manager::GetDepthMatrix() const
+{
+	return depth_matrix;
+}
+
+void Shadow_Manager::SetDepthMatrix(glm::mat4 depth_matrix)
+{
+	this->depth_matrix = depth_matrix;
+}
+
 void Shadow_Manager::BindForWriting() const
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, depth_fbo);
+}
+
+void Shadow_Manager::Unbind() const
+{
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
 Shadow_Manager::Shadow_Manager()
@@ -65,4 +71,10 @@ Shadow_Manager::Shadow_Manager()
 
 	// Disable color rendering on frame buffer
 	glDrawBuffer(GL_NONE);
+
+	// Check that framebuffer is okay
+	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+		std::cout << "ERROR: Framebuffer not okay" << std::endl;
+
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }

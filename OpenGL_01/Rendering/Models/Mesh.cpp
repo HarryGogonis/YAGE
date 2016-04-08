@@ -5,6 +5,7 @@
 #include <string>
 #include <sstream>
 #include <assert.h>
+#include "../../Managers/Shadow_Manager.h"
 
 glm::vec3 assimpToGLM3D(const aiVector3D &vec)
 {
@@ -95,13 +96,14 @@ std::vector<VertexFormat> Mesh::GetVertices()
 
 void Mesh::Update()
 {
-	glUseProgram(program);
+	//glUseProgram(program);
+
 	glm::mat4 transformMatrix = this->transform.getTransformMatrix();
 	glm::mat4 ViewMatrix = Camera::GetViewMatrix();
 	glm::mat4 ProjectionMatrix = Camera::GetProjectionMatrix();
 	// Send mvp to currently bound shader
 	glm::mat4 mv = ViewMatrix * ModelMatrix;
-	glm::mat4 mvp = ProjectionMatrix * ViewMatrix * ModelMatrix;
+	glm::mat4 mvp = ProjectionMatrix * mv;
 	glUniformMatrix4fv(MV_ID, 1, GL_FALSE, &mv[0][0]);
 	glUniformMatrix4fv(MVP_ID, 1, GL_FALSE, &mvp[0][0]);
 	glUniformMatrix4fv(Trans_ID, 1, GL_FALSE, &transformMatrix[0][0]);
@@ -113,7 +115,7 @@ void Mesh::Update()
 
 void Mesh::Draw(GLuint program)
 {	
-	glUseProgram(program);
+	//glUseProgram(program);
 
 	for (int i=0; i < this->textures.size(); ++i)
 	{
@@ -142,8 +144,41 @@ void Mesh::Draw(GLuint program)
 		}
 	}
 
+	// Add shadow texture
+	GLuint shadow_texture_id = Shadow_Manager::GetInstance()->GetShadowMap();
+	glUniform1i(glGetUniformLocation(program, "texture_shadow"), 3);
+	glActiveTexture(GL_TEXTURE3);
+	glBindTexture(GL_TEXTURE_2D, shadow_texture_id);
+
+
+	glm::mat4 bias (
+		0.5, 0.0, 0.0, 0.0,
+		0.0, 0.5, 0.0, 0.0,
+		0.0, 0.0, 0.5, 0.0,
+		0.5, 0.5, 0.5, 1.0
+		);
+	glm::mat4 depthMVP = Shadow_Manager::GetInstance()->GetDepthMatrix();
+	glm::mat4 depthBiasMVP = bias * depthMVP;
+
+	glUniformMatrix4fv(Depth_ID, 1, GL_FALSE, &depthBiasMVP[0][0]);
+
 	glUniform1f(glGetUniformLocation(program, "Shininess"), shininess);
 	glUniform1f(glGetUniformLocation(program, "Strength"), strength);
+
+	// Draw triangles
+	glBindVertexArray(vao);
+	glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_SHORT, nullptr);
+	glBindVertexArray(0);
+}
+
+void Mesh::DrawShadow(GLuint shadowProgram)
+{
+	//glUseProgram(shadowProgram);
+	// Send transform array to shadow program
+	glm::mat4 transformMatrix = this->transform.getTransformMatrix();
+	glUniformMatrix4fv(
+		glGetUniformLocation(shadowProgram, "Transform"),
+		1, GL_FALSE, &transformMatrix[0][0]);
 
 	// Draw triangles
 	glBindVertexArray(vao);
@@ -161,8 +196,7 @@ void Mesh::Create()
 	MVP_ID = glGetUniformLocation(program, "MVP");
 	MV_ID = glGetUniformLocation(program, "MV");
 	Trans_ID = glGetUniformLocation(program, "TransformMatrix");
-	NormalMatrix_ID = glGetUniformLocation(program, "NormalMatrix");
-
+	Depth_ID = glGetUniformLocation(program, "DepthMVP");
 	glGenVertexArrays(1, &vao);
 	glBindVertexArray(vao);
 	

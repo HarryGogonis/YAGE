@@ -54,6 +54,9 @@
     <ClCompile Include="Managers\Shader_Factory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Managers\Shadow_Manager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -62,6 +65,8 @@
     <None Include="Shaders\TextureVertexShader.glsl" />
     <None Include="Shaders\TextureFragmentShader.glsl" />
     <None Include="Shaders\VertexShader.glsl" />
+    <None Include="Shaders\ShadowVertexShader.glsl" />
+    <None Include="Shaders\ShadowFragmentShader.glsl" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core\Init\WindowInfo.h">
@@ -122,6 +127,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Managers\Shader_Factory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Managers\Shadow_Manager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

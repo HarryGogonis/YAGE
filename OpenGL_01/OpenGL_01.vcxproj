@@ -122,6 +122,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Managers\Shadow_Manager.cpp" />
     <ClCompile Include="Rendering\Util\Light.cpp" />
     <ClCompile Include="Rendering\Models\Mesh.cpp" />
     <ClCompile Include="Rendering\Util\Camera.cpp" />
@@ -147,6 +148,7 @@
     <None Include="Shaders\Vertex_Shader.glsl" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Managers\Shadow_Manager.h" />
     <ClInclude Include="Rendering\Texture.h" />
     <ClInclude Include="Rendering\Util\Light.h" />
     <ClInclude Include="Rendering\Models\Mesh.h" />
