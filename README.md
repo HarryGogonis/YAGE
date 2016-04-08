@@ -22,3 +22,5 @@
 * [in2gpu OpenGL Tutorial](http://in2gpu.com/opengl-3/)
 * [OpenGL Documentation](https://www.opengl.org/sdk/docs/man/)
 * [Red Book](http://www.amazon.com/OpenGL-Programming-Guide-Official-Learning/dp/0321335732)
+* [OpenGL-Tutorial](http://www.opengl-tutorial.org/)
+* [OGLDev](http://ogldev.atspace.co.uk/index.html)
