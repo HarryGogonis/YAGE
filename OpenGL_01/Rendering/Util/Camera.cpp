@@ -4,7 +4,7 @@
 float Camera::fov = 45.0f;
 float Camera::aspect = 1.0f;
 
-float speed = 10.0f;
+float speed = 50.0f;
 float mouseSpeed = 1.0f;
 
 glm::mat4 viewMatrix;

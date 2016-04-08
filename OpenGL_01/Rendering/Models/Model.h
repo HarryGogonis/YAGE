@@ -14,7 +14,8 @@ public:
 	Model(Transform t);
 	virtual ~Model();
 
-	void SetProgram(GLuint shaderName) override;
+	void SetProgram(GLuint) override;
+	void SetShadowProgram(GLuint) override;
 	void Destroy() override;
 
 	virtual std::vector<VertexFormat> GetVertices() = 0;
@@ -30,7 +31,4 @@ protected:
 	GLuint vao;
 	std::vector<GLuint> vbos;
 	std::vector<Texture> textures;
-	//std::map<std::string, GLuint> textures;
-
-
 };

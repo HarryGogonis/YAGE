@@ -55,6 +55,15 @@ void Scene_Container::SetProgram(GLuint program)
 	}
 }
 
+void Scene_Container::SetShadowProgram(GLuint program)
+{
+	this->shadowProgram = program;
+	for (int i = 0; i != meshes.size(); ++i)
+	{
+		meshes[i]->SetShadowProgram(program); // ?? do we really need to do this?
+	}
+}
+
 void Scene_Container::SetTexture(const std::string& textureName, const TextureType& textureType, const GLuint& id)
 {
 	for (int i = 0; i != meshes.size(); ++i)
@@ -82,11 +91,24 @@ void Scene_Container::Draw()
 	Draw(program);
 }
 
+void Scene_Container::DrawShadow()
+{
+	DrawShadow(shadowProgram);
+}
+
 void Scene_Container::Draw(GLuint program)
 {
 	for (int i = 0; i != meshes.size(); ++i)
 	{
 		meshes[i]->Draw(program);
+	}
+}
+
+void Scene_Container::DrawShadow(GLuint program)
+{
+	for (int i = 0; i != meshes.size(); ++i)
+	{
+		meshes[i]->DrawShadow(program);
 	}
 }
 

@@ -14,28 +14,7 @@ int texture_id = 0;
 
 Models_Manager::Models_Manager()
 {
-	Shader_Factory* shaderFactory = Shader_Factory::GetInstance();
-	Transform t2 = Transform(glm::vec3(-1.0f, 2.0f, -2.0f), glm::vec3(1.4f), glm::quat());
-	Transform t3 = Transform(glm::vec3(-1.0f, 2.0f, -2.0f), glm::vec3(0.05f), glm::quat());
 
-	CreateModel("suzanne", "Examples\\diablo.obj", t2, "Examples\\diablo_diffuse.tga");
-	//CreateModel("raptor", "Examples\\Raptor.obj", t3, "Examples\\test_texture.png");
-
-	Light* pointLight1 = new PointLight(
-		glm::vec3(0.6, 0.5, 0.5), // color
-		glm::vec3(0.0, 4.0, 0.0) // position
-		);
-	gameLightList["light1"] = pointLight1;
-
-	Light* directionalLight1 = new DirectionalLight(
-		glm::vec3(0.2, 0.2, 0.2), // color
-		glm::vec3(0.0, 0.0, 1.0), // direction
-		glm::vec3(0.5, 0.5, 0.5) // half vec
-		);
-	gameLightList["light2"] = directionalLight1;
-
-	Light* ambientLight1 = new AmbientLight(glm::vec3(1.0, 1.0, 1.0), 0.2);
-	gameLightList["light3"] = ambientLight1;
 }
 
 Models_Manager::~Models_Manager()
@@ -49,7 +28,7 @@ Models_Manager::~Models_Manager()
 }
 
 // TODO: Create Light method
-void Models_Manager::CreateModel(
+Scene_Container* Models_Manager::CreateModel(
 	const std::string& modelName,
 	const std::string& modelPath,
 	const Transform& transform,
@@ -61,7 +40,13 @@ void Models_Manager::CreateModel(
 	shaderFactory->SetTextureShader(*model);
 	if (!texturePath.empty())
 	{
-		std::string texture_name = "texture_" + texture_id;
+		std::string texture_name;
+		if (type == Texture_Diffuse)
+			texture_name = modelName + "_diffuse";
+		else if (type == Texture_Specular)
+			texture_name = modelName + "_specular";
+		else
+			texture_name = modelName + "_normal";
 		GLuint texture = SOIL_load_OGL_texture(
 			texturePath.c_str(),
 			SOIL_LOAD_AUTO,
@@ -73,6 +58,13 @@ void Models_Manager::CreateModel(
 			model->SetTexture(texture_name, type, texture);
 	}
 	gameModelList[modelName] = model;
+	return model;
+}
+
+Light* Models_Manager::AddLight(const std::string& name, Light* light)
+{
+	gameLightList[name] = light;
+	return light;
 }
 
 void Models_Manager::DeleteModel(const std::string& gameModelName)
@@ -87,26 +79,20 @@ const IGameObject& Models_Manager::GetModel(const std::string& gameModelName)
 	return (*gameModelList.at(gameModelName));
 }
 
-std::vector<std::string> &split(const std::string &s, char delim, std::vector<std::string> &elems) {
-	std::stringstream ss(s);
-	std::string item;
-	while (std::getline(ss, item, delim)) {
-		elems.push_back(item);
-	}
-	return elems;
-}
-
 void Models_Manager::Update()
 {
 	// iterate through model list and Update
 	for (auto model : gameModelList)
 	{
+		glUseProgram(model.second->GetProgram());
 		model.second->Update();
+
 		for (auto light : gameLightList)
 		{
 			light.second->Update();
 		}
 	}
+
 }
 
 void Models_Manager::Draw()
@@ -114,11 +100,27 @@ void Models_Manager::Draw()
 	// iterate through model list and Draw
 	for (auto model : gameModelList)
 	{
+		GLuint p = model.second->GetProgram();
+		glUseProgram(p);
 		model.second->Draw();
-		GLuint current_program = model.second->GetProgram();
 		for (auto light : gameLightList)
 		{
-			light.second->Draw(current_program);
+			light.second->Draw(p);
 		}
+	}
+}
+
+void Models_Manager::DrawShadows()
+{
+	for (auto model : gameModelList)
+	{
+		GLuint p = model.second->GetShadowProgram();
+		glUseProgram(p);
+		for (auto light : gameLightList)
+		{
+			// NOTE We will end up only drawing 1 light
+			light.second->DrawShadow(p);
+		}
+		model.second->DrawShadow();
 	}
 }

@@ -10,12 +10,16 @@ public:
 	~Light() {};
 
 	virtual void Draw(GLuint) override;
+	virtual void DrawShadow(GLuint) override;
 	virtual void Update() override;
 	virtual void SetProgram(GLuint program) override;
+	virtual void SetShadowProgram(GLuint program) override;
 	virtual void Destroy() override;
 
 	virtual void SetTexture(const std::string&, const TextureType&, const GLuint&) override;
 	virtual const GLuint GetTexture(const std::string&) const override;
+
+	bool EnableShadows();
 
 	glm::vec3 ambient; // light's contribution to ambient light
 	glm::vec3 color;
@@ -29,11 +33,12 @@ public:
 	float quadraticAttenuation;
 	void SetAttenuation(float constant, float linear, float quadratic);
 
+	bool isEnabled;
+
 protected:
 	GLuint texture;
 	unsigned int _id;
-
-	bool isEnabled;
+	bool castsShadow;
 	int type; 
 
 	// Holds shader locations
@@ -63,6 +68,7 @@ public:
 	DirectionalLight(glm::vec3 color, glm::vec3 position, glm::vec3 halfVector);
 
 	virtual void Draw(GLuint) override final;
+	virtual void DrawShadow(GLuint) override  final;
 };
 
 class AmbientLight: public Light
