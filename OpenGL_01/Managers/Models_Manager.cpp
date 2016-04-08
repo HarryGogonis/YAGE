@@ -10,37 +10,42 @@
 #include "../Rendering/Models/Scene_Container.h"
 #include "Shader_Factory.h"
 #include "Shadow_Manager.h"
+#include <ctime>
 
 int texture_id = 0;
+
+float RandomNumber(float Min, float Max)
+{
+	return ((float(rand()) / float(RAND_MAX)) * (Max - Min)) + Min;
+}
 
 Models_Manager::Models_Manager()
 {
 	Shader_Factory* shaderFactory = Shader_Factory::GetInstance();
 
-	Transform t1 = Transform(glm::vec3(0.0f), glm::vec3(0.2f), glm::quat());
-	Transform t2 = Transform(glm::vec3(0.0f, 0.1f, 1.0f), glm::vec3(0.02), glm::quat());
-	Transform t3 = Transform(glm::vec3(0.0f), glm::vec3(2.0, 0.1, 2.0), glm::quat());
+	Transform t1 = Transform(glm::vec3(0.0f), glm::vec3(2.0, 0.1, 2.0), glm::quat());
 	
-	Scene_Container* dog = CreateModel("dog", "Examples\\dog.obj", t2, "Examples\\dog_diffuse.tga");
-	dog->SetTexture("dog_normal", Texture_Normal, SOIL_load_OGL_texture(
-		"Examples\\dog_normal.tga",
-		SOIL_LOAD_AUTO,
-		SOIL_CREATE_NEW_ID,
-		SOIL_FLAG_INVERT_Y));
-	dog->SetTexture("dog_specular", Texture_Specular, SOIL_load_OGL_texture(
-		"Examples\\dog_specular.tga",
-		SOIL_LOAD_AUTO,
-		SOIL_CREATE_NEW_ID,
-		SOIL_FLAG_INVERT_Y));
+	CreateModel("zfloor", "Examples\\cube.obj", t1, "Examples\\test.jpg");
 
-	Scene_Container* floor = CreateModel("zfloor", "Examples\\cube.obj", t3, "Examples\\suzanne.dds");
-	Scene_Container* box = CreateModel("box", "Examples\\cube.obj", t1, "Examples\\test_texture.png");
-	AddLight("light1", new PointLight(
+	const int NUM_BOXES = 5;
+	srand(time(NULL));
+	for (int i = 0; i < NUM_BOXES; i++)
+	{
+		double rand1 = RandomNumber(-1.0, 1.0);
+		double rand2 = RandomNumber(-1.0, 1.0);
+		Transform t = Transform(glm::vec3(rand1, 0.3, rand2), glm::vec3(0.2), glm::quat());
+		CreateModel("box" + i, "Examples\\cube.obj", t, "Examples\\test.jpg");
+	}
+
+	Light* DirLight = AddLight("light1", new DirectionalLight(
 		glm::vec3(1.0, 1.0, 1.0), // color
-		glm::vec3(0.0, 2.0, 2.0) // position
+		glm::vec3(1.0, 0.0, 0.0), // direction
+		glm::vec3(0.5, 0.5, 0.5)
 	));
 
-	AddLight("ambient1", new AmbientLight(glm::vec3(1.0f), 0.1));
+	DirLight->EnableShadows();
+
+	AddLight("ambient1", new AmbientLight(glm::vec3(1.0f), 0.15));
 }
 
 Models_Manager::~Models_Manager()
@@ -87,9 +92,10 @@ Scene_Container* Models_Manager::CreateModel(
 	return model;
 }
 
-void Models_Manager::AddLight(const std::string& name, Light* light)
+Light* Models_Manager::AddLight(const std::string& name, Light* light)
 {
 	gameLightList[name] = light;
+	return light;
 }
 
 void Models_Manager::DeleteModel(const std::string& gameModelName)
@@ -137,28 +143,13 @@ void Models_Manager::Draw()
 
 void Models_Manager::DrawShadows()
 {
-	/*glUseProgram(p);
-	for (auto light: gameLightList)
-	{
-		if (light.second->isEnabled && light.second->castsShadow)
-		{
-			// Draw scene from light's point of view
-			//light.second->DrawShadow(p);
-			for (auto model : gameModelList)
-			{
-				GLuint p = Shadow_Manager::GetProgram();
-				glUseProgram(p);
-				//model.second->DrawShadow(p);
-			}
-		}
-	}*/
-
 	for (auto model : gameModelList)
 	{
 		GLuint p = model.second->GetShadowProgram();
 		glUseProgram(p);
 		for (auto light : gameLightList)
 		{
+			// NOTE We will end up only drawing 1 light
 			light.second->DrawShadow(p);
 		}
 		model.second->DrawShadow();

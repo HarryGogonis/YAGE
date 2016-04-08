@@ -9,10 +9,12 @@ const static int POINT_LIGHT = 2;
 const static int SPOT_LIGHT = 3;
 
 unsigned int Light::count = 0;
+unsigned int shadowLightCount = 0;
 
 Light::Light()
 {
 	this->isEnabled = true;
+	this->castsShadow = false;
 	this->_id = count++;
 }
 
@@ -35,29 +37,15 @@ void Light::Draw(GLuint program)
 
 void Light::DrawShadow(GLuint shadowProgram)
 {
-	if (!isEnabled || !castsShadow) return;
+	// override
 
-	//TODO only supports point ligths
-	if (type != POINT_LIGHT) return;
 
-	const float FRUSTRUM_DEPTH = 100.0f; // maximum depth over light with influence
-
-									   // Setup depth MVP
-	glm::mat4 projection = glm::frustum(-1.0f, 1.0f, -1.0f, 1.0f,
-		1.0f, FRUSTRUM_DEPTH);
-	glm::mat4 view = glm::lookAt(position, glm::vec3(0.0f), glm::vec3(0.0, 1.0, 0.0));
-	glm::mat4 depth_mvp = projection * view;
-
-		//or, for spot light :
+		//for spot light :
 		//glm::vec3 lightPos(5, 20, 20);
 		//glm::mat4 depthProjectionMatrix = glm::perspective<float>(45.0f, 1.0f, 2.0f, 50.0f);
 		//glm::mat4 depthViewMatrix = glm::lookAt(lightPos, lightPos-lightInvDir, glm::vec3(0,1,0));
 
-	Shadow_Manager::GetInstance()->SetDepthMatrix(depth_mvp);
-
-	// Render from light's position onto depth buffer
-	glUniformMatrix4fv(glGetUniformLocation(shadowProgram, "DepthMVP"),
-		1, GL_FALSE, &depth_mvp[0][0]);
+		// See this for more: http://www.opengl-tutorial.org/intermediate-tutorials/tutorial-16-shadow-mapping/
 }
 
 void Light::Update()
@@ -92,6 +80,18 @@ const GLuint Light::GetTexture(const std::string&) const
 	throw "Textures not supported with Lights";
 }
 
+bool Light::EnableShadows()
+{
+	// Currently only supports up to 1 directional light
+	if (shadowLightCount > 0 || type != DIRECTIONAL_LIGHT)
+	{
+		return false;
+	}
+	shadowLightCount++;
+	this->castsShadow = true;
+	return true;
+}
+
 void Light::SetAttenuation(float constant, float linear, float quadratic)
 {
 	this->constantAttenuation = constant;
@@ -104,7 +104,7 @@ DirectionalLight::DirectionalLight(glm::vec3 color, glm::vec3 direction, glm::ve
 	this->type = DIRECTIONAL_LIGHT;
 	this->ambient = glm::vec3(0.0, 0.0, 0.0);
 	this->color = color;
-	this->position = direction;
+	this->position = -direction;
 	this->halfVector = halfVector;
 }
 
@@ -118,6 +118,21 @@ void DirectionalLight::Draw(GLuint program)
 	glUniform3fv(ids.color, 1, &color[0]);
 	glUniform3fv(ids.position, 1, &position[0]);
 	glUniform3fv(ids.halfVector, 1, &halfVector[0]);
+}
+
+void DirectionalLight::DrawShadow(GLuint shadowProgram)
+{
+	if (!isEnabled || !castsShadow) return;
+
+	glm::mat4 projection = glm::ortho<float>(-10, 10, -10, 10, -10, 20);
+	glm::mat4 view = glm::lookAt(position, glm::vec3(0.0f), glm::vec3(0.0, 1.0, 0.0));
+	glm::mat4 depth_mvp = projection * view;
+
+	Shadow_Manager::GetInstance()->SetDepthMatrix(depth_mvp);
+
+	// Render from light's position onto depth buffer
+	glUniformMatrix4fv(glGetUniformLocation(shadowProgram, "DepthMVP"),
+		1, GL_FALSE, &depth_mvp[0][0]);
 }
 
 AmbientLight::AmbientLight(glm::vec3 color, float strength) : Light()

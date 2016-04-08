@@ -34,7 +34,7 @@ in vec2 UV;
 in vec4 Position;
 in mat3 TBN;
 in vec3 EyeDirection;
-in vec4 ShadowCoord; //TODO ShadowCoord for EACH light???
+in vec4 ShadowCoord;
 
 void main(void)
 {
@@ -94,10 +94,6 @@ void main(void)
 		reflectedLight += Lights[light].color * specularCoefficient * attenuation;
 	}
 
-	/*float visibility = 1.0;
-	if ( texture(texture_shadow, ShadowCoord.xy).z < ShadowCoord.z) {
-		visibility = 0.5;
-	}*/
 	float visibility = textureProj(texture_shadow, ShadowCoord);
 
 	vec4 MaterialDiffuse = texture(texture_diffuse, UV).rgba;
@@ -108,5 +104,4 @@ void main(void)
 
 	vec3 rgb = min(diffuse + specular, vec3(1.0));
 	out_color = vec4(rgb, MaterialDiffuse.a);
-	//out_color = texture(texture_shadow, ShadowColor);
 }

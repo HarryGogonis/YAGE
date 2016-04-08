@@ -22,7 +22,7 @@ public:
 		const Transform& transform,
 		const std::string& texturePath = "", 
 		const TextureType type = Texture_Diffuse);
-	void AddLight(const std::string& lightName, Light* light);
+	Light* AddLight(const std::string& lightName, Light* light);
 
 	void DeleteModel(const std::string& gameModelName);
 	const IGameObject& GetModel(const std::string& gameModelName);
