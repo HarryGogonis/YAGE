@@ -2,6 +2,7 @@
 
 ## Screenshots
 
+![Diablo](https://i.imgur.com/IVXhjca.png)
 ![YAGE Demo #1](http://i.imgur.com/ryB9ORn.png)
 
 ## Viewport Controls
