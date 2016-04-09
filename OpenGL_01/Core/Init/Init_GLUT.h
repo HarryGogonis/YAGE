@@ -3,7 +3,7 @@
 #include "FrameBufferInfo.h"
 #include "WindowInfo.h"
 #include "Init_GLEW.h"
-#include "IListener.h"
+#include "../../Managers/Scene_Manager.h"
 
 #include <iostream>
 
@@ -20,7 +20,7 @@ public:
 
 	static void printOpenGLInfo(const WindowInfo& window, const ContextInfo& context);
 	
-	static void setListener(IListener*& iListener);
+	static void setListener(Scene_Manager*& iListener);
 
 private:
 	// GLUT callbacks
@@ -29,6 +29,6 @@ private:
 	static void reshapeCallback(int width, int height);
 	static void closeCallback();
 
-	static IListener* listener;
+	static Scene_Manager* listener;
 	static WindowInfo windowInformation;
 };

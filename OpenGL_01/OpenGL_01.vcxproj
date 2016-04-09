@@ -173,7 +173,6 @@
     <ClInclude Include="Rendering\Util\Camera.h" />
     <ClInclude Include="Core\Init\ContextInfo.h" />
     <ClInclude Include="Core\Init\FrameBufferInfo.h" />
-    <ClInclude Include="Core\Init\IListener.h" />
     <ClInclude Include="Core\Init\Init_GLEW.h" />
     <ClInclude Include="Core\Init\Init_GLUT.h" />
     <ClInclude Include="Core\Init\WindowInfo.h" />

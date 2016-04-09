@@ -48,7 +48,7 @@ public:
 			GameObjectsBuilder & setSpotExponent(float exponent);
 
 
-	Models_Manager* getResult();
+	Models_Manager* getResult() const;
 private:
 	Models_Manager* models;
 	IGameObject* current;

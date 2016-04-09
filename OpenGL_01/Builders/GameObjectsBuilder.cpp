@@ -186,7 +186,7 @@ GameObjectsBuilder & GameObjectsBuilder::setSpotExponent(float exponent)
 	return *this;
 }
 
-Models_Manager* GameObjectsBuilder::getResult()
+Models_Manager* GameObjectsBuilder::getResult() const
 {
 	return models;
 }

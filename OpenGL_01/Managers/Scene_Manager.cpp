@@ -1,7 +1,6 @@
 #include "Scene_Manager.h"
 #include "../Rendering/Util/Camera.h"
 #include "../Core/Options.h"
-#include "../Builders/GameObjectsBuilder.h"
 #include "../Core/Init/WindowInfo.h"
 
 double currentTime;
@@ -22,37 +21,7 @@ Scene_Manager::Scene_Manager(std::string scene_name)
 	shader_manager = Shader_Factory::GetInstance();
 	shadow_manager = Shadow_Manager::GetInstance();
 	physics_manager = Physics_Manager::GetInstance();
-	GameObjectsBuilder gob = GameObjectsBuilder();
-
-	gob.addModel("Examples\\wall.obj", "Examples\\bricks.jpg") // Back center
-			.setPosition(glm::vec3(-3.f, 0.f, 0.f))
-			.setScale(8.f)
-			.setRotation(90.f, 0.f, 0.f)
-			.addRigidBody(0.f)
-		.addModel("Examples\\wall.obj", "Examples\\dirt.jpg") // Back center
-			.setPosition(glm::vec3(-3.f, 7.f, -7.f))
-			.setScale(8.f)
-			.setRotation(0.f, 0.f, 0.f)
-			.addRigidBody(0.f)
-		.addModel("Examples\\Raptor.obj", std::string())
-			.setPosition(glm::vec3(0.f, 0.f, 0.f))
-			.setScale(1.f)
-			.setRotation(0.f, 180.f, 0.f)
-			.addRigidBody(5.f)
-			.lockUpright()
-		.addLight(OT_LIGHT_POINT)
-			.setColor(glm::vec3(0.6f, 0.5f, 0.5f))
-			.setPosition(glm::vec3(0.0, 4.0, 0.0))
-		.addLight(OT_LIGHT_DIRECTIONAL)
-			.setColor(glm::vec3(0.2f, 0.2f, 0.2f))
-			.setPosition(glm::vec3(0.f, 0.f, 1.f))
-			.setHalfVector(glm::vec3(0.5f, 0.5f, 0.5f))
-		.addLight(OT_LIGHT_AMBIENT)
-			.setColor(glm::vec3(1.f, 1.f, 1.f))
-			.setStrength(0.2f);
-
-
-	models_manager = gob.getResult();
+	
 }
 
 Scene_Manager::~Scene_Manager()
@@ -60,6 +29,11 @@ Scene_Manager::~Scene_Manager()
 	delete physics_manager;
 	delete shader_manager;
 	delete models_manager;
+}
+
+void Scene_Manager::SetupScene(const GameObjectsBuilder& gob)
+{
+	models_manager = gob.getResult();
 }
 
 void Scene_Manager::UpdatePass() const

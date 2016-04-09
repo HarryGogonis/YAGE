@@ -91,9 +91,6 @@
     <ClInclude Include="Core\Init\Init_GLUT.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Core\Init\IListener.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Managers\Scene_Manager.h">
       <Filter>Header Files</Filter>
     </ClInclude>

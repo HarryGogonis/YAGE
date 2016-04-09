@@ -1,7 +1,7 @@
 #include "Init_GLUT.h"
 
 // static attribs
-IListener* Init_GLUT::listener = nullptr;
+Scene_Manager* Init_GLUT::listener = nullptr;
 WindowInfo Init_GLUT::windowInformation;
 
 void Init_GLUT::init(const WindowInfo& windowInfo,
@@ -97,7 +97,7 @@ void Init_GLUT::reshapeCallback(int width, int height)
 	}
 }
 
-void Init_GLUT::setListener(IListener*& iListener)
+void Init_GLUT::setListener(Scene_Manager*& iListener)
 {
 	listener = iListener;
 }
