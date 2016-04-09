@@ -1,8 +1,9 @@
 # YAGE (Yet Another Game Engine)
 
 ## Screenshots
-
 ![YAGE Demo #1](http://i.imgur.com/ryB9ORn.png)
+![Shadows](https://i.imgur.com/WRgQYms.png)
+![Diablo](https://i.imgur.com/IVXhjca.png)
 
 ## Viewport Controls
 
@@ -18,7 +19,14 @@
 | Mouse Scroll UP   | Zooms the camera in (lowers FOV).  |
 | Mouse DRAG		| Rotates the camera around			 |
 
+## 3rd Party Libraries
+* [ASSIMP](http://www.assimp.org/)
+* [SOIL](http://www.lonesock.net/soil.html)
+* [Bullet](http://bulletphysics.org/wordpress/)
+
 ## Helpful resources
 * [in2gpu OpenGL Tutorial](http://in2gpu.com/opengl-3/)
 * [OpenGL Documentation](https://www.opengl.org/sdk/docs/man/)
 * [Red Book](http://www.amazon.com/OpenGL-Programming-Guide-Official-Learning/dp/0321335732)
+* [OpenGL-Tutorial](http://www.opengl-tutorial.org/)
+* [OGLDev](http://ogldev.atspace.co.uk/index.html)
