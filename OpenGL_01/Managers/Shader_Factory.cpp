@@ -4,7 +4,7 @@
 #include<vector>
 
 // static instance for the singleton
-Shader_Factory *Shader_Factory::mShaderFactory;
+Shader_Factory *Shader_Factory::mShaderFactory = nullptr;
 
 // static int that names the programs
 static int inc = 0;
@@ -123,4 +123,10 @@ const void Shader_Factory::SetTextureShader(IGameObject& model)
 		"Shaders\\TextureVertexShader.glsl",
 		"Shaders\\TextureFragmentShader.glsl");
 	model.SetProgram(program);
+}
+
+const GLuint& Shader_Factory::CreateDebugProgram()
+{
+	GLuint program = CreateProgram("", "Shaders\\Vertex_Shader.glsl", "Shaders\\Fragment_Shader.glsl");
+	return program;
 }

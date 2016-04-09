@@ -12,21 +12,19 @@ public:
 
 	void Draw();
 	void Update();
+	void addLight(Light* light);
 	/*
 	 * We want a controlled creation method to prevent resources from leaking.
 	 */
-	void CreateModel(
-		const std::string& modelName,
+	Scene_Container* CreateModel(
 		const std::string& modelPath,
 		const Transform& transform,
 		const std::string& texturePath = "", 
 		const TextureType type = Texture_Diffuse);
-	void DeleteModel(const std::string& gameModelName);
-	const IGameObject& GetModel(const std::string& gameModelName);
 
 private:
 	// for big games, use a vector instead of a map
 	// map has slow iteration, fast lookup
-	std::map <const std::string, Scene_Container*> gameModelList;
-	std::map <const std::string, Light*> gameLightList;
+	std::vector <Scene_Container*> gameModelList;
+	std::vector <Light*> gameLightList;
 };

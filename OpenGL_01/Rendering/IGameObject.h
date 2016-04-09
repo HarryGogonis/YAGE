@@ -5,6 +5,7 @@
 
 #include "Util\Transform.h"
 #include "Texture.h"
+#include "btBulletDynamicsCommon.h"
 
 class IGameObject
 {
@@ -16,8 +17,6 @@ public:
 	virtual void SetProgram(GLuint shaderName) = 0;
 	virtual void Destroy() = 0;
 	virtual GLuint GetProgram();
-
-	
 	virtual void SetTexture(const std::string& textureName, const TextureType& textureType, const GLuint& texture) = 0;
 	virtual const GLuint GetTexture(const std::string&) const = 0;
 

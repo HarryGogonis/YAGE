@@ -1,7 +1,7 @@
 #include "Init_GLUT.h"
 
 // static attribs
-IListener* Init_GLUT::listener = NULL;
+IListener* Init_GLUT::listener = nullptr;
 WindowInfo Init_GLUT::windowInformation;
 
 void Init_GLUT::init(const WindowInfo& windowInfo,

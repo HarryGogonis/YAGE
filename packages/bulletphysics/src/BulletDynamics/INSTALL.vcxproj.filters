@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\Projects\YAGE\packages\bulletphysics\CMakeFiles\a6f0968cc14ceb2431d456828114f20c\INSTALL_force.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{1F5B85B5-D8B2-3462-89E5-B77674FC1AAF}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

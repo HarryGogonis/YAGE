@@ -11,7 +11,7 @@ class Model : public IGameObject
 {
 public:
 	Model();
-	Model(Transform t);
+	Model(Transform* t);
 	virtual ~Model();
 
 	void SetProgram(GLuint shaderName) override;
@@ -25,8 +25,8 @@ public:
 	const GLuint GetTexture(const std::string&) const override;
 	void SetTexture(const std::string& textureName, const TextureType& textureType, const GLuint& texture) override;
 
-	Transform transform;
 protected:
+	Transform* transform;
 	GLuint vao;
 	std::vector<GLuint> vbos;
 	std::vector<Texture> textures;

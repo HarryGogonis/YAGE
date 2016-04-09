@@ -4,18 +4,18 @@
 Transform::Transform()
 {
 	this->position = glm::vec3(0.0, 0.0, 0.0);
-	this->scale = glm::vec3(1.0, 1.0, 1.0);
+	this->scale = 1.f;
 	this->rotation = glm::quat();
 }
 
-Transform::Transform(glm::vec3 position, glm::vec3 scale, glm::quat rotation)
+Transform::Transform(glm::vec3 position, float scale, glm::quat rotation)
 {
 	this->position = position;
 	this->scale = scale;
 	this->rotation = rotation;
 }
 
-void Transform::SetScale(const glm::vec3& scale)
+void Transform::SetScale(float scale)
 {
 	this->scale = scale;
 }
@@ -30,20 +30,25 @@ void Transform::SetRotation(float angle, glm::vec3 axis)
 	this->rotation = glm::angleAxis(angle, axis);
 }
 
+void Transform::IncRotation(float angle, glm::vec3 axis)
+{
+	this->rotation *= glm::angleAxis(angle, axis);
+}
+
 // Rotate along X Axis - Angle is in degrees
 void Transform::RotateX(float angle)
 {
-	this->SetRotation(glm::radians(angle), glm::vec3(1.0, 0.0, 0.0));
+	this->IncRotation(glm::radians(angle), glm::vec3(1.0, 0.0, 0.0));
 }
 
 void Transform::RotateY(float angle)
 {
-	this->SetRotation(glm::radians(angle), glm::vec3(0.0, 1.0, 0.0));
+	this->IncRotation(glm::radians(angle), glm::vec3(0.0, 1.0, 0.0));
 }
 
 void Transform::RotateZ(float angle)
 {
-	this->SetRotation(glm::radians(angle), glm::vec3(0.0, 0.0, 1.0));
+	this->IncRotation(glm::radians(angle), glm::vec3(0.0, 0.0, 1.0));
 }
 
 glm::mat4 Transform::getTranslationMatrix() const
@@ -53,7 +58,7 @@ glm::mat4 Transform::getTranslationMatrix() const
 
 glm::mat4 Transform::getScaleMatrix() const
 {
-	return glm::scale(glm::mat4(1.0f), this->scale);
+	return glm::scale(glm::mat4(1.0f), glm::vec3(this->scale));
 }
 
 glm::mat4 Transform::getRotationMatrix() const
@@ -64,6 +69,20 @@ glm::mat4 Transform::getRotationMatrix() const
 glm::mat4 Transform::getTransformMatrix() const
 {
 	return getTranslationMatrix() * getRotationMatrix() * getScaleMatrix();
+}
+
+Transform& Transform::operator=(const btTransform &trans)
+{
+	btQuaternion quat = trans.getRotation();
+	btVector3 pos = trans.getOrigin();
+	rotation.x = quat.getX();
+	rotation.y = quat.getY();
+	rotation.z = quat.getZ();
+	rotation.w = quat.getW();
+	position.x = pos.getX();
+	position.y = pos.getY();
+	position.z = pos.getZ();
+	return *this;
 }
 
 Transform::~Transform()

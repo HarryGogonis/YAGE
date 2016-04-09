@@ -11,6 +11,7 @@ uniform mat4 MVP;
 uniform mat4 MV;
 uniform mat4 TransformMatrix;
 uniform mat3 NormalMatrix;
+uniform mat3 ScaleConst;
 
 void main(void)
 {
