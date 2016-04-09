@@ -15,9 +15,19 @@ public:
 	// Draw function so that we are sure that the Scene_Container uses its own program
 	void Draw();
 	void Draw(GLuint) override;
+	void DrawShadow();
+	void DrawShadow(GLuint) override;
 	void Update() override;
 	void Destroy() override;
+
 	void SetProgram(GLuint) override;
+	void SetShadowProgram(GLuint) override;
+
+	GLuint GetShadowProgram() const
+	{
+		return shadowProgram;
+	}
+
 	btRigidBody* getRigidBody();
 	virtual void InitRigidBody(btScalar mass);
 

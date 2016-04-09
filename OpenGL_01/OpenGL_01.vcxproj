@@ -93,8 +93,6 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>
-      </AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -140,6 +138,7 @@
     <ClCompile Include="Builders\GameObjectsBuilder.cpp" />
     <ClCompile Include="Rendering\Util\DebugDrawer.cpp" />
     <ClCompile Include="Managers\Physics_Manager.cpp" />
+    <ClCompile Include="Managers\Shadow_Manager.cpp" />
     <ClCompile Include="Rendering\Util\Light.cpp" />
     <ClCompile Include="Rendering\Models\Mesh.cpp" />
     <ClCompile Include="Rendering\Util\Camera.cpp" />
@@ -167,6 +166,7 @@
     <ClInclude Include="Builders\GameObjectsBuilder.h" />
     <ClInclude Include="Rendering\Util\DebugDrawer.h" />
     <ClInclude Include="Managers\Physics_Manager.h" />
+    <ClInclude Include="Managers\Shadow_Manager.h" />
     <ClInclude Include="Rendering\Texture.h" />
     <ClInclude Include="Rendering\Util\Light.h" />
     <ClInclude Include="Rendering\Models\Mesh.h" />

@@ -10,6 +10,7 @@ int numFrames;
 
 Scene_Manager::Scene_Manager(std::string scene_name)
 {
+	glEnable(GL_NORMALIZE);
 	if (CULL_BACK)
 	{
 		glEnable(GL_DEPTH_TEST);
@@ -19,6 +20,7 @@ Scene_Manager::Scene_Manager(std::string scene_name)
 
 	this->scene_name = scene_name;
 	shader_manager = Shader_Factory::GetInstance();
+	shadow_manager = Shadow_Manager::GetInstance();
 	physics_manager = Physics_Manager::GetInstance();
 	GameObjectsBuilder gob = GameObjectsBuilder();
 
@@ -60,7 +62,7 @@ Scene_Manager::~Scene_Manager()
 	delete models_manager;
 }
 
-void Scene_Manager::notifyBeginFrame()
+void Scene_Manager::UpdatePass() const
 {
 	currentTime = glutGet(GLUT_ELAPSED_TIME);
 	numFrames++;
@@ -73,12 +75,54 @@ void Scene_Manager::notifyBeginFrame()
 	models_manager->Update();
 }
 
-void Scene_Manager::notifyDisplayFrame()
+
+void Scene_Manager::RenderPass() const
 {
+	// Restore default framebuffer
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+	// Restore default viewport
+	glViewport(0, 0, 1024, 768); //TODO Don't hardcode
+
+	// Clear scene
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glClearColor(0.0, 0.0, 0.0, 1.0);
 	physics_manager->DrawDebug();
 	models_manager->Draw();
+}
+
+void Scene_Manager::ShadowPass() const
+{
+	// Switch to shadow frame buffer
+	shadow_manager->BindForWriting();
+
+	// Render on the whole framebuffer
+	glViewport(0, 0, shadow_manager->DEPTH_TEXTURE_SIZE, shadow_manager->DEPTH_TEXTURE_SIZE);
+
+	// Clear the screen
+	glClearDepth(1.0f);
+	glClear(GL_DEPTH_BUFFER_BIT);
+
+	// Enable polygon offset to resolve depth-fighting issues
+	glEnable(GL_POLYGON_OFFSET_FILL);
+	glPolygonOffset(2.0f, 4.0f);
+
+	// Render scene
+	models_manager->DrawShadows();
+
+	glDisable(GL_POLYGON_OFFSET_FILL);
+
+}
+
+void Scene_Manager::notifyBeginFrame()
+{
+	UpdatePass();
+}
+
+void Scene_Manager::notifyDisplayFrame()
+{
+	ShadowPass();
+	RenderPass();
 }
 
 void Scene_Manager::notifyEndFrame()
