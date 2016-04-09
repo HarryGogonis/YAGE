@@ -92,6 +92,12 @@ bool Light::EnableShadows()
 	return true;
 }
 
+bool Light::DisableShadows()
+{
+	this->castsShadow = false;
+	return true;
+}
+
 void Light::SetAttenuation(float constant, float linear, float quadratic)
 {
 	this->constantAttenuation = constant;

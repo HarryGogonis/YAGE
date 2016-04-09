@@ -48,9 +48,10 @@ int main(int argc, char **argv)
 		.setColor(glm::vec3(0.2f, 0.2f, 0.2f))
 		.setPosition(glm::vec3(0.f, 0.f, 1.f))
 		.setHalfVector(glm::vec3(0.5f, 0.5f, 0.5f))
-		.addLight(OT_LIGHT_AMBIENT)
+		.setCastsShadows(true)
+	.addLight(OT_LIGHT_AMBIENT)
 		.setColor(glm::vec3(1.f, 1.f, 1.f))
-		.setStrength(0.2f);
+		.setStrength(0.1f);
 
 	scene->SetupScene(gob);
 

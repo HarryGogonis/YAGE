@@ -136,6 +136,19 @@ GameObjectsBuilder & GameObjectsBuilder::setHalfVector(glm::vec3 halfVector)
 	return *this;
 }
 
+GameObjectsBuilder& GameObjectsBuilder::setCastsShadows(bool castsShadow)
+{
+	if (current_type & OT_LIGHT)
+	{
+		Light* light = static_cast<Light*>(current);
+		if (castsShadow)
+			light->EnableShadows();
+		else
+			light->DisableShadows();
+	}
+	return *this;
+}
+
 GameObjectsBuilder & GameObjectsBuilder::setStrength(float strength)
 {
 	if (current_type & OT_LIGHT)

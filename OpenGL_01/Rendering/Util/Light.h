@@ -20,6 +20,7 @@ public:
 	virtual const GLuint GetTexture(const std::string&) const override;
 
 	bool EnableShadows();
+	bool DisableShadows();
 
 	glm::vec3 ambient; // light's contribution to ambient light
 	glm::vec3 color;

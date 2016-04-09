@@ -36,6 +36,7 @@ public:
 
 			GameObjectsBuilder & setColor(glm::vec3 color);
 			GameObjectsBuilder & setHalfVector(glm::vec3 halfVector);
+			GameObjectsBuilder & setCastsShadows(bool);
 			// Only call AFTER color is set
 			GameObjectsBuilder & setStrength(float strength);
 
