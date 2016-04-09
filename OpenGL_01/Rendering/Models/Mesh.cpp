@@ -16,7 +16,7 @@ glm::vec2 assimpToGLM2D(const aiVector3D &vec)
 
 Mesh::Mesh(const aiMesh* ai_mesh, const aiMaterial* ai_mat, Transform* transform)
 {
-	shininess = 20;
+	shininess = 2;
 	strength = 2;
 	this->transform = transform;
 	for (auto i = 0; i < ai_mesh->mNumFaces; ++i)
