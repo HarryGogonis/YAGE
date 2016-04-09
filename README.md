@@ -2,6 +2,7 @@
 
 ## Screenshots
 
+![Diablo](https://i.imgur.com/IVXhjca.png)
 ![YAGE Demo #1](http://i.imgur.com/ryB9ORn.png)
 
 ## Viewport Controls
@@ -22,3 +23,5 @@
 * [in2gpu OpenGL Tutorial](http://in2gpu.com/opengl-3/)
 * [OpenGL Documentation](https://www.opengl.org/sdk/docs/man/)
 * [Red Book](http://www.amazon.com/OpenGL-Programming-Guide-Official-Learning/dp/0321335732)
+* [OpenGL-Tutorial](http://www.opengl-tutorial.org/)
+* [OGLDev](http://ogldev.atspace.co.uk/index.html)
