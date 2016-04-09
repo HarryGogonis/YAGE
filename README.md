@@ -2,6 +2,7 @@
 
 ## Screenshots
 
+![Shadows](https://i.imgur.com/WRgQYms.png)
 ![Diablo](https://i.imgur.com/IVXhjca.png)
 ![YAGE Demo #1](http://i.imgur.com/ryB9ORn.png)
 
@@ -18,6 +19,11 @@
 | Mouse Scroll DOWN | Zooms the camera out (raises FOV). |
 | Mouse Scroll UP   | Zooms the camera in (lowers FOV).  |
 | Mouse DRAG		| Rotates the camera around			 |
+
+## 3rd Party Libraries
+* [ASSIMP](http://www.assimp.org/)
+* [SOIL](http://www.lonesock.net/soil.html)
+* [Bullet](http://bulletphysics.org/wordpress/)
 
 ## Helpful resources
 * [in2gpu OpenGL Tutorial](http://in2gpu.com/opengl-3/)
