@@ -118,11 +118,17 @@ const GLuint& Shader_Factory::CreateProgram(const std::string& shaderName,
 
 const void Shader_Factory::SetTextureShader(IGameObject& model)
 {
-	std::string name = "textureShader" + ++inc;
-	GLuint program = CreateProgram(name,
+	int id = ++inc;
+	GLuint program = CreateProgram(
+		"textureShader" + id,
 		"Shaders\\TextureVertexShader.glsl",
 		"Shaders\\TextureFragmentShader.glsl");
+	GLuint shadowProgram = CreateProgram(
+		"shadowShader" + id,
+		"Shaders\\ShadowVertexShader.glsl",
+		"Shaders\\ShadowFragmentShader.glsl");
 	model.SetProgram(program);
+	model.SetShadowProgram(shadowProgram);
 }
 
 const GLuint& Shader_Factory::CreateDebugProgram()

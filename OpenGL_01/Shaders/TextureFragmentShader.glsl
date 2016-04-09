@@ -16,14 +16,10 @@ struct LightProperties {
 	float quadraticAttenuation;
 };
 
-uniform sampler2D texture_diffuse1;
-uniform sampler2D texture_diffuse2;
-uniform sampler2D texture_diffuse3;
-uniform sampler2D texture_specular1;
-uniform sampler2D texture_specular2;
-
-uniform float texture_contributions[3];
-uniform float texture_count;
+uniform sampler2D texture_diffuse;
+uniform sampler2D texture_normal;
+uniform sampler2D texture_specular;
+uniform sampler2DShadow texture_shadow;
 
 // set of lights to apply, per invocation of this shader
 const int MaxLights = 5; 
@@ -31,18 +27,21 @@ uniform LightProperties Lights[MaxLights];
 
 uniform float Shininess;
 uniform float Strength;
-uniform vec3 EyeDirection; // camera position
 uniform mat4 MVP;
 uniform mat4 MV;
 
 in vec2 UV;
-in vec3 Normal;
 in vec4 Position;
+in mat3 TBN;
+in vec3 EyeDirection;
+in vec4 ShadowCoord;
 
 void main(void)
 {
 	vec3 scatteredLight = vec3(0.0);
 	vec3 reflectedLight = vec3(0.0);
+
+	vec3 Normal = normalize(texture(texture_normal, UV).rgb * 2.0 - vec3(1.0));
 
 	for (int light = 0; light < MaxLights; ++light)
 	{
@@ -63,9 +62,9 @@ void main(void)
 		}
 		else if (Lights[light].type == 2) // Point Light
 		{		
-			lightDirection = lightDirection - vec3(Position);
+			lightDirection = TBN * (lightDirection - vec3(Position));
 			lightDistance = length(lightDirection); //!warning! length does expensive SQRT
-			lightDirection = lightDirection / lightDistance;
+			lightDirection = normalize(lightDirection);
 
 			attenuation = 1.0 /
 				(Lights[light].constantAttenuation
@@ -73,57 +72,36 @@ void main(void)
 				+ Lights[light].quadraticAttenuation * lightDistance * lightDistance);
 			
 			halfVector = normalize(lightDirection + EyeDirection);
+			//halfVector = reflect(-lightDirection, Normal);
 		}
 		else // Spot Light
 		{ 
-			lightDirection = lightDirection - vec3(Position);
-			lightDistance = length(lightDirection); //!warning! length does expensive SQRT
-			lightDirection = lightDirection / lightDistance;
-
-			attenuation = 1.0 /
-				(Lights[light].constantAttenuation
-				+ Lights[light].linearAttenuation * lightDistance
-				+ Lights[light].quadraticAttenuation * lightDistance * lightDistance);
-			
-			float spotCos = dot(lightDirection, -Lights[light].coneDirection);
-			if (spotCos < Lights[light].spotCosCutoff)
-				attenuation = 0.0;
-			else 
-				attenuation *= pow(spotCos, Lights[light].spotExponent);
-
-			halfVector = normalize(lightDirection + EyeDirection);
+			// TODO Implement
 		}
 
-		float diffuse = max(0.0, dot(Normal, lightDirection));
-		float specular = max(0.0, dot(Normal, halfVector));
+		float diffuseCoefficient = clamp(dot(Normal, lightDirection), 0, 1);
+		float specularCoefficient = max(0.0, dot(EyeDirection, halfVector));
+		//float specularCoefficient = max(0.0, dot(EyeDirection, halfVector));
 
-		if (diffuse == 0.0)
-			specular = 0.0;
+		if (diffuseCoefficient == 0.0)
+			specularCoefficient = 0.0;
 		else
-			specular = pow(specular, Shininess) * Strength;
+			specularCoefficient = pow(specularCoefficient , Shininess);
 
 		// Accumulate all the light's effects
 		scatteredLight += Lights[light].ambient * attenuation + 
-						  Lights[light].color * diffuse * attenuation;
-		reflectedLight += Lights[light].color * specular * attenuation;
-	}
-	vec4 texture_color;
-	if (texture_count == 1)
-	{
-		texture_color = texture(texture_diffuse1, UV).rgba;
-	}
-	else if (texture_count == 2)
-	{
-		texture_color =	texture(texture_diffuse1, UV).rgba * texture_contributions[0] +
-						texture(texture_diffuse2, UV).rgba * texture_contributions[1];
-	}
-	else
-	{
-		texture_color =	texture(texture_diffuse1, UV).rgba * texture_contributions[0] +
-						texture(texture_diffuse2, UV).rgba * texture_contributions[1] +
-						texture(texture_diffuse3, UV).rgba * texture_contributions[2];
+						  Lights[light].color * diffuseCoefficient * attenuation;
+		reflectedLight += Lights[light].color * specularCoefficient * attenuation;
 	}
 
-	vec3 rgb = min(texture_color.rgb * scatteredLight + reflectedLight, vec3(1.0));
-	out_color = vec4(rgb, texture_color.a);
+	float visibility = textureProj(texture_shadow, ShadowCoord);
+
+	vec4 MaterialDiffuse = texture(texture_diffuse, UV).rgba;
+	vec3 MaterialSpecular = texture(texture_specular, UV).rgb;
+
+	vec3 diffuse = visibility * MaterialDiffuse.rgb * scatteredLight;
+	vec3 specular = visibility * MaterialSpecular * reflectedLight;
+
+	vec3 rgb = min(diffuse + specular, vec3(1.0));
+	out_color = vec4(rgb, MaterialDiffuse.a);
 }

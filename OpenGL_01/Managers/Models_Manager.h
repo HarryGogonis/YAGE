@@ -11,6 +11,7 @@ public:
 	~Models_Manager();
 
 	void Draw();
+	void DrawShadows();
 	void Update();
 	void addLight(Light* light);
 	/*
