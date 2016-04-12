@@ -23,6 +23,23 @@
 * [ASSIMP](http://www.assimp.org/)
 * [SOIL](http://www.lonesock.net/soil.html)
 * [Bullet](http://bulletphysics.org/wordpress/)
+* [Freeglut](http://freeglut.sourceforge.net/)
+* [OpenGL](https://www.opengl.org/)
+
+## Features
+* OpenGL based rendering system
+* Lighting system (Point, Directional, Spotlight*)
+* Physics system (using bullet physics)
+* Bump mapping
+* Specular mapping
+* Import scenes via .fbx, .obj, and more
+* Scene builder
+* Dynamic shadows*
+
+## Future Features
+* Animation
+* Text rendering
+* Particle system
 
 ## Helpful resources
 * [in2gpu OpenGL Tutorial](http://in2gpu.com/opengl-3/)
