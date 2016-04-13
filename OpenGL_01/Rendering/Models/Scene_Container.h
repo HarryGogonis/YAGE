@@ -23,11 +23,6 @@ public:
 	void SetProgram(GLuint) override;
 	void SetShadowProgram(GLuint) override;
 
-	GLuint GetShadowProgram() const
-	{
-		return shadowProgram;
-	}
-
 	btRigidBody* getRigidBody();
 	virtual void InitRigidBody(btScalar mass);
 

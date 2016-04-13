@@ -3,6 +3,7 @@
 #include <iostream>
 #include "../Rendering/Util/Light.h"
 #include "../Rendering/Models/Scene_Container.h"
+#include "../Rendering/Models/Particle_Container.h"
 
 class Models_Manager
 {
@@ -27,5 +28,6 @@ private:
 	// for big games, use a vector instead of a map
 	// map has slow iteration, fast lookup
 	std::vector <Scene_Container*> gameModelList;
+	std::vector <Particle_Container*> gameParticleList;
 	std::vector <Light*> gameLightList;
 };

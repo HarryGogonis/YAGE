@@ -9,6 +9,7 @@
 #include "../Rendering/Util/Light.h"
 #include "../Rendering/Models/Scene_Container.h"
 #include "Shader_Factory.h"
+#include "../Rendering/Models/Particle_Container.h"
 
 int texture_id = 0;
 
@@ -23,6 +24,12 @@ Models_Manager::~Models_Manager()
 		delete model;
 	}
 	gameModelList.clear();
+
+	for (auto particle : gameParticleList)
+	{
+		delete particle;
+	}
+	gameParticleList.clear();
 }
 
 // TODO: Create Light method
@@ -65,6 +72,11 @@ void Models_Manager::Update()
 			light->Update();
 		}
 	}
+	
+	for (auto particle : gameParticleList)
+	{
+		particle->Update();
+	}
 }
 
 void Models_Manager::addLight(Light * light)
@@ -79,11 +91,16 @@ void Models_Manager::Draw()
 	{
 		GLuint p = model->GetProgram();
 		glUseProgram(p);
-		model->Draw();
+		model->Draw(p);
 		for (auto light : gameLightList)
 		{
 			light->Draw(p);
 		}
+	}
+
+	for (auto particle : gameParticleList)
+	{
+		particle->Draw();
 	}
 }
 
@@ -98,6 +115,6 @@ void Models_Manager::DrawShadows()
 			// NOTE We will end up only drawing 1 light
 			light->DrawShadow(p);
 		}
-		model->DrawShadow();
+		model->DrawShadow(p);
 	}
 }
