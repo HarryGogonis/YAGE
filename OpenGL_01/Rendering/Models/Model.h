@@ -1,11 +1,8 @@
 #pragma once
 #include <vector>
-#include <string>
-#include <map>
 #include "../IGameObject.h"
 #include "../VertexFormat.h"
 #include "../Texture.h"
-#include "../Util/Camera.h"
 
 class Model : public IGameObject
 {

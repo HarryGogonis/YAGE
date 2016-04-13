@@ -116,12 +116,35 @@ GameObjectsBuilder& GameObjectsBuilder::setSpecular(const std::string& path)
 	return *this;
 }
 
+GameObjectsBuilder & GameObjectsBuilder::setDynamic()
+{
+	if (current_type == OT_MODEL)
+	{
+		Scene_Container* model = static_cast<Scene_Container*>(current);
+		btRigidBody* model_body = model->getRigidBody();
+		if (model_body)
+		{
+			model_body->setActivationState(DISABLE_DEACTIVATION);
+		}
+	}
+	return *this;
+}
+
 GameObjectsBuilder& GameObjectsBuilder::addRigidBody(float mass)
 {
 	if (current_type == OT_MODEL)
 	{
 		Scene_Container* model = static_cast<Scene_Container*>(current);
 		model->InitRigidBody(mass);
+	}
+	return *this;
+}
+
+GameObjectsBuilder & GameObjectsBuilder::controlAsPlayer()
+{
+	if (current_type == OT_MODEL)
+	{
+		Physics_Manager::GetInstance()->setCharacter(static_cast<Scene_Container*>(current));
 	}
 	return *this;
 }

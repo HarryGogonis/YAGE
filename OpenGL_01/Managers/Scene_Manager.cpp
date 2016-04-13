@@ -43,7 +43,6 @@ void Scene_Manager::SetupScene(const GameObjectsBuilder& gob)
 
 void Scene_Manager::UpdatePass() const
 {
-	Camera::ComputeMatrices();
 	physics_manager->Step();
 	models_manager->Update();
 }

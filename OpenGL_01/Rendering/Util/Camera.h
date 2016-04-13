@@ -1,5 +1,8 @@
 #pragma once
 #include <glm/glm.hpp>
+#include "../Models/Scene_Container.h"
+
+class Scene_Container;
 
 /**********************************************************************************************//**
  * @class	Camera
@@ -48,7 +51,8 @@ public:
 
 	static glm::vec3 GetEyeDirection();
 	static void resizeWindow(float width, float height);
-	static void ComputeMatrices();
+	static void ComputeMatrices(Scene_Container* actor = nullptr);
+	static void onKeyPressed(const unsigned char key);
 
 	/** @brief	The field of view */
 	static float fov;

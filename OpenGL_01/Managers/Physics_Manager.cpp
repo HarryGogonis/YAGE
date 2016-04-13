@@ -1,7 +1,94 @@
+#include "../Rendering/Util/Camera.h"
 #include "Physics_Manager.h"
-#include <iostream>
 #include "../Rendering/Util/DebugDrawer.h"
 #include "../Core/Options.h"
+#include "BulletCollision/CollisionDispatch/btGhostObject.h"
+#include "BulletDynamics/Character/btKinematicCharacterController.h"
+
+#include <GL/freeglut.h>
+
+struct CharacterContainer
+{
+	btPairCachingGhostObject* ghost;
+	btKinematicCharacterController* controller;
+	Scene_Container* actor;
+
+	CharacterContainer(Scene_Container* actor)
+	{
+		this->actor = actor;
+		ghost = new btPairCachingGhostObject();
+		ghost->setCollisionShape(actor->getRigidBody()->getCollisionShape());
+		btTransform t;
+		actor->getRigidBody()->getMotionState()->getWorldTransform(t);
+		ghost->setWorldTransform(t);
+		ghost->setCollisionFlags(ghost->getCollisionFlags()
+			| btCollisionObject::CF_NO_CONTACT_RESPONSE);
+		controller = new btKinematicCharacterController(
+			ghost, 
+			static_cast<btConvexShape*>(actor->getRigidBody()->getCollisionShape()),
+			0.3f);
+		actor->getRigidBody()->getMotionState()->getWorldTransform(t);
+		std::cout << "TEST: " << &ghost->getWorldTransform() << "\t" << &t << std::endl;
+	}
+
+	~CharacterContainer()
+	{
+		delete controller;
+		controller = nullptr;
+		delete ghost;
+		ghost = nullptr;
+	}
+};
+
+void onKeyPressed(const unsigned char key, int x, int y)
+{
+	std::cout << "We in dis bitch!" << std::endl;
+	Physics_Manager* physics_mgr = Physics_Manager::GetInstance();
+	btRigidBody* actor = physics_mgr->getActorBody();
+	CharacterContainer* charContainer = physics_mgr->getCharacter();
+	if (charContainer)
+	{
+		btVector3 prev = charContainer->actor->getRigidBody()->getLinearVelocity();
+		btKinematicCharacterController* controller = charContainer->controller;
+		std::cout << "Some controller debugging: " << controller->getGravity() << std::endl;
+		switch (key)
+		{
+		case 'd':
+			controller->setWalkDirection(btVector3(2.f, 0.f, 0.f));
+			std::cout << "Right!" << std::endl;
+			break;
+		case 'a':
+			controller->setWalkDirection(btVector3(-2.f, 0.f, 0.f));
+			std::cout << "Left!" << std::endl;
+			break;
+		case 'w':
+			controller->setVelocityForTimeInterval(btVector3(2.f, prev.getY(), 0.f), 1.f);
+			std::cout << "Up!" << std::endl; 
+			break;
+		default:
+			break;
+		}
+	}
+	else
+	{
+		Camera::onKeyPressed(key);
+	}
+}
+
+void onKeyRelease(unsigned char key, int x, int y)
+{
+	Physics_Manager* physics_mgr = Physics_Manager::GetInstance();
+	btRigidBody* actor = physics_mgr->getActorBody();
+	CharacterContainer* charContainer = physics_mgr->getCharacter();
+	if (charContainer)
+	{
+		btKinematicCharacterController* controller = charContainer->controller;
+		float gravityFactor = actor->getLinearVelocity().getY();
+		controller->setVelocityForTimeInterval(btVector3(2.f, gravityFactor, 0.f), 1.f);
+		actor->setLinearVelocity(btVector3(0.f, gravityFactor, 0.f));
+	}
+}
+
 Physics_Manager* Physics_Manager::m_physics_mgr = nullptr;
 
 Physics_Manager* Physics_Manager::GetInstance()
@@ -13,12 +100,10 @@ Physics_Manager* Physics_Manager::GetInstance()
 	return m_physics_mgr;
 }
 
-
 Physics_Manager::Physics_Manager()
 {
 	initWorld();
 }
-
 
 Physics_Manager::~Physics_Manager()
 {
@@ -29,6 +114,12 @@ Physics_Manager::~Physics_Manager()
 		dynamicsWorld->removeConstraint(dynamicsWorld->getConstraint(i));
 		delete constraint;
 		constraint = nullptr;
+	}
+	if (charContainer)
+	{
+		dynamicsWorld->removeAction(charContainer->controller);
+		delete charContainer;
+		charContainer = nullptr;
 	}
 	delete dynamicsWorld;
 	dynamicsWorld = nullptr;
@@ -48,6 +139,8 @@ Physics_Manager::~Physics_Manager()
 
 void Physics_Manager::initWorld()
 {
+	glutKeyboardFunc(onKeyPressed);
+	glutKeyboardUpFunc(onKeyRelease);
 	clock = nullptr;
 	collisionConfiguration = new btDefaultCollisionConfiguration();
 	dispatcher = new btCollisionDispatcher(collisionConfiguration);
@@ -70,17 +163,30 @@ void Physics_Manager::initWorld()
 	dynamicsWorld->setDebugDrawer(drawer);
 }
 
+void Physics_Manager::setCharacter(Scene_Container* actor)
+{
+	charContainer = new CharacterContainer(actor);
+	dynamicsWorld->addAction(charContainer->controller);
+	dynamicsWorld->addCollisionObject(
+		charContainer->ghost,
+		btBroadphaseProxy::CharacterFilter,
+		btBroadphaseProxy::StaticFilter | btBroadphaseProxy::DefaultFilter);
+	dynamicsWorld->getPairCache()->setInternalGhostPairCallback(new btGhostPairCallback());
+}
+
 void Physics_Manager::Step()
 {
-		btCollisionObject* diablo = dynamicsWorld->getCollisionObjectArray()[0];
-		btRigidBody* realDiablo = btRigidBody::upcast(diablo);
-		btTransform trans;
-		realDiablo->getMotionState()->getWorldTransform(trans);
 	if (!clock)
 	{
 		clock = new btClock();
 	}
-	dynamicsWorld->stepSimulation(clock->getTimeSeconds(), 1);
+	float sec = clock->getTimeSeconds();
+	charContainer->controller->updateAction(dynamicsWorld, sec);
+	dynamicsWorld->stepSimulation(sec, 1);
+	Scene_Container* player_model = charContainer			? 
+		static_cast<Scene_Container*>(charContainer->actor) : 
+		nullptr;
+	Camera::ComputeMatrices(player_model);
 }
 
 void Physics_Manager::AddRigidBody(btRigidBody* body)
@@ -91,6 +197,20 @@ void Physics_Manager::AddRigidBody(btRigidBody* body)
 void Physics_Manager::AddConstraint(btTypedConstraint* constraint)
 {
 	dynamicsWorld->addConstraint(constraint, false);
+}
+
+btRigidBody* Physics_Manager::getActorBody()
+{
+	if (charContainer)
+	{
+		return charContainer->actor->getRigidBody();
+	}
+	return nullptr;
+}
+
+CharacterContainer * Physics_Manager::getCharacter()
+{
+	return charContainer;
 }
 
 void Physics_Manager::DrawDebug()

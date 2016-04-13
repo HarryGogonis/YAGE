@@ -1,10 +1,9 @@
 #include "Mesh.h" 
 #include "GL/glew.h"
 #include "SOIL.h"
-#include <string>
-#include <sstream>
 #include <assert.h>
 #include "../../Managers/Shadow_Manager.h"
+#include "../Util/Camera.h"
 
 glm::vec3 assimpToGLM3D(const aiVector3D &vec)
 {

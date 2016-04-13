@@ -1,3 +1,4 @@
+#include <assimp/Importer.hpp>
 #include "Scene_Container.h"
 #include "BulletCollision/CollisionShapes/btShapeHull.h"
 #include "../../Managers/Physics_Manager.h"

@@ -1,10 +1,8 @@
 #pragma once
-#include "Model.h"
-#include "Mesh.h"
-#include <assimp/Importer.hpp>      // C++ importer interface
 #include <assimp/scene.h>           // Output data structure
 #include <assimp/postprocess.h>     // Post processing flags
 #include "btBulletDynamicsCommon.h"
+#include "Mesh.h"
 
 class Scene_Container : public IGameObject
 {
@@ -36,8 +34,9 @@ public:
 private:
 	std::vector<Mesh*> meshes;
 	const aiScene *scene;
-	btRigidBody *rigidBody; 
+	btCollisionObject *collisionBody; 
 	btConvexHullShape* collisionShape;
+	btRigidBody* rigidBody;
 	bool isDynamic;
 	int texture_id = 0;
 
