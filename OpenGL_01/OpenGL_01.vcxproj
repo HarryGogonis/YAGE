@@ -156,6 +156,8 @@
   <ItemGroup>
     <None Include="packages.config" />
     <None Include="Shaders\Fragment_Shader.glsl" />
+    <None Include="Shaders\ShadowFragmentShader.glsl" />
+    <None Include="Shaders\ShadowVertexShader.glsl" />
     <None Include="Shaders\TextureFragmentShader.glsl" />
     <None Include="Shaders\TextureVertexShader.glsl" />
     <None Include="Shaders\VertexShader.glsl" />

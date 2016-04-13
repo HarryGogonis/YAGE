@@ -74,6 +74,8 @@
     <None Include="Shaders\TextureVertexShader.glsl" />
     <None Include="Shaders\TextureFragmentShader.glsl" />
     <None Include="Shaders\VertexShader.glsl" />
+    <None Include="Shaders\ShadowFragmentShader.glsl" />
+    <None Include="Shaders\ShadowVertexShader.glsl" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core\Init\WindowInfo.h">
