@@ -17,6 +17,9 @@ public:
 	void ShadowPass() const;
 	void RenderPass() const;
 
+	static int GetDeltaTime(); // deltaTime in miliseconds
+	static float GetFPS();
+
 	// GLUT callbacks
 	void notifyBeginFrame();
 	void notifyDisplayFrame();
@@ -28,6 +31,8 @@ private:
 	Models_Manager* models_manager;
 	Shadow_Manager* shadow_manager;
 	Physics_Manager* physics_manager;
+
+	static int deltaTime, currentTime, lastTime, numFrames;
 
 	std::string scene_name;
 };

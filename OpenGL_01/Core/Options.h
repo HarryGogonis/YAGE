@@ -11,3 +11,4 @@
 
 #define CULL_BACK			1
 #define DRAW_WIREFRAMES		1
+#define FPS_COUNTER			1

@@ -4,9 +4,7 @@
 #include <algorithm>
 #include "../../Managers/Shader_Factory.h"
 #include <SOIL.h>
-
-int lastTime;
-double delta;
+#include "../../Managers/Scene_Manager.h"
 
 int Particle_Container::instanceCount = 0;
 
@@ -70,8 +68,6 @@ Particle_Container::Particle_Container(Transform t, const std::string& texturePa
 	glBindBuffer(GL_ARRAY_BUFFER, color_buffer);
 	// Init empty buffer, updated at each frame
 	glBufferData(GL_ARRAY_BUFFER, MaxParticles * 4 * sizeof(GLubyte), nullptr, GL_STREAM_DRAW);
-
-	lastTime = glutGet(GLUT_ELAPSED_TIME);
 }
 
 Particle_Container::~Particle_Container()
@@ -127,9 +123,7 @@ void Particle_Container::Draw()
 void Particle_Container::Update()
 {
 	glUseProgram(program);
-	int currentTime = glutGet(GLUT_ELAPSED_TIME);
-	delta = double(currentTime - lastTime) / 1000.0;
-	lastTime = currentTime;
+	double delta = double(Scene_Manager::GetDeltaTime())/1000.0;
 
 	glm::mat4 ViewMatrix = Camera::GetViewMatrix();
 	glm::mat4 ProjectionMatrix = Camera::GetProjectionMatrix();
@@ -232,6 +226,7 @@ void Particle_Container::SimulateParticles()
 
 		if (p.life > 0.0f)
 		{
+			double delta = double(Scene_Manager::GetDeltaTime())/1000.0;
 			// Decrease life
 			p.life -= delta;
 			if (p.life > 0.0f)
