@@ -7,6 +7,7 @@ class Mesh : public Model
 {
 public:
 	Mesh(const aiMesh*, const aiMaterial*, Transform*);
+	Mesh(const Mesh*, Transform*);
 	~Mesh();
 
 	std::vector<VertexFormat> GetVertices() override final;

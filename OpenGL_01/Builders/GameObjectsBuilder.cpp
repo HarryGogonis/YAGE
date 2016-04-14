@@ -21,6 +21,14 @@ GameObjectsBuilder & GameObjectsBuilder::addModel(const std::string modelPath, c
 	return *this;
 }
 
+GameObjectsBuilder& GameObjectsBuilder::copyModel()
+{
+	current_type = OT_MODEL;
+	const Scene_Container* model = static_cast<Scene_Container*>(current);
+	current = models->CreateModel(model, Transform());
+	return *this;
+}
+
 GameObjectsBuilder & GameObjectsBuilder::setPosition(glm::vec3 pos)
 {
 	if (current_type == OT_MODEL)

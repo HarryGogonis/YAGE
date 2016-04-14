@@ -23,6 +23,7 @@ public:
 		const Transform& transform,
 		const std::string& texturePath = "", 
 		const TextureType type = Texture_Diffuse);
+	Scene_Container* CreateModel(const Scene_Container*&, const Transform& t);
 	Particle_Container* CreateParticleSystem(Transform t, const std::string& texturePath);
 
 private:

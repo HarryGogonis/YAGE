@@ -23,6 +23,7 @@ public:
 	GameObjectsBuilder & addModel(
 		const std::string modelPath, 
 		const std::string texturePath = std::string());
+	GameObjectsBuilder & copyModel();
 			// Transform
 			GameObjectsBuilder & setPosition(glm::vec3);
 			GameObjectsBuilder & setScale(float);

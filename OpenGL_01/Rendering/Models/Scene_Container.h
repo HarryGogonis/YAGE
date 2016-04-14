@@ -10,6 +10,8 @@ class Scene_Container : public IGameObject
 {
 public:
 	Scene_Container(const std::string&, Transform);
+	Scene_Container(const Scene_Container*&, Transform);
+
 	~Scene_Container();
 
 	// Draw function so that we are sure that the Scene_Container uses its own program
@@ -25,6 +27,7 @@ public:
 
 	btRigidBody* getRigidBody();
 	virtual void InitRigidBody(btScalar mass);
+	const std::vector<Mesh*> GetMeshes() const;
 
 	void SetTexture(const std::string&,const TextureType&, const GLuint&) override;
 	const GLuint GetTexture(const std::string&) const override;

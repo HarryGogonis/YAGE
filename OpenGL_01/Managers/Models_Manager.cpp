@@ -59,6 +59,15 @@ Scene_Container* Models_Manager::CreateModel(
 	return model;
 }
 
+Scene_Container* Models_Manager::CreateModel(const Scene_Container*& other, const Transform& transform)
+{
+	Scene_Container* model = new Scene_Container(other, transform);
+	Shader_Factory* shaderFactory = Shader_Factory::GetInstance();
+	shaderFactory->SetTextureShader(*model);
+	gameModelList.push_back(model);
+	return model;
+}
+
 Particle_Container* Models_Manager::CreateParticleSystem(Transform t, const std::string& texturePath)
 {
 	Particle_Container* particle = new Particle_Container(t, texturePath);
