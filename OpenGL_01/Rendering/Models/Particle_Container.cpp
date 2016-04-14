@@ -10,7 +10,7 @@ double delta;
 
 int Particle_Container::instanceCount = 0;
 
-Particle_Container::Particle_Container(Transform t, const std::string& texturePath,
+Particle_Container::Particle_Container(Transform t, const std::string& texturePath, bool enable,
 	int max_particles, int particle_rate, float particle_max_life)
 {
 	MaxParticles = max_particles;
@@ -18,6 +18,7 @@ Particle_Container::Particle_Container(Transform t, const std::string& texturePa
 	LastUsedParticle = 0;
 	spawn_rate = particle_rate;
 	max_life = particle_max_life;
+	isEnabled = enable;
 	particles = std::vector<Particle>(max_particles);
 	position_data = new GLfloat[max_particles * 4];
 	color_data = new GLubyte[max_particles * 4];
@@ -172,6 +173,21 @@ void Particle_Container::SetTexture(const std::string&, const TextureType& type,
 const GLuint Particle_Container::GetTexture(const std::string&) const
 {
 	return texture;
+}
+
+void Particle_Container::setMaxParticles(int n)
+{
+	this->MaxParticles = n;
+}
+
+void Particle_Container::setSpawnRate(int rate)
+{
+	this->spawn_rate = rate;
+}
+
+void Particle_Container::setMaxLife(float life)
+{
+	this->max_life = life;
 }
 
 void Particle_Container::AddNewParticles(int newparticles)

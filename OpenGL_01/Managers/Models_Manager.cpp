@@ -59,6 +59,13 @@ Scene_Container* Models_Manager::CreateModel(
 	return model;
 }
 
+Particle_Container* Models_Manager::CreateParticleSystem(Transform t, const std::string& texturePath)
+{
+	Particle_Container* particle = new Particle_Container(t, texturePath);
+	gameParticleList.push_back(particle);
+	return particle;
+}
+
 void Models_Manager::Update()
 {
 	// iterate through model list and Update

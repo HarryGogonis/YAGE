@@ -23,6 +23,7 @@ public:
 		const Transform& transform,
 		const std::string& texturePath = "", 
 		const TextureType type = Texture_Diffuse);
+	Particle_Container* CreateParticleSystem(Transform t, const std::string& texturePath);
 
 private:
 	// for big games, use a vector instead of a map

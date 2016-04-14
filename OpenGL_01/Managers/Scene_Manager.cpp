@@ -10,6 +10,9 @@ int numFrames;
 Scene_Manager::Scene_Manager(std::string scene_name)
 {
 	glEnable(GL_NORMALIZE);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 	if (CULL_BACK)
 	{
 		glEnable(GL_DEPTH_TEST);
