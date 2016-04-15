@@ -102,15 +102,31 @@ $(document).ready(function(){initNavTree('index.html','');});
 <div class="title">YAGE (Yet Another Game Engine) </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><h2>Screenshots</h2>
+<div class="textblock"><p>This is a C++ based 3D game engine targeted for Windows.</p>
+<h2>Requirements</h2>
+<ul>
+<li>Microsoft Visual Studio 2015 (sorry, will port to gcc later)</li>
+</ul>
+<h2>Getting Started</h2>
+<ul>
+<li>Clone the repository</li>
+<li>Open <code>YAGE.sln</code> file with visual studio</li>
+<li>Install missing dependancies:<ul>
+<li><code>Tools &gt; Nuget Package Manager &gt; Package Manager Console</code></li>
+<li>Type this into the the console: <code>Update-Package -Reinstall</code></li>
+</ul>
+</li>
+<li>Edit <code><a class="el" href="main_8cpp.html">main.cpp</a></code> and play with the game code</li>
+<li>Run the default startup project <code>F10</code></li>
+</ul>
+<h2>Documentation</h2>
+<p>If you are viewing this on Github, you can find our documentation here: <a href="http://harrygogonis.github.io/YAGE">http://harrygogonis.github.io/YAGE</a></p>
+<h2>Screenshots</h2>
 <div class="image">
-<img src="http://i.imgur.com/ryB9ORn.png"  alt="YAGE Demo #1"/>
+<img src="http://i.imgur.com/crVyjjA.png"  alt="Shadows"/>
 </div>
  <div class="image">
-<img src="https://i.imgur.com/WRgQYms.png"  alt="Shadows"/>
-</div>
- <div class="image">
-<img src="https://i.imgur.com/IVXhjca.png"  alt="Diablo"/>
+<img src="http://i.imgur.com/JOZFDyq.png"  alt="Diablo"/>
 </div>
 <h2>Viewport Controls</h2>
 <table class="doxtable">
@@ -142,23 +158,29 @@ $(document).ready(function(){initNavTree('index.html','');});
 <li><a href="http://bulletphysics.org/wordpress/">Bullet</a></li>
 <li><a href="http://freeglut.sourceforge.net/">Freeglut</a></li>
 <li><a href="https://www.opengl.org/">OpenGL</a></li>
+<li><a href="http://glm.g-truc.net/0.9.7/index.html">GLM</a></li>
 </ul>
 <h2>Features</h2>
 <ul>
-<li>OpenGL based rendering system</li>
-<li>Lighting system (Point, Directional, Spotlight*)</li>
+<li>Lighting system (Ambient, Point, Directional, Spotlight)</li>
 <li>Physics system (using bullet physics)</li>
-<li>Bump mapping</li>
+<li>Diffuse mapping</li>
+<li>Normal mapping</li>
 <li>Specular mapping</li>
 <li>Import scenes via .fbx, .obj, and more</li>
-<li>Scene builder</li>
-<li>Dynamic shadows*</li>
+<li>Game object builder</li>
+<li>Dynamic shadows</li>
+<li>Particle system</li>
 </ul>
-<h2>Future Features</h2>
+<h3>Limitations</h3>
+<ul>
+<li>Significant frame drop after ~500k polygons</li>
+<li>Shadows only supported w/ one directional light</li>
+</ul>
+<h3>Future Features</h3>
 <ul>
 <li>Animation</li>
 <li>Text rendering</li>
-<li>Particle system</li>
 </ul>
 <h2>Helpful resources</h2>
 <ul>
@@ -166,7 +188,12 @@ $(document).ready(function(){initNavTree('index.html','');});
 <li><a href="https://www.opengl.org/sdk/docs/man/">OpenGL Documentation</a></li>
 <li><a href="http://www.amazon.com/OpenGL-Programming-Guide-Official-Learning/dp/0321335732">Red Book</a></li>
 <li><a href="http://www.opengl-tutorial.org/">OpenGL-Tutorial</a></li>
-<li><a href="http://ogldev.atspace.co.uk/index.html">OGLDev</a> </li>
+<li><a href="http://ogldev.atspace.co.uk/index.html">OGLDev</a></li>
+</ul>
+<h2>Authors</h2>
+<ul>
+<li>Harry Gogonis <a href="https://github.com/HarryGogonis"></a></li>
+<li>Dylan Richardson <a href="https://github.com/goozie001"></a> </li>
 </ul>
 </div></div><!-- contents -->
 </div><!-- doc-content -->
