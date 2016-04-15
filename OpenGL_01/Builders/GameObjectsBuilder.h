@@ -32,7 +32,7 @@ public:
 		const std::string texturePath = std::string());
 	GameObjectsBuilder & copyModel();
 			// Transform
-			GameObjectsBuilder & setPosition(glm::vec3);
+			GameObjectsBuilder & setPosition(float x, float y, float z);
 			GameObjectsBuilder & setScale(float);
 			GameObjectsBuilder & setRotation(float angleX, float angleY, float angleZ);
 			// Textures

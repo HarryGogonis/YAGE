@@ -195,8 +195,8 @@
     <ClInclude Include="Rendering\Models\Scene_Container.h" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="Examples\checkerboard.dds" />
-    <Image Include="Examples\Crate.bmp" />
+    <Image Include="Assets\checkerboard.dds" />
+    <Image Include="Assets\Crate.bmp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
