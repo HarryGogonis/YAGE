@@ -23,11 +23,11 @@ public:
 	void setMaxParticles(int);
 	void setSpawnRate(int);
 	void setMaxLife(float);
+	Transform transform;
 
 private:
 	static int instanceCount;
 	int MaxParticles, ParticleCount, LastUsedParticle;
-	Transform t;
 
 	int spawn_rate;
 	float max_life;

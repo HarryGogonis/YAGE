@@ -33,6 +33,7 @@ Scene_Manager::~Scene_Manager()
 	delete physics_manager;
 	delete shader_manager;
 	delete models_manager;
+	delete shadow_manager;
 }
 
 void Scene_Manager::SetupScene(const GameObjectsBuilder& gob)

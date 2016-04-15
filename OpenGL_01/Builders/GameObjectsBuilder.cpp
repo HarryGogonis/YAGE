@@ -36,6 +36,11 @@ GameObjectsBuilder & GameObjectsBuilder::setPosition(glm::vec3 pos)
 		Scene_Container* model = static_cast<Scene_Container*>(current);
 		model->transform.position = pos;
 	}
+	else if (current_type == OT_PARTICLE)
+	{
+		Particle_Container* particle = static_cast<Particle_Container*>(current);
+		particle->transform.position = pos;
+	}
 	else if (current_type & OT_LIGHT)
 	{
 		Light* light = static_cast<Light*>(current);
