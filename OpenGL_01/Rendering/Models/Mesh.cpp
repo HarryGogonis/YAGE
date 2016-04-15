@@ -77,6 +77,21 @@ Mesh::Mesh(const aiMesh* ai_mesh, const aiMaterial* ai_mat, Transform* transform
 	}
 }
 
+Mesh::Mesh(const Mesh* mesh, Transform* t)
+{
+	shininess = 2;
+	strength = 2;
+	this->transform = t;
+
+	vertices = mesh->vertices;
+	normals = mesh->normals;
+	uvs = mesh->uvs;
+	tangents = mesh->tangents;
+	bitangents = mesh->bitangents;
+	indices = mesh->indices;
+	textures = mesh->textures;
+}
+
 Mesh::~Mesh()
 {
 	// We don't want this to delete the program, since it shares w/ container.

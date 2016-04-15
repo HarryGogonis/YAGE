@@ -3,7 +3,6 @@
 #include <iostream>
 
 const int Shadow_Manager::DEPTH_TEXTURE_SIZE = 1024; // ??? Hardcode ???
-int count = 0;
 Shadow_Manager* Shadow_Manager::mShadowManager; // static instance for the singleton
 
 Shadow_Manager* Shadow_Manager::GetInstance()

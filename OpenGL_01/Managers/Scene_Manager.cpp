@@ -3,13 +3,17 @@
 #include "../Core/Options.h"
 #include "../Core/Init/WindowInfo.h"
 
-double currentTime;
-double lastTime = 0;
-int numFrames;
+int Scene_Manager::lastTime = 0;
+int Scene_Manager::deltaTime = 0;
+int Scene_Manager::currentTime = 0;
+int Scene_Manager::numFrames = 0;
 
 Scene_Manager::Scene_Manager(std::string scene_name)
 {
 	glEnable(GL_NORMALIZE);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 	if (CULL_BACK)
 	{
 		glEnable(GL_DEPTH_TEST);
@@ -38,12 +42,6 @@ void Scene_Manager::SetupScene(const GameObjectsBuilder& gob)
 
 void Scene_Manager::UpdatePass() const
 {
-	currentTime = glutGet(GLUT_ELAPSED_TIME);
-	numFrames++;
-	if (currentTime - lastTime >= 1.0)
-	{
-		numFrames = 0;
-	}
 	Camera::ComputeMatrices();
 	physics_manager->Step();
 	models_manager->Update();
@@ -63,6 +61,16 @@ void Scene_Manager::RenderPass() const
 	glClearColor(0.0, 0.0, 0.0, 1.0);
 	physics_manager->DrawDebug();
 	models_manager->Draw();
+}
+
+int Scene_Manager::GetDeltaTime()
+{
+	return deltaTime;
+}
+
+float Scene_Manager::GetFPS()
+{
+	return numFrames*1000.0 / (currentTime - lastTime);
 }
 
 void Scene_Manager::ShadowPass() const
@@ -90,6 +98,19 @@ void Scene_Manager::ShadowPass() const
 
 void Scene_Manager::notifyBeginFrame()
 {
+	currentTime = double(glutGet(GLUT_ELAPSED_TIME));
+	deltaTime = currentTime - lastTime;
+	numFrames++;
+	if (deltaTime >= 1000)
+	{
+		if (FPS_COUNTER)
+		{
+			printf("\rFPS: %4.2f", GetFPS());
+		}
+		numFrames = 0;
+		lastTime = currentTime;
+	}
+
 	UpdatePass();
 }
 
@@ -101,8 +122,6 @@ void Scene_Manager::notifyDisplayFrame()
 
 void Scene_Manager::notifyEndFrame()
 {
-	//TODO implement
-	lastTime = glutGet(GLUT_ELAPSED_TIME);
 }
 
 void Scene_Manager::notifyReshape(int width, int height,

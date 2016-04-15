@@ -1,5 +1,6 @@
 #include "GameObjectsBuilder.h"
 #include "../Managers/Physics_Manager.h"
+#include <SOIL.h>
 
 
 GameObjectsBuilder::GameObjectsBuilder()
@@ -17,6 +18,14 @@ GameObjectsBuilder & GameObjectsBuilder::addModel(const std::string modelPath, c
 {
 	current_type = OT_MODEL;
 	current = models->CreateModel(modelPath, Transform(), texturePath);
+	return *this;
+}
+
+GameObjectsBuilder& GameObjectsBuilder::copyModel()
+{
+	current_type = OT_MODEL;
+	const Scene_Container* model = static_cast<Scene_Container*>(current);
+	current = models->CreateModel(model, Transform());
 	return *this;
 }
 
@@ -57,6 +66,51 @@ GameObjectsBuilder & GameObjectsBuilder::setRotation(float angleX, float angleY,
 	return *this;
 }
 
+GameObjectsBuilder& GameObjectsBuilder::setDiffuse(const std::string& path)
+{
+	if (current_type == OT_MODEL)
+	{
+		GLuint textureID = SOIL_load_OGL_texture(
+			path.c_str(),
+			SOIL_LOAD_AUTO,
+			SOIL_CREATE_NEW_ID,
+			SOIL_FLAG_INVERT_Y);
+		Scene_Container* model = static_cast<Scene_Container*>(current);
+		model->SetTexture(path, Texture_Diffuse, textureID);
+	}
+	return *this;
+}
+
+GameObjectsBuilder& GameObjectsBuilder::setNormal(const std::string& path)
+{
+	if (current_type == OT_MODEL)
+	{
+		GLuint textureID = SOIL_load_OGL_texture(
+			path.c_str(),
+			SOIL_LOAD_AUTO,
+			SOIL_CREATE_NEW_ID,
+			SOIL_FLAG_INVERT_Y);
+		Scene_Container* model = static_cast<Scene_Container*>(current);
+		model->SetTexture(path, Texture_Normal, textureID);
+	}
+	return *this;
+}
+
+GameObjectsBuilder& GameObjectsBuilder::setSpecular(const std::string& path)
+{
+	if (current_type == OT_MODEL)
+	{
+		GLuint textureID = SOIL_load_OGL_texture(
+			path.c_str(),
+			SOIL_LOAD_AUTO,
+			SOIL_CREATE_NEW_ID,
+			SOIL_FLAG_INVERT_Y);
+		Scene_Container* model = static_cast<Scene_Container*>(current);
+		model->SetTexture(path, Texture_Specular, textureID);
+	}
+	return *this;
+}
+
 GameObjectsBuilder& GameObjectsBuilder::addRigidBody(float mass)
 {
 	if (current_type == OT_MODEL)
@@ -75,6 +129,43 @@ GameObjectsBuilder & GameObjectsBuilder::lockUpright()
 		btRigidBody* current_body = model->getRigidBody();
 		current_body->setLinearFactor(btVector3(1.f, 1.f, 0.f));
 		current_body->setAngularFactor(btVector3(0.f, 1.f, 0.f));
+	}
+	return *this;
+}
+
+GameObjectsBuilder& GameObjectsBuilder::addParticleSystem(const std::string& texturePath)
+{
+	current_type = OT_PARTICLE;
+	current = models->CreateParticleSystem(Transform(), texturePath);
+	return *this;
+}
+
+GameObjectsBuilder& GameObjectsBuilder::setParticleCount(int n)
+{
+	if (current_type == OT_PARTICLE)
+	{
+		Particle_Container* particle = static_cast<Particle_Container*>(current);
+		particle->setMaxParticles(n);
+	}
+	return *this;
+}
+
+GameObjectsBuilder& GameObjectsBuilder::setParticleSpawnRate(int rate)
+{
+	if (current_type == OT_PARTICLE)
+	{
+		Particle_Container* particle = static_cast<Particle_Container*>(current);
+		particle->setSpawnRate(rate);
+	}
+	return *this;
+}
+
+GameObjectsBuilder& GameObjectsBuilder::setParticleLife(float seconds)
+{
+	if (current_type == OT_PARTICLE)
+	{
+		Particle_Container* particle = static_cast<Particle_Container*>(current);
+		particle->setMaxLife(seconds);
 	}
 	return *this;
 }

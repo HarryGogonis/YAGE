@@ -136,6 +136,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Builders\GameObjectsBuilder.cpp" />
+    <ClCompile Include="Rendering\Models\Particle_Container.cpp" />
     <ClCompile Include="Rendering\Util\DebugDrawer.cpp" />
     <ClCompile Include="Managers\Physics_Manager.cpp" />
     <ClCompile Include="Managers\Shadow_Manager.cpp" />
@@ -156,6 +157,8 @@
   <ItemGroup>
     <None Include="packages.config" />
     <None Include="Shaders\Fragment_Shader.glsl" />
+    <None Include="Shaders\ParticleFragmentShader.glsl" />
+    <None Include="Shaders\ParticleVertexShader.glsl" />
     <None Include="Shaders\ShadowFragmentShader.glsl" />
     <None Include="Shaders\ShadowVertexShader.glsl" />
     <None Include="Shaders\TextureFragmentShader.glsl" />
@@ -166,6 +169,7 @@
   <ItemGroup>
     <ClInclude Include="Core\Options.h" />
     <ClInclude Include="Builders\GameObjectsBuilder.h" />
+    <ClInclude Include="Rendering\Models\Particle_Container.h" />
     <ClInclude Include="Rendering\Util\DebugDrawer.h" />
     <ClInclude Include="Managers\Physics_Manager.h" />
     <ClInclude Include="Managers\Shadow_Manager.h" />

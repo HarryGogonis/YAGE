@@ -18,8 +18,8 @@ public:
 	virtual void Update() = 0;
 	virtual void Destroy() = 0;
 
-	virtual void SetProgram(GLuint shaderName) = 0; //TODO consider inline implementation
-	virtual void SetShadowProgram(GLuint shaderName) = 0; //TODO consider inline implementation
+	virtual void SetProgram(GLuint shaderName);
+	virtual void SetShadowProgram(GLuint shaderName);
 	virtual GLuint GetProgram();
 	virtual GLuint GetShadowProgram();
 
@@ -47,5 +47,15 @@ inline GLuint IGameObject::GetProgram()
 inline GLuint IGameObject::GetShadowProgram()
 {
 	return shadowProgram;
+}
+
+inline void IGameObject::SetProgram(GLuint p)
+{
+	program = p;
+}
+
+inline void IGameObject::SetShadowProgram(GLuint p)
+{
+	shadowProgram = p;
 }
 

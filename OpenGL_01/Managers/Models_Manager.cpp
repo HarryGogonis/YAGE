@@ -9,6 +9,7 @@
 #include "../Rendering/Util/Light.h"
 #include "../Rendering/Models/Scene_Container.h"
 #include "Shader_Factory.h"
+#include "../Rendering/Models/Particle_Container.h"
 
 int texture_id = 0;
 
@@ -23,6 +24,12 @@ Models_Manager::~Models_Manager()
 		delete model;
 	}
 	gameModelList.clear();
+
+	for (auto particle : gameParticleList)
+	{
+		delete particle;
+	}
+	gameParticleList.clear();
 }
 
 // TODO: Create Light method
@@ -52,6 +59,22 @@ Scene_Container* Models_Manager::CreateModel(
 	return model;
 }
 
+Scene_Container* Models_Manager::CreateModel(const Scene_Container*& other, const Transform& transform)
+{
+	Scene_Container* model = new Scene_Container(other, transform);
+	Shader_Factory* shaderFactory = Shader_Factory::GetInstance();
+	shaderFactory->SetTextureShader(*model);
+	gameModelList.push_back(model);
+	return model;
+}
+
+Particle_Container* Models_Manager::CreateParticleSystem(Transform t, const std::string& texturePath)
+{
+	Particle_Container* particle = new Particle_Container(t, texturePath);
+	gameParticleList.push_back(particle);
+	return particle;
+}
+
 void Models_Manager::Update()
 {
 	// iterate through model list and Update
@@ -64,6 +87,11 @@ void Models_Manager::Update()
 		{
 			light->Update();
 		}
+	}
+	
+	for (auto particle : gameParticleList)
+	{
+		particle->Update();
 	}
 }
 
@@ -79,11 +107,16 @@ void Models_Manager::Draw()
 	{
 		GLuint p = model->GetProgram();
 		glUseProgram(p);
-		model->Draw();
+		model->Draw(p);
 		for (auto light : gameLightList)
 		{
 			light->Draw(p);
 		}
+	}
+
+	for (auto particle : gameParticleList)
+	{
+		particle->Draw();
 	}
 }
 
@@ -98,6 +131,6 @@ void Models_Manager::DrawShadows()
 			// NOTE We will end up only drawing 1 light
 			light->DrawShadow(p);
 		}
-		model->DrawShadow();
+		model->DrawShadow(p);
 	}
 }

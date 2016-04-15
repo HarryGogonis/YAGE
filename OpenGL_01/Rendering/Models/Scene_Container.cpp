@@ -35,6 +35,18 @@ Scene_Container::Scene_Container(const std::string &path, Transform transform)
 	rigidBody = nullptr;
 }
 
+Scene_Container::Scene_Container(const Scene_Container*& other, Transform t)
+{
+	this->transform = t;
+	const std::vector<Mesh*> old_meshes = other->GetMeshes();
+	
+	for (auto old_mesh : old_meshes)
+	{
+		meshes.push_back(new Mesh(old_mesh, &transform));
+	}
+	rigidBody = nullptr;
+}
+
 
 Scene_Container::~Scene_Container()
 {
@@ -113,6 +125,11 @@ void Scene_Container::InitRigidBody(btScalar mass)
 	rigidBody = new btRigidBody(rigidBodyCI);
 	rigidBody->setUserPointer(this);
 	Physics_Manager::GetInstance()->AddRigidBody(rigidBody);
+}
+
+const std::vector<Mesh*> Scene_Container::GetMeshes() const
+{
+	return meshes;
 }
 
 /**

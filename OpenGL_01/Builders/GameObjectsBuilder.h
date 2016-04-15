@@ -10,7 +10,8 @@ enum GameObjectType
 	OT_LIGHT_DIRECTIONAL	= 3,
 	OT_LIGHT_AMBIENT		= 6,
 	OT_LIGHT_POINT			= 7,
-	OT_LIGHT_SPOT			= 10
+	OT_LIGHT_SPOT			= 10,
+	OT_PARTICLE				= 13,
 };
 
 class GameObjectsBuilder
@@ -22,14 +23,27 @@ public:
 	GameObjectsBuilder & addModel(
 		const std::string modelPath, 
 		const std::string texturePath = std::string());
-
+	GameObjectsBuilder & copyModel();
+			// Transform
 			GameObjectsBuilder & setPosition(glm::vec3);
 			GameObjectsBuilder & setScale(float);
 			GameObjectsBuilder & setRotation(float angleX, float angleY, float angleZ);
+			// Textures
+			GameObjectsBuilder & setDiffuse(const std::string&);
+			GameObjectsBuilder & setNormal(const std::string&);
+			GameObjectsBuilder & setSpecular(const std::string&);
 			// Initializes collision detection with no gravity if mass is '0.f'
 			GameObjectsBuilder & addRigidBody(float mass);
 			// Limit rotation on Y axis and translation on X and Y axes
 			GameObjectsBuilder & lockUpright();
+
+
+	GameObjectsBuilder & addParticleSystem(const std::string& texturePath);
+
+			GameObjectsBuilder & setParticleCount(int);
+			GameObjectsBuilder & setParticleSpawnRate(int);
+			GameObjectsBuilder & setParticleLife(float);
+
 
 	// All lights
 	GameObjectsBuilder & addLight(GameObjectType type);
