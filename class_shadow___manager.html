@@ -116,32 +116,45 @@ $(document).ready(function(){initNavTree('class_shadow___manager.html','');});
 </div><!--header-->
 <div class="contents">
 
+<p>Manager for shadows implemented as a Singleton.  
+ <a href="class_shadow___manager.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="_shadow___manager_8h_source.html">Shadow_Manager.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a3b6ab51555b2b93394895bb850b33798"><td class="memItemLeft" align="right" valign="top">GLuint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shadow___manager.html#a3b6ab51555b2b93394895bb850b33798">GetShadowMap</a> () const </td></tr>
+<tr class="memdesc:a3b6ab51555b2b93394895bb850b33798"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets shadow map texture.  <a href="#a3b6ab51555b2b93394895bb850b33798">More...</a><br /></td></tr>
 <tr class="separator:a3b6ab51555b2b93394895bb850b33798"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6d3f64265bcfb8f288c11affc54b5d68"><td class="memItemLeft" align="right" valign="top">glm::mat4&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shadow___manager.html#a6d3f64265bcfb8f288c11affc54b5d68">GetDepthMatrix</a> () const </td></tr>
+<tr class="memdesc:a6d3f64265bcfb8f288c11affc54b5d68"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the 4x4 depth matrix.  <a href="#a6d3f64265bcfb8f288c11affc54b5d68">More...</a><br /></td></tr>
 <tr class="separator:a6d3f64265bcfb8f288c11affc54b5d68"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8405e96b91bb028ec75969dbecfb7427"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shadow___manager.html#a8405e96b91bb028ec75969dbecfb7427">SetDepthMatrix</a> (glm::mat4)</td></tr>
-<tr class="separator:a8405e96b91bb028ec75969dbecfb7427"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac95a2e4bf561ebf478e46c2fe2dd10c2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shadow___manager.html#ac95a2e4bf561ebf478e46c2fe2dd10c2">SetDepthMatrix</a> (glm::mat4 DepthMatrix)</td></tr>
+<tr class="memdesc:ac95a2e4bf561ebf478e46c2fe2dd10c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the depth matrix.  <a href="#ac95a2e4bf561ebf478e46c2fe2dd10c2">More...</a><br /></td></tr>
+<tr class="separator:ac95a2e4bf561ebf478e46c2fe2dd10c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a78283238f477600505103a5def71a819"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shadow___manager.html#a78283238f477600505103a5def71a819">BindForWriting</a> () const </td></tr>
+<tr class="memdesc:a78283238f477600505103a5def71a819"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bind the depth t exture for writing.  <a href="#a78283238f477600505103a5def71a819">More...</a><br /></td></tr>
 <tr class="separator:a78283238f477600505103a5def71a819"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab6bb04f38d32b1d7457c786e750c9cad"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shadow___manager.html#ab6bb04f38d32b1d7457c786e750c9cad">Unbind</a> () const </td></tr>
+<tr class="memdesc:ab6bb04f38d32b1d7457c786e750c9cad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unbinds the depth texture.  <a href="#ab6bb04f38d32b1d7457c786e750c9cad">More...</a><br /></td></tr>
 <tr class="separator:ab6bb04f38d32b1d7457c786e750c9cad"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a91e3e27186eae59e5fe06834d69140ad"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_shadow___manager.html">Shadow_Manager</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shadow___manager.html#a91e3e27186eae59e5fe06834d69140ad">GetInstance</a> ()</td></tr>
-<tr class="separator:a91e3e27186eae59e5fe06834d69140ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae8aae3d6ffdd827bde29f04d04c71ff6"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_shadow___manager.html">Shadow_Manager</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shadow___manager.html#ae8aae3d6ffdd827bde29f04d04c71ff6">GetInstance</a> ()</td></tr>
+<tr class="memdesc:ae8aae3d6ffdd827bde29f04d04c71ff6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the instance.  <a href="#ae8aae3d6ffdd827bde29f04d04c71ff6">More...</a><br /></td></tr>
+<tr class="separator:ae8aae3d6ffdd827bde29f04d04c71ff6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
 <tr class="memitem:ab086d1680f96db1f1f3cd0aea276fcfc"><td class="memItemLeft" align="right" valign="top">static const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_shadow___manager.html#ab086d1680f96db1f1f3cd0aea276fcfc">DEPTH_TEXTURE_SIZE</a> = 1024</td></tr>
+<tr class="memdesc:ab086d1680f96db1f1f3cd0aea276fcfc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Size of the depth texture in pixels.  <a href="#ab086d1680f96db1f1f3cd0aea276fcfc">More...</a><br /></td></tr>
 <tr class="separator:ab086d1680f96db1f1f3cd0aea276fcfc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Function Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Manager for shadows implemented as a Singleton. </p>
+<dl class="section author"><dt>Author</dt><dd>Harry Gogonis </dd></dl>
+</div><h2 class="groupheader">Member Function Documentation</h2>
 <a class="anchor" id="a78283238f477600505103a5def71a819"></a>
 <div class="memitem">
 <div class="memproto">
@@ -154,6 +167,8 @@ Static Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Bind the depth t exture for writing. </p>
 
 </div>
 </div>
@@ -170,9 +185,12 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Gets the 4x4 depth matrix. </p>
+<dl class="section return"><dt>Returns</dt><dd>The depth matrix. </dd></dl>
+
 </div>
 </div>
-<a class="anchor" id="a91e3e27186eae59e5fe06834d69140ad"></a>
+<a class="anchor" id="ae8aae3d6ffdd827bde29f04d04c71ff6"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -180,7 +198,7 @@ Static Public Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="class_shadow___manager.html">Shadow_Manager</a> * Shadow_Manager::GetInstance </td>
+          <td class="memname">static <a class="el" href="class_shadow___manager.html">Shadow_Manager</a> * Shadow_Manager::GetInstance </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -192,6 +210,10 @@ Static Public Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Gets the instance. </p>
+<dl class="section author"><dt>Author</dt><dd>Harry</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The Singleton instance </dd></dl>
 
 </div>
 </div>
@@ -208,9 +230,12 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Gets shadow map texture. </p>
+<dl class="section return"><dt>Returns</dt><dd>The shadow map. </dd></dl>
+
 </div>
 </div>
-<a class="anchor" id="a8405e96b91bb028ec75969dbecfb7427"></a>
+<a class="anchor" id="ac95a2e4bf561ebf478e46c2fe2dd10c2"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -218,11 +243,19 @@ Static Public Attributes</h2></td></tr>
           <td class="memname">void Shadow_Manager::SetDepthMatrix </td>
           <td>(</td>
           <td class="paramtype">glm::mat4&#160;</td>
-          <td class="paramname"><em>depth_matrix</em></td><td>)</td>
+          <td class="paramname"><em>DepthMatrix</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Sets the depth matrix. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">DepthMatrix</td><td>The depth matrix. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -238,6 +271,8 @@ Static Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Unbinds the depth texture. </p>
 
 </div>
 </div>
@@ -259,6 +294,8 @@ Static Public Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Size of the depth texture in pixels. </p>
 
 </div>
 </div>

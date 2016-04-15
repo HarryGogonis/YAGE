@@ -115,6 +115,9 @@ $(document).ready(function(){initNavTree('class_i_game_object.html','');});
 </div><!--header-->
 <div class="contents">
 
+<p>A Game Object. All objects that are to be rendered will inherit this class.  
+ <a href="class_i_game_object.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="_i_game_object_8h_source.html">IGameObject.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for IGameObject:</div>
@@ -122,14 +125,14 @@ Inheritance diagram for IGameObject:</div>
  <div class="center">
   <img src="class_i_game_object.png" usemap="#IGameObject_map" alt=""/>
   <map id="IGameObject_map" name="IGameObject_map">
-<area href="class_light.html" alt="Light" shape="rect" coords="190,56,307,80"/>
+<area href="class_light.html" title="A light is a special class of Game Object that mostly just sends uniform data to the shaders..." alt="Light" shape="rect" coords="190,56,307,80"/>
 <area href="class_model.html" alt="Model" shape="rect" coords="508,56,625,80"/>
 <area href="class_particle___container.html" alt="Particle_Container" shape="rect" coords="635,56,752,80"/>
 <area href="class_scene___container.html" alt="Scene_Container" shape="rect" coords="762,56,879,80"/>
-<area href="class_ambient_light.html" alt="AmbientLight" shape="rect" coords="0,112,117,136"/>
-<area href="class_directional_light.html" alt="DirectionalLight" shape="rect" coords="127,112,244,136"/>
-<area href="class_point_light.html" alt="PointLight" shape="rect" coords="254,112,371,136"/>
-<area href="class_spot_light.html" alt="SpotLight" shape="rect" coords="381,112,498,136"/>
+<area href="class_ambient_light.html" title="An ambient light. Uniformly lights up everything. " alt="AmbientLight" shape="rect" coords="0,112,117,136"/>
+<area href="class_directional_light.html" title="A directional light. Comes from &quot;infinity&quot; and lights up anything in the direction it is coming from..." alt="DirectionalLight" shape="rect" coords="127,112,244,136"/>
+<area href="class_point_light.html" title="A point light. " alt="PointLight" shape="rect" coords="254,112,371,136"/>
+<area href="class_spot_light.html" title="A spot light. " alt="SpotLight" shape="rect" coords="381,112,498,136"/>
 <area href="class_mesh.html" alt="Mesh" shape="rect" coords="508,112,625,136"/>
 </map>
  </div></div>
@@ -137,27 +140,38 @@ Inheritance diagram for IGameObject:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a4f66e595aac6c39352e89101c8e49ad5"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_i_game_object.html#a4f66e595aac6c39352e89101c8e49ad5">~IGameObject</a> ()</td></tr>
+<tr class="memdesc:a4f66e595aac6c39352e89101c8e49ad5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor that deletes the unique shader program and shadow program belonging to the object.  <a href="#a4f66e595aac6c39352e89101c8e49ad5">More...</a><br /></td></tr>
 <tr class="separator:a4f66e595aac6c39352e89101c8e49ad5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a798d1af62f3d73cc2ff395ecf628235b"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_i_game_object.html#a798d1af62f3d73cc2ff395ecf628235b">Draw</a> (GLuint shader)=0</td></tr>
-<tr class="separator:a798d1af62f3d73cc2ff395ecf628235b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a52f526c7e30d6f871b68084a4446a9be"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_i_game_object.html#a52f526c7e30d6f871b68084a4446a9be">DrawShadow</a> (GLuint shader)=0</td></tr>
-<tr class="separator:a52f526c7e30d6f871b68084a4446a9be"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2a555ee406215dd98e8b36b125656ae4"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_i_game_object.html#a2a555ee406215dd98e8b36b125656ae4">Update</a> ()=0</td></tr>
-<tr class="separator:a2a555ee406215dd98e8b36b125656ae4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a72b7fa39bac0a68167d665240b87aca8"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_i_game_object.html#a72b7fa39bac0a68167d665240b87aca8">Destroy</a> ()=0</td></tr>
-<tr class="separator:a72b7fa39bac0a68167d665240b87aca8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adbd0312067bfacd201c3fe2d51f1edb2"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_i_game_object.html#adbd0312067bfacd201c3fe2d51f1edb2">Draw</a> (GLuint shader)=0</td></tr>
+<tr class="memdesc:adbd0312067bfacd201c3fe2d51f1edb2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draws via the given shader.  <a href="#adbd0312067bfacd201c3fe2d51f1edb2">More...</a><br /></td></tr>
+<tr class="separator:adbd0312067bfacd201c3fe2d51f1edb2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a51271ecda257d190ffb0c4d4ebf6fdf9"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_i_game_object.html#a51271ecda257d190ffb0c4d4ebf6fdf9">DrawShadow</a> (GLuint shader)=0</td></tr>
+<tr class="memdesc:a51271ecda257d190ffb0c4d4ebf6fdf9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draw shadows via the given shader.  <a href="#a51271ecda257d190ffb0c4d4ebf6fdf9">More...</a><br /></td></tr>
+<tr class="separator:a51271ecda257d190ffb0c4d4ebf6fdf9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4bea854558132fc82911b634b12b0cde"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_i_game_object.html#a4bea854558132fc82911b634b12b0cde">Update</a> ()=0</td></tr>
+<tr class="memdesc:a4bea854558132fc82911b634b12b0cde"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates this object.  <a href="#a4bea854558132fc82911b634b12b0cde">More...</a><br /></td></tr>
+<tr class="separator:a4bea854558132fc82911b634b12b0cde"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a06718cc541b30a4645c21009b9932f1a"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_i_game_object.html#a06718cc541b30a4645c21009b9932f1a">Destroy</a> ()=0</td></tr>
+<tr class="memdesc:a06718cc541b30a4645c21009b9932f1a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroys this object.  <a href="#a06718cc541b30a4645c21009b9932f1a">More...</a><br /></td></tr>
+<tr class="separator:a06718cc541b30a4645c21009b9932f1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af9b7a63ebf34b579323d9185ad0b4b2b"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_i_game_object.html#af9b7a63ebf34b579323d9185ad0b4b2b">SetProgram</a> (GLuint shaderName)</td></tr>
+<tr class="memdesc:af9b7a63ebf34b579323d9185ad0b4b2b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the main shader program corresponding to this object.  <a href="#af9b7a63ebf34b579323d9185ad0b4b2b">More...</a><br /></td></tr>
 <tr class="separator:af9b7a63ebf34b579323d9185ad0b4b2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad7ae4cbeabe3cbf3f15626d1b09e8c10"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_i_game_object.html#ad7ae4cbeabe3cbf3f15626d1b09e8c10">SetShadowProgram</a> (GLuint shaderName)</td></tr>
+<tr class="memdesc:ad7ae4cbeabe3cbf3f15626d1b09e8c10"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the shadow pass shader program corresponding to this object.  <a href="#ad7ae4cbeabe3cbf3f15626d1b09e8c10">More...</a><br /></td></tr>
 <tr class="separator:ad7ae4cbeabe3cbf3f15626d1b09e8c10"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1ee89b8d4a4500a1af6776e5cbc6c2c2"><td class="memItemLeft" align="right" valign="top">virtual GLuint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_i_game_object.html#a1ee89b8d4a4500a1af6776e5cbc6c2c2">GetProgram</a> ()</td></tr>
+<tr class="memdesc:a1ee89b8d4a4500a1af6776e5cbc6c2c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the object's main shader program.  <a href="#a1ee89b8d4a4500a1af6776e5cbc6c2c2">More...</a><br /></td></tr>
 <tr class="separator:a1ee89b8d4a4500a1af6776e5cbc6c2c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab6b2ec26e062072ac5f9aceab019b533"><td class="memItemLeft" align="right" valign="top">virtual GLuint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_i_game_object.html#ab6b2ec26e062072ac5f9aceab019b533">GetShadowProgram</a> ()</td></tr>
+<tr class="memdesc:ab6b2ec26e062072ac5f9aceab019b533"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the object's shadow program.  <a href="#ab6b2ec26e062072ac5f9aceab019b533">More...</a><br /></td></tr>
 <tr class="separator:ab6b2ec26e062072ac5f9aceab019b533"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a176f298b4b50b372415fe043fb295b71"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_i_game_object.html#a176f298b4b50b372415fe043fb295b71">SetTexture</a> (const std::string &amp;textureName, const <a class="el" href="_texture_8h.html#a65468556d79304b3a4bfc464cc12e549">TextureType</a> &amp;textureType, const GLuint &amp;texture)=0</td></tr>
-<tr class="separator:a176f298b4b50b372415fe043fb295b71"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acde738d4c3317b72a15fa9bd33e90145"><td class="memItemLeft" align="right" valign="top">virtual const GLuint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_i_game_object.html#acde738d4c3317b72a15fa9bd33e90145">GetTexture</a> (const std::string &amp;) const  =0</td></tr>
-<tr class="separator:acde738d4c3317b72a15fa9bd33e90145"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1ee4f7eb7d80225b12d6ffa5d0bf925b"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_i_game_object.html#a1ee4f7eb7d80225b12d6ffa5d0bf925b">SetTexture</a> (const std::string &amp;textureName, const <a class="el" href="_texture_8h.html#a65468556d79304b3a4bfc464cc12e549">TextureType</a> &amp;textureType, const GLuint &amp;texture)=0</td></tr>
+<tr class="memdesc:a1ee4f7eb7d80225b12d6ffa5d0bf925b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a texture to an object.  <a href="#a1ee4f7eb7d80225b12d6ffa5d0bf925b">More...</a><br /></td></tr>
+<tr class="separator:a1ee4f7eb7d80225b12d6ffa5d0bf925b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a682af6e7c27ef87941e156f013ac41fc"><td class="memItemLeft" align="right" valign="top">virtual const GLuint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_i_game_object.html#a682af6e7c27ef87941e156f013ac41fc">GetTexture</a> (const std::string &amp;textureName) const  =0</td></tr>
+<tr class="memdesc:a682af6e7c27ef87941e156f013ac41fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets a texture.  <a href="#a682af6e7c27ef87941e156f013ac41fc">More...</a><br /></td></tr>
+<tr class="separator:a682af6e7c27ef87941e156f013ac41fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
@@ -166,7 +180,9 @@ Protected Attributes</h2></td></tr>
 <tr class="memitem:a67b2c3af4efddf3c98b468bd150e2018"><td class="memItemLeft" align="right" valign="top">GLuint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_i_game_object.html#a67b2c3af4efddf3c98b468bd150e2018">shadowProgram</a> = 0</td></tr>
 <tr class="separator:a67b2c3af4efddf3c98b468bd150e2018"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>A Game Object. All objects that are to be rendered will inherit this class. </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a4f66e595aac6c39352e89101c8e49ad5"></a>
 <div class="memitem">
 <div class="memproto">
@@ -188,10 +204,12 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Destructor that deletes the unique shader program and shadow program belonging to the object. </p>
+
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="a72b7fa39bac0a68167d665240b87aca8"></a>
+<a class="anchor" id="a06718cc541b30a4645c21009b9932f1a"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -199,7 +217,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void IGameObject::Destroy </td>
+          <td class="memname">void IGameObject::Destroy </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -212,11 +230,13 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="class_scene___container.html#a38dec3216d130badc1a9ed3b1c12a88b">Scene_Container</a>, <a class="el" href="class_model.html#a9105422f784578e2217872b079959b62">Model</a>, <a class="el" href="class_particle___container.html#a8493ba7e66e73f6485a58a0dbaa1ffb9">Particle_Container</a>, and <a class="el" href="class_light.html#a8229096f3d3586d4d5f52bbfceece9ca">Light</a>.</p>
+<p>Destroys this object. </p>
+
+<p>Implemented in <a class="el" href="class_light.html#a8229096f3d3586d4d5f52bbfceece9ca">Light</a>, <a class="el" href="class_scene___container.html#a38dec3216d130badc1a9ed3b1c12a88b">Scene_Container</a>, <a class="el" href="class_model.html#a9105422f784578e2217872b079959b62">Model</a>, and <a class="el" href="class_particle___container.html#a8493ba7e66e73f6485a58a0dbaa1ffb9">Particle_Container</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a798d1af62f3d73cc2ff395ecf628235b"></a>
+<a class="anchor" id="adbd0312067bfacd201c3fe2d51f1edb2"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -224,7 +244,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void IGameObject::Draw </td>
+          <td class="memname">void IGameObject::Draw </td>
           <td>(</td>
           <td class="paramtype">GLuint&#160;</td>
           <td class="paramname"><em>shader</em></td><td>)</td>
@@ -238,11 +258,19 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="class_spot_light.html#ad2f8ee8880473ef42c2717696cf118f9">SpotLight</a>, <a class="el" href="class_point_light.html#a277da9f3ae57c472c2f781e7cc4ca351">PointLight</a>, <a class="el" href="class_ambient_light.html#a419cf65bf90ce3d5caa8cc2c27285a15">AmbientLight</a>, <a class="el" href="class_directional_light.html#adb1822396e9b9536bf7cd81a7a35a2f7">DirectionalLight</a>, <a class="el" href="class_scene___container.html#a45e7f343460de256c49e59ebb167ce07">Scene_Container</a>, <a class="el" href="class_mesh.html#a951a7d50b3ba1968ed990010c88a729e">Mesh</a>, <a class="el" href="class_particle___container.html#a6a7f8300535e633faf00d7d4d8d08fd0">Particle_Container</a>, and <a class="el" href="class_light.html#ac51f8947daea25f27f7fcfd7667075f3">Light</a>.</p>
+<p>Draws via the given shader. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">shader</td><td>The shader. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Implemented in <a class="el" href="class_spot_light.html#ad2f8ee8880473ef42c2717696cf118f9">SpotLight</a>, <a class="el" href="class_point_light.html#a277da9f3ae57c472c2f781e7cc4ca351">PointLight</a>, <a class="el" href="class_ambient_light.html#a419cf65bf90ce3d5caa8cc2c27285a15">AmbientLight</a>, <a class="el" href="class_directional_light.html#adb1822396e9b9536bf7cd81a7a35a2f7">DirectionalLight</a>, <a class="el" href="class_light.html#ac51f8947daea25f27f7fcfd7667075f3">Light</a>, <a class="el" href="class_scene___container.html#a45e7f343460de256c49e59ebb167ce07">Scene_Container</a>, <a class="el" href="class_mesh.html#a951a7d50b3ba1968ed990010c88a729e">Mesh</a>, and <a class="el" href="class_particle___container.html#a6a7f8300535e633faf00d7d4d8d08fd0">Particle_Container</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a52f526c7e30d6f871b68084a4446a9be"></a>
+<a class="anchor" id="a51271ecda257d190ffb0c4d4ebf6fdf9"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -250,7 +278,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void IGameObject::DrawShadow </td>
+          <td class="memname">void IGameObject::DrawShadow </td>
           <td>(</td>
           <td class="paramtype">GLuint&#160;</td>
           <td class="paramname"><em>shader</em></td><td>)</td>
@@ -264,7 +292,9 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="class_directional_light.html#ade0fb3aa1678f8d7a23c998bfa569855">DirectionalLight</a>, <a class="el" href="class_scene___container.html#a2c91dcf241d09c7cda738d1ca7fa9333">Scene_Container</a>, <a class="el" href="class_mesh.html#a2e7b2de6fde3750694bdbb5a78a232f8">Mesh</a>, <a class="el" href="class_particle___container.html#a621ba5a7eb3615641c293433723c8e86">Particle_Container</a>, and <a class="el" href="class_light.html#a6c2873a62d6578676de5a30898b64822">Light</a>.</p>
+<p>Draw shadows via the given shader. </p>
+
+<p>Implemented in <a class="el" href="class_directional_light.html#ade0fb3aa1678f8d7a23c998bfa569855">DirectionalLight</a>, <a class="el" href="class_light.html#a6c2873a62d6578676de5a30898b64822">Light</a>, <a class="el" href="class_scene___container.html#a2c91dcf241d09c7cda738d1ca7fa9333">Scene_Container</a>, <a class="el" href="class_mesh.html#a2e7b2de6fde3750694bdbb5a78a232f8">Mesh</a>, and <a class="el" href="class_particle___container.html#a621ba5a7eb3615641c293433723c8e86">Particle_Container</a>.</p>
 
 </div>
 </div>
@@ -289,6 +319,9 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Gets the object's main shader program. </p>
+<dl class="section return"><dt>Returns</dt><dd>The main shader program. </dd></dl>
+
 </div>
 </div>
 <a class="anchor" id="ab6b2ec26e062072ac5f9aceab019b533"></a>
@@ -312,9 +345,12 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Gets the object's shadow program. </p>
+<dl class="section return"><dt>Returns</dt><dd>The shadow program. </dd></dl>
+
 </div>
 </div>
-<a class="anchor" id="acde738d4c3317b72a15fa9bd33e90145"></a>
+<a class="anchor" id="a682af6e7c27ef87941e156f013ac41fc"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -322,10 +358,10 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual const GLuint IGameObject::GetTexture </td>
+          <td class="memname">const GLuint IGameObject::GetTexture </td>
           <td>(</td>
           <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramname"><em>textureName</em></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
@@ -336,7 +372,16 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="class_scene___container.html#af64934389fbbd0fffbd24947585f470e">Scene_Container</a>, <a class="el" href="class_model.html#af6eb97a72b98c6accb9fd8e39532c85a">Model</a>, <a class="el" href="class_particle___container.html#a1126a14392f531e798a704bd44bfb33c">Particle_Container</a>, and <a class="el" href="class_light.html#a3636bde39740c8bbee4652d62ab7baed">Light</a>.</p>
+<p>Gets a texture. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">textureName</td><td>The name of the texture.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The texture. </dd></dl>
+
+<p>Implemented in <a class="el" href="class_light.html#a3636bde39740c8bbee4652d62ab7baed">Light</a>, <a class="el" href="class_scene___container.html#af64934389fbbd0fffbd24947585f470e">Scene_Container</a>, <a class="el" href="class_model.html#af6eb97a72b98c6accb9fd8e39532c85a">Model</a>, and <a class="el" href="class_particle___container.html#a1126a14392f531e798a704bd44bfb33c">Particle_Container</a>.</p>
 
 </div>
 </div>
@@ -362,7 +407,17 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Reimplemented in <a class="el" href="class_scene___container.html#aa2f158dfcf4e42eba6dbbb97ca8ea2fb">Scene_Container</a>, <a class="el" href="class_model.html#a77f740881b67a9d157eb9560dd7e72c4">Model</a>, and <a class="el" href="class_light.html#a2e3e558d0cabe5beca1231f76a38f79a">Light</a>.</p>
+<p>Sets the main shader program corresponding to this object. </p>
+<dl class="section author"><dt>Author</dt><dd>Harry </dd></dl>
+<dl class="section date"><dt>Date</dt><dd>4/14/2016</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">shaderName</td><td>Name of the shader. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Reimplemented in <a class="el" href="class_scene___container.html#aa2f158dfcf4e42eba6dbbb97ca8ea2fb">Scene_Container</a>, and <a class="el" href="class_model.html#a77f740881b67a9d157eb9560dd7e72c4">Model</a>.</p>
 
 </div>
 </div>
@@ -388,11 +443,19 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Reimplemented in <a class="el" href="class_scene___container.html#a7434798c4164ee26eae51962c779b12f">Scene_Container</a>, <a class="el" href="class_model.html#ace6598352817c14320fc124d1bae417c">Model</a>, and <a class="el" href="class_light.html#aa07e46f4a41ee0a53bfc98630dea03d3">Light</a>.</p>
+<p>Sets the shadow pass shader program corresponding to this object. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">shaderName</td><td>Name of the shader. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Reimplemented in <a class="el" href="class_scene___container.html#a7434798c4164ee26eae51962c779b12f">Scene_Container</a>, and <a class="el" href="class_model.html#ace6598352817c14320fc124d1bae417c">Model</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a176f298b4b50b372415fe043fb295b71"></a>
+<a class="anchor" id="a1ee4f7eb7d80225b12d6ffa5d0bf925b"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -400,7 +463,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void IGameObject::SetTexture </td>
+          <td class="memname">void IGameObject::SetTexture </td>
           <td>(</td>
           <td class="paramtype">const std::string &amp;&#160;</td>
           <td class="paramname"><em>textureName</em>, </td>
@@ -430,11 +493,21 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="class_scene___container.html#a00c9eeb9c88b669c84d99cb01c43003e">Scene_Container</a>, <a class="el" href="class_model.html#ab5edf2b10866ecb3680c2c957817f705">Model</a>, <a class="el" href="class_particle___container.html#adf7d8c81c37e6d8e2f68cc5bd5d6e56c">Particle_Container</a>, and <a class="el" href="class_light.html#abfec7543afcb1a1c802915a50729004e">Light</a>.</p>
+<p>Adds a texture to an object. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">textureName</td><td>Name of the texture. </td></tr>
+    <tr><td class="paramname">textureType</td><td>Type of the texture. </td></tr>
+    <tr><td class="paramname">texture</td><td>The texture id. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Implemented in <a class="el" href="class_light.html#abfec7543afcb1a1c802915a50729004e">Light</a>, <a class="el" href="class_scene___container.html#a00c9eeb9c88b669c84d99cb01c43003e">Scene_Container</a>, <a class="el" href="class_model.html#ab5edf2b10866ecb3680c2c957817f705">Model</a>, and <a class="el" href="class_particle___container.html#adf7d8c81c37e6d8e2f68cc5bd5d6e56c">Particle_Container</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a2a555ee406215dd98e8b36b125656ae4"></a>
+<a class="anchor" id="a4bea854558132fc82911b634b12b0cde"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -442,7 +515,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void IGameObject::Update </td>
+          <td class="memname">void IGameObject::Update </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -455,7 +528,9 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="class_scene___container.html#a95c784346dfc83871cda9bc082ba47fb">Scene_Container</a>, <a class="el" href="class_mesh.html#af4a953836d202ded865d390269374be0">Mesh</a>, <a class="el" href="class_particle___container.html#af173fbaad5244efdd03b7499ce75e2c7">Particle_Container</a>, and <a class="el" href="class_light.html#a67847fb749205eb5ddf59d008ba5e42d">Light</a>.</p>
+<p>Updates this object. </p>
+
+<p>Implemented in <a class="el" href="class_light.html#a67847fb749205eb5ddf59d008ba5e42d">Light</a>, <a class="el" href="class_scene___container.html#a95c784346dfc83871cda9bc082ba47fb">Scene_Container</a>, <a class="el" href="class_mesh.html#af4a953836d202ded865d390269374be0">Mesh</a>, and <a class="el" href="class_particle___container.html#af173fbaad5244efdd03b7499ce75e2c7">Particle_Container</a>.</p>
 
 </div>
 </div>

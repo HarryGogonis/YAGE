@@ -116,6 +116,9 @@ $(document).ready(function(){initNavTree('class_camera.html','');});
 </div><!--header-->
 <div class="contents">
 
+<p>The game camera - a Singleton. Primary use is to generate Model-View-Projection matrices.  
+ <a href="class_camera.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="_camera_8h_source.html">Camera.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
@@ -129,12 +132,15 @@ Public Member Functions</h2></td></tr>
 Static Public Member Functions</h2></td></tr>
 <tr class="memitem:ac8db96290ef270fcc538a3262dd29ba5"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_camera.html">Camera</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_camera.html#ac8db96290ef270fcc538a3262dd29ba5">GetInstance</a> ()</td></tr>
 <tr class="separator:ac8db96290ef270fcc538a3262dd29ba5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab0a4bf5a65d45f25529e3cffda1c361b"><td class="memItemLeft" align="right" valign="top">static glm::mat4&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_camera.html#ab0a4bf5a65d45f25529e3cffda1c361b">GetProjectionMatrix</a> ()</td></tr>
-<tr class="separator:ab0a4bf5a65d45f25529e3cffda1c361b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:affa333055635aed96518c4c66be9a70c"><td class="memItemLeft" align="right" valign="top">static glm::mat4&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_camera.html#affa333055635aed96518c4c66be9a70c">GetViewMatrix</a> ()</td></tr>
-<tr class="separator:affa333055635aed96518c4c66be9a70c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad789ada0f1dc8d664785cf644de30685"><td class="memItemLeft" align="right" valign="top">static glm::vec3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_camera.html#ad789ada0f1dc8d664785cf644de30685">GetEyeDirection</a> ()</td></tr>
-<tr class="separator:ad789ada0f1dc8d664785cf644de30685"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5e3d77d9dd0759b3b48da8fc88e56d60"><td class="memItemLeft" align="right" valign="top">static glm::mat4&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_camera.html#a5e3d77d9dd0759b3b48da8fc88e56d60">GetProjectionMatrix</a> ()</td></tr>
+<tr class="memdesc:a5e3d77d9dd0759b3b48da8fc88e56d60"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the camera projection matrix.  <a href="#a5e3d77d9dd0759b3b48da8fc88e56d60">More...</a><br /></td></tr>
+<tr class="separator:a5e3d77d9dd0759b3b48da8fc88e56d60"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2b9e5010a103abeb7f685a71faf9c188"><td class="memItemLeft" align="right" valign="top">static glm::mat4&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_camera.html#a2b9e5010a103abeb7f685a71faf9c188">GetViewMatrix</a> ()</td></tr>
+<tr class="memdesc:a2b9e5010a103abeb7f685a71faf9c188"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the camera view matrix.  <a href="#a2b9e5010a103abeb7f685a71faf9c188">More...</a><br /></td></tr>
+<tr class="separator:a2b9e5010a103abeb7f685a71faf9c188"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3267267cda0859e8024b72ad4f407ca4"><td class="memItemLeft" align="right" valign="top">static glm::vec3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_camera.html#a3267267cda0859e8024b72ad4f407ca4">GetEyeDirection</a> ()</td></tr>
+<tr class="memdesc:a3267267cda0859e8024b72ad4f407ca4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the direction the camera is looking at.  <a href="#a3267267cda0859e8024b72ad4f407ca4">More...</a><br /></td></tr>
+<tr class="separator:a3267267cda0859e8024b72ad4f407ca4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a40f01dd0c43b5e139459b7bbfc7fb73b"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_camera.html#a40f01dd0c43b5e139459b7bbfc7fb73b">resizeWindow</a> (float width, float height)</td></tr>
 <tr class="separator:a40f01dd0c43b5e139459b7bbfc7fb73b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a52f1edd478e919ff047477ece546437e"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_camera.html#a52f1edd478e919ff047477ece546437e">ComputeMatrices</a> ()</td></tr>
@@ -143,15 +149,19 @@ Static Public Member Functions</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
 <tr class="memitem:aff7393c9cfbccd7e369091f00008da93"><td class="memItemLeft" align="right" valign="top">static float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_camera.html#aff7393c9cfbccd7e369091f00008da93">fov</a> = 45.0f</td></tr>
+<tr class="memdesc:aff7393c9cfbccd7e369091f00008da93"><td class="mdescLeft">&#160;</td><td class="mdescRight">The field of view.  <a href="#aff7393c9cfbccd7e369091f00008da93">More...</a><br /></td></tr>
 <tr class="separator:aff7393c9cfbccd7e369091f00008da93"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a181aff3db1ae87a837ddc3a97e5b0f43"><td class="memItemLeft" align="right" valign="top">static float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_camera.html#a181aff3db1ae87a837ddc3a97e5b0f43">aspect</a></td></tr>
+<tr class="memdesc:a181aff3db1ae87a837ddc3a97e5b0f43"><td class="mdescLeft">&#160;</td><td class="mdescRight">The aspect ratio.  <a href="#a181aff3db1ae87a837ddc3a97e5b0f43">More...</a><br /></td></tr>
 <tr class="separator:a181aff3db1ae87a837ddc3a97e5b0f43"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1db2166635ff27594eda3a23130b66ac"><td class="memItemLeft" align="right" valign="top">static float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_camera.html#a1db2166635ff27594eda3a23130b66ac">zNear</a></td></tr>
 <tr class="separator:a1db2166635ff27594eda3a23130b66ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6290469f972a5903c805725db563f41f"><td class="memItemLeft" align="right" valign="top">static float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_camera.html#a6290469f972a5903c805725db563f41f">zFar</a></td></tr>
 <tr class="separator:a6290469f972a5903c805725db563f41f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>The game camera - a Singleton. Primary use is to generate Model-View-Projection matrices. </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a3fa2f2b7f21d1b89866aed5abd893b81"></a>
 <div class="memitem">
 <div class="memproto">
@@ -200,7 +210,7 @@ Static Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="ad789ada0f1dc8d664785cf644de30685"></a>
+<a class="anchor" id="a3267267cda0859e8024b72ad4f407ca4"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -208,7 +218,7 @@ Static Public Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">glm::vec3 Camera::GetEyeDirection </td>
+          <td class="memname">static glm::vec3 Camera::GetEyeDirection </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -220,6 +230,9 @@ Static Public Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Gets the direction the camera is looking at. </p>
+<dl class="section return"><dt>Returns</dt><dd>The eye direction. </dd></dl>
 
 </div>
 </div>
@@ -246,7 +259,7 @@ Static Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="ab0a4bf5a65d45f25529e3cffda1c361b"></a>
+<a class="anchor" id="a5e3d77d9dd0759b3b48da8fc88e56d60"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -254,7 +267,7 @@ Static Public Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">glm::mat4 Camera::GetProjectionMatrix </td>
+          <td class="memname">static glm::mat4 Camera::GetProjectionMatrix </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -267,9 +280,12 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Gets the camera projection matrix. </p>
+<dl class="section return"><dt>Returns</dt><dd>The projection matrix. </dd></dl>
+
 </div>
 </div>
-<a class="anchor" id="affa333055635aed96518c4c66be9a70c"></a>
+<a class="anchor" id="a2b9e5010a103abeb7f685a71faf9c188"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -277,7 +293,7 @@ Static Public Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">glm::mat4 Camera::GetViewMatrix </td>
+          <td class="memname">static glm::mat4 Camera::GetViewMatrix </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -289,6 +305,9 @@ Static Public Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Gets the camera view matrix. </p>
+<dl class="section return"><dt>Returns</dt><dd>The view matrix. </dd></dl>
 
 </div>
 </div>
@@ -369,6 +388,8 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>The aspect ratio. </p>
+
 </div>
 </div>
 <a class="anchor" id="aff7393c9cfbccd7e369091f00008da93"></a>
@@ -388,6 +409,8 @@ Static Public Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>The field of view. </p>
 
 </div>
 </div>
