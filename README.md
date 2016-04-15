@@ -1,6 +1,6 @@
 # YAGE (Yet Another Game Engine)
 
-Authors: @harrygogonis and @goozie001
+This is a C++ based 3D game engine targeted for Windows.
 
 ## Requirements
 
@@ -10,10 +10,10 @@ Authors: @harrygogonis and @goozie001
 
 * Clone the repository
 * Open `YAGE.sln` file with visual studio
-* Install dependancies:
+* Install missing dependancies:
 	* `Tools > Nuget Package Manager > Package Manager Console`
 	*  Type this into the the console: `Update-Package -Reinstall`
-* Edit `main.cpp`
+* Edit `main.cpp` and play with the game code
 * Run the default startup project `F10`
 
 ## Documentation
@@ -57,11 +57,11 @@ If you are viewing this on Github, you can find our documentation here:
 * Dynamic shadows
 * Particle system
 
-## Limitations
+### Limitations
 * Significant frame drop after ~500k polygons
 * Shadows only supported w/ one directional light
 
-## Future Features
+### Future Features
 * Animation
 * Text rendering
 
@@ -71,3 +71,8 @@ If you are viewing this on Github, you can find our documentation here:
 * [Red Book](http://www.amazon.com/OpenGL-Programming-Guide-Official-Learning/dp/0321335732)
 * [OpenGL-Tutorial](http://www.opengl-tutorial.org/)
 * [OGLDev](http://ogldev.atspace.co.uk/index.html)
+
+## Authors
+
+- Harry Gogonis [@harrygogonis](https://github.com/HarryGogonis)
+- Dylan Richardson [@goozie001](https://github.com/goozie001)

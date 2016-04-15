@@ -1,7 +1,14 @@
 #pragma once
 #include "../Managers/Models_Manager.h"
 
-// Everything except OT_NONE and OT_MODEL bit-wise AND with OT_LIGHT for a non-zero result
+
+/**********************************************************************************************//**
+ * @enum	GameObjectType
+ *
+ * @brief	Values that represent game object types.
+ * 			Everything except OT_NONE and OT_MODEL bit-wise AND with OT_LIGHT for a non-zero result
+ **************************************************************************************************/
+
 enum GameObjectType
 {
 	OT_NONE					= 0,
