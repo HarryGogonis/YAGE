@@ -6,7 +6,7 @@ var searchData=
   ['igameobject_2eh',['IGameObject.h',['../_i_game_object_8h.html',1,'']]],
   ['incrotation',['IncRotation',['../class_transform.html#a31149a207d1845683e56209b301ebd99',1,'Transform']]],
   ['indexvbo',['indexVBO',['../class_vbo_indexer.html#a80a5fbc6ac368e6cb32489d81171349f',1,'VboIndexer']]],
-  ['init',['Init',['../class_init___g_l_e_w.html#a3e5e57fc45cd07f3c122cf84cf02eeb1',1,'Init_GLEW::Init()'],['../class_init___g_l_u_t.html#a6dc15d69eb0a1019dc95b8c2ed4bf219',1,'Init_GLUT::init()']]],
+  ['init',['Init',['../class_init___g_l_e_w.html#a3e5e57fc45cd07f3c122cf84cf02eeb1',1,'Init_GLEW::Init()'],['../class_init___g_l_u_t.html#ade0ac9fee19e86abfb367b5c8ea3846a',1,'Init_GLUT::init()']]],
   ['init_5fglew',['Init_GLEW',['../class_init___g_l_e_w.html',1,'Init_GLEW'],['../class_init___g_l_e_w.html#a8d69643447f5fbe20d14238fae7a87fe',1,'Init_GLEW::Init_GLEW()']]],
   ['init_5fglew_2ecpp',['Init_GLEW.cpp',['../_init___g_l_e_w_8cpp.html',1,'']]],
   ['init_5fglew_2eh',['Init_GLEW.h',['../_init___g_l_e_w_8h.html',1,'']]],

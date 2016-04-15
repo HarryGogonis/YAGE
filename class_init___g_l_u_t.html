@@ -48,6 +48,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -115,6 +116,9 @@ $(document).ready(function(){initNavTree('class_init___g_l_u_t.html','');});
 </div><!--header-->
 <div class="contents">
 
+<p>Helper class to initalize GLUT and setup listener callbacks.  
+ <a href="class_init___g_l_u_t.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="_init___g_l_u_t_8h_source.html">Init_GLUT.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
@@ -126,8 +130,9 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a6dc15d69eb0a1019dc95b8c2ed4bf219"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_init___g_l_u_t.html#a6dc15d69eb0a1019dc95b8c2ed4bf219">init</a> (const <a class="el" href="struct_window_info.html">WindowInfo</a> &amp;, const <a class="el" href="struct_context_info.html">ContextInfo</a> &amp;, const <a class="el" href="struct_frame_buffer_info.html">FrameBufferInfo</a> &amp;)</td></tr>
-<tr class="separator:a6dc15d69eb0a1019dc95b8c2ed4bf219"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ade0ac9fee19e86abfb367b5c8ea3846a"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_init___g_l_u_t.html#ade0ac9fee19e86abfb367b5c8ea3846a">init</a> (const <a class="el" href="struct_window_info.html">WindowInfo</a> &amp;, const <a class="el" href="struct_context_info.html">ContextInfo</a> &amp;, const <a class="el" href="struct_frame_buffer_info.html">FrameBufferInfo</a> &amp;)</td></tr>
+<tr class="memdesc:ade0ac9fee19e86abfb367b5c8ea3846a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initalizes GLUT with a window.  <a href="#ade0ac9fee19e86abfb367b5c8ea3846a">More...</a><br /></td></tr>
+<tr class="separator:ade0ac9fee19e86abfb367b5c8ea3846a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0f4523ab31b5cc5286b67d2012966dbd"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_init___g_l_u_t.html#a0f4523ab31b5cc5286b67d2012966dbd">run</a> ()</td></tr>
 <tr class="separator:a0f4523ab31b5cc5286b67d2012966dbd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a47a80168d8785a419d0165943a25887c"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_init___g_l_u_t.html#a47a80168d8785a419d0165943a25887c">close</a> ()</td></tr>
@@ -137,7 +142,9 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a95266f97b3661f3a3be82393ac7ba234"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_init___g_l_u_t.html#a95266f97b3661f3a3be82393ac7ba234">setListener</a> (<a class="el" href="class_scene___manager.html">Scene_Manager</a> *&amp;iListener)</td></tr>
 <tr class="separator:a95266f97b3661f3a3be82393ac7ba234"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Function Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Helper class to initalize GLUT and setup listener callbacks. </p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
 <a class="anchor" id="a47a80168d8785a419d0165943a25887c"></a>
 <div class="memitem">
 <div class="memproto">
@@ -191,7 +198,7 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a6dc15d69eb0a1019dc95b8c2ed4bf219"></a>
+<a class="anchor" id="ade0ac9fee19e86abfb367b5c8ea3846a"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -199,7 +206,7 @@ Static Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Init_GLUT::init </td>
+          <td class="memname">static void Init_GLUT::init </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="struct_window_info.html">WindowInfo</a> &amp;&#160;</td>
           <td class="paramname"><em>windowInfo</em>, </td>
@@ -228,6 +235,8 @@ Static Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Initalizes GLUT with a window. </p>
 
 </div>
 </div>
@@ -312,10 +321,6 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<hr/>The documentation for this class was generated from the following files:<ul>
-<li>C:/Users/Harry/Projects/opengl-tutorial/OpenGL_01/Core/Init/<a class="el" href="_init___g_l_u_t_8h_source.html">Init_GLUT.h</a></li>
-<li>C:/Users/Harry/Projects/opengl-tutorial/OpenGL_01/Core/Init/<a class="el" href="_init___g_l_u_t_8cpp.html">Init_GLUT.cpp</a></li>
-</ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
