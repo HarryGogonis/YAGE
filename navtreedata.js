@@ -1,7 +1,7 @@
 var NAVTREE =
 [
   [ "YAGE", "index.html", [
-    [ "YAGE (Yet Another Game Engine)", "md_C:_Users_Harry_Projects_opengl-tutorial_README.html", null ],
+    [ "YAGE (Yet Another Game Engine)", "index.html", null ],
     [ "Classes", "annotated.html", [
       [ "Class List", "annotated.html", "annotated_dup" ],
       [ "Class Index", "classes.html", null ],
