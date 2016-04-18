@@ -205,8 +205,7 @@ void Scene_Container::Draw(GLuint program)
 {
 	if (rigidBody && isDynamic)
 	{
-		btTransform trans;
-		rigidBody->getMotionState()->getWorldTransform(trans);
+		btTransform trans = rigidBody->getWorldTransform();
 		transform = trans;
 	}
 	for (int i = 0; i != meshes.size(); ++i)

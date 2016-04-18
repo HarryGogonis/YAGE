@@ -5,7 +5,7 @@
 
 #ifdef RELEASE
 #define DEBUG_MODE			0
-#define DRAW_WIREFRAMES		0
+#define DRAW_WIREFRAMES		1
 #else
 #define DEBUG_MODE			1
 #define DRAW_WIREFRAMES		1

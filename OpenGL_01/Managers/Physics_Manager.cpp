@@ -12,27 +12,33 @@ struct CharacterContainer
 	btPairCachingGhostObject* ghost;
 	btKinematicCharacterController* controller;
 	Scene_Container* actor;
+	btGhostPairCallback* callback;
+	bool leftPressed, rightPressed;
 
 	CharacterContainer(Scene_Container* actor)
 	{
 		this->actor = actor;
 		ghost = new btPairCachingGhostObject();
 		ghost->setCollisionShape(actor->getRigidBody()->getCollisionShape());
-		btTransform t;
-		actor->getRigidBody()->getMotionState()->getWorldTransform(t);
+		btTransform t = actor->getRigidBody()->getWorldTransform();
 		ghost->setWorldTransform(t);
 		ghost->setCollisionFlags(ghost->getCollisionFlags()
+			| btCollisionObject::CF_CHARACTER_OBJECT);
+		actor->getRigidBody()->setCollisionFlags(actor->getRigidBody()->getCollisionFlags()
 			| btCollisionObject::CF_NO_CONTACT_RESPONSE);
+		actor->getRigidBody()->setGravity(btVector3(0.f, 0.f, 0.f));
 		controller = new btKinematicCharacterController(
-			ghost, 
+			ghost,
 			static_cast<btConvexShape*>(actor->getRigidBody()->getCollisionShape()),
 			0.3f);
-		actor->getRigidBody()->getMotionState()->getWorldTransform(t);
-		std::cout << "TEST: " << &ghost->getWorldTransform() << "\t" << &t << std::endl;
+		controller->setJumpSpeed(15.f);
+		callback = new btGhostPairCallback();
 	}
 
 	~CharacterContainer()
 	{
+		delete callback;
+		callback = nullptr;
 		delete controller;
 		controller = nullptr;
 		delete ghost;
@@ -42,28 +48,25 @@ struct CharacterContainer
 
 void onKeyPressed(const unsigned char key, int x, int y)
 {
-	std::cout << "We in dis bitch!" << std::endl;
 	Physics_Manager* physics_mgr = Physics_Manager::GetInstance();
 	btRigidBody* actor = physics_mgr->getActorBody();
 	CharacterContainer* charContainer = physics_mgr->getCharacter();
 	if (charContainer)
 	{
-		btVector3 prev = charContainer->actor->getRigidBody()->getLinearVelocity();
+		btVector3 prev = actor->getLinearVelocity();
 		btKinematicCharacterController* controller = charContainer->controller;
-		std::cout << "Some controller debugging: " << controller->getGravity() << std::endl;
 		switch (key)
 		{
 		case 'd':
-			controller->setWalkDirection(btVector3(2.f, 0.f, 0.f));
-			std::cout << "Right!" << std::endl;
+			charContainer->rightPressed = true;
+			controller->setWalkDirection(btVector3(.05f, 0.f, 0.f));
 			break;
 		case 'a':
-			controller->setWalkDirection(btVector3(-2.f, 0.f, 0.f));
-			std::cout << "Left!" << std::endl;
+			charContainer->leftPressed = true;
+			controller->setWalkDirection(btVector3(-.05f, 0.f, 0.f));
 			break;
 		case 'w':
-			controller->setVelocityForTimeInterval(btVector3(2.f, prev.getY(), 0.f), 1.f);
-			std::cout << "Up!" << std::endl; 
+			controller->jump();
 			break;
 		default:
 			break;
@@ -80,12 +83,19 @@ void onKeyRelease(unsigned char key, int x, int y)
 	Physics_Manager* physics_mgr = Physics_Manager::GetInstance();
 	btRigidBody* actor = physics_mgr->getActorBody();
 	CharacterContainer* charContainer = physics_mgr->getCharacter();
+	if (key == 'a')
+		charContainer->leftPressed = false;
+	else if (key == 'd')
+		charContainer->rightPressed = false;
 	if (charContainer)
 	{
+		btVector3 walk = btVector3(0.f, 0.f, 0.f);
+		if (charContainer->leftPressed)
+			walk.setX(-0.2f);
+		else if (charContainer->rightPressed)
+			walk.setX(0.2f);
 		btKinematicCharacterController* controller = charContainer->controller;
-		float gravityFactor = actor->getLinearVelocity().getY();
-		controller->setVelocityForTimeInterval(btVector3(2.f, gravityFactor, 0.f), 1.f);
-		actor->setLinearVelocity(btVector3(0.f, gravityFactor, 0.f));
+		controller->setWalkDirection(btVector3(0.f, 0.f, 0.f));
 	}
 }
 
@@ -115,12 +125,6 @@ Physics_Manager::~Physics_Manager()
 		delete constraint;
 		constraint = nullptr;
 	}
-	if (charContainer)
-	{
-		dynamicsWorld->removeAction(charContainer->controller);
-		delete charContainer;
-		charContainer = nullptr;
-	}
 	delete dynamicsWorld;
 	dynamicsWorld = nullptr;
 	delete solver;
@@ -135,6 +139,11 @@ Physics_Manager::~Physics_Manager()
 	clock = nullptr;
 	delete drawer;
 	drawer = nullptr;
+	if (charContainer)
+	{
+		delete charContainer;
+		charContainer = nullptr;
+	}
 }
 
 void Physics_Manager::initWorld()
@@ -147,7 +156,7 @@ void Physics_Manager::initWorld()
 	broadphase = new btDbvtBroadphase();
 	solver = new btSequentialImpulseConstraintSolver;
 	dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher, broadphase, solver, collisionConfiguration);
-	dynamicsWorld->setGravity(btVector3(0, -1, 0));
+	dynamicsWorld->setGravity(btVector3(0.f, gravity, 0.f));
 
 	// Absolute base plane so all RigidBodies can be accounted for even if they phase through the ground
 	btCollisionShape* ground = new btStaticPlaneShape(btVector3(0, 1, 0), -15);
@@ -166,12 +175,13 @@ void Physics_Manager::initWorld()
 void Physics_Manager::setCharacter(Scene_Container* actor)
 {
 	charContainer = new CharacterContainer(actor);
+	charContainer->controller->setGravity(abs(gravity));
 	dynamicsWorld->addAction(charContainer->controller);
 	dynamicsWorld->addCollisionObject(
 		charContainer->ghost,
 		btBroadphaseProxy::CharacterFilter,
 		btBroadphaseProxy::StaticFilter | btBroadphaseProxy::DefaultFilter);
-	dynamicsWorld->getPairCache()->setInternalGhostPairCallback(new btGhostPairCallback());
+	dynamicsWorld->getPairCache()->setInternalGhostPairCallback(charContainer->callback);
 }
 
 void Physics_Manager::Step()
@@ -180,11 +190,11 @@ void Physics_Manager::Step()
 	{
 		clock = new btClock();
 	}
-	float sec = clock->getTimeSeconds();
-	charContainer->controller->updateAction(dynamicsWorld, sec);
-	dynamicsWorld->stepSimulation(sec, 1);
-	Scene_Container* player_model = charContainer			? 
-		static_cast<Scene_Container*>(charContainer->actor) : 
+	float secs = clock->getTimeSeconds();
+	getActorBody()->setWorldTransform(charContainer->ghost->getWorldTransform());
+	dynamicsWorld->stepSimulation(secs);
+	Scene_Container* player_model = charContainer ?
+		static_cast<Scene_Container*>(charContainer->actor) :
 		nullptr;
 	Camera::ComputeMatrices(player_model);
 }

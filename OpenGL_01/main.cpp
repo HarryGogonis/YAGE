@@ -7,7 +7,7 @@ Shader_Factory* shaderManager;
 
 int main(int argc, char **argv)
 {
-	std::string game_name = "RAPTOR RAMPAGE";
+	std::string game_name = "DEMO";
 
 	/* GLUT Parameters */
 	WindowInfo window(
@@ -59,7 +59,7 @@ int main(int argc, char **argv)
 		.setCastsShadows(false)
 	.addLight(OT_LIGHT_AMBIENT)
 		.setColor(glm::vec3(1.f, 1.f, 1.f))
-		.setStrength(1.0f);
+		.setStrength(0.2f);
 
 	scene->SetupScene(gob);
 

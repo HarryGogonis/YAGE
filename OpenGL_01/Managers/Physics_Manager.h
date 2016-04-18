@@ -25,13 +25,15 @@ private:
 	// Static instance of Physics_Manager because who wants two physics systems?
 	static Physics_Manager* m_physics_mgr;
 	
-	btBroadphaseInterface* broadphase;
-	btCollisionDispatcher* dispatcher;
-	btConstraintSolver*	solver;
-	btDefaultCollisionConfiguration* collisionConfiguration;
-	btDiscreteDynamicsWorld* dynamicsWorld;
-	btClock* clock;
-	DebugDrawer* drawer;
-
+	btBroadphaseInterface* broadphase = nullptr;
+	btCollisionDispatcher* dispatcher = nullptr;
+	btConstraintSolver*	solver = nullptr;
+	btDefaultCollisionConfiguration* collisionConfiguration = nullptr;
+	btDiscreteDynamicsWorld* dynamicsWorld = nullptr;
+	btClock* clock = nullptr;
+	DebugDrawer* drawer = nullptr;
 	CharacterContainer* charContainer = nullptr;
+
+	float gravity = -9.8f;
+	bool leftPressed, rightPressed;
 };
