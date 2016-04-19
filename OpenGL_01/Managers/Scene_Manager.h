@@ -31,6 +31,7 @@ private:
 	Models_Manager* models_manager;
 	Shadow_Manager* shadow_manager;
 	Physics_Manager* physics_manager;
+	Skybox* skybox;
 
 	static int deltaTime, currentTime, lastTime, numFrames;
 

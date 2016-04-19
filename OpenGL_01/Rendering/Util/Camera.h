@@ -58,7 +58,9 @@ public:
 	static float fov;
 	/** @brief	The aspect ratio */
 	static float aspect;
+	/** @brief	The clostest Z value to render. */
 	static float zNear;
+	/** @brief	The farthest Z value to render */
 	static float zFar;
 
 	Camera(Camera const&) = delete;

@@ -1,6 +1,7 @@
 #include "GameObjectsBuilder.h"
 #include "../Managers/Physics_Manager.h"
 #include <SOIL.h>
+#include "../Rendering/Util/TextureLoader.h"
 
 
 GameObjectsBuilder::GameObjectsBuilder()
@@ -49,6 +50,11 @@ GameObjectsBuilder & GameObjectsBuilder::setPosition(glm::vec3 pos)
 	return *this;
 }
 
+GameObjectsBuilder& GameObjectsBuilder::setPosition(float x, float y, float z)
+{
+	return setPosition(glm::vec3(x, y, z));
+}
+
 GameObjectsBuilder & GameObjectsBuilder::setScale(float scale)
 {
 	if (current_type == OT_MODEL)
@@ -75,13 +81,8 @@ GameObjectsBuilder& GameObjectsBuilder::setDiffuse(const std::string& path)
 {
 	if (current_type == OT_MODEL)
 	{
-		GLuint textureID = SOIL_load_OGL_texture(
-			path.c_str(),
-			SOIL_LOAD_AUTO,
-			SOIL_CREATE_NEW_ID,
-			SOIL_FLAG_INVERT_Y);
 		Scene_Container* model = static_cast<Scene_Container*>(current);
-		model->SetTexture(path, Texture_Diffuse, textureID);
+		model->SetTexture(path, Texture_Diffuse, TextureLoader::LoadTexture(path));
 	}
 	return *this;
 }
@@ -90,13 +91,8 @@ GameObjectsBuilder& GameObjectsBuilder::setNormal(const std::string& path)
 {
 	if (current_type == OT_MODEL)
 	{
-		GLuint textureID = SOIL_load_OGL_texture(
-			path.c_str(),
-			SOIL_LOAD_AUTO,
-			SOIL_CREATE_NEW_ID,
-			SOIL_FLAG_INVERT_Y);
 		Scene_Container* model = static_cast<Scene_Container*>(current);
-		model->SetTexture(path, Texture_Normal, textureID);
+		model->SetTexture(path, Texture_Normal, TextureLoader::LoadTexture(path));
 	}
 	return *this;
 }
@@ -105,13 +101,8 @@ GameObjectsBuilder& GameObjectsBuilder::setSpecular(const std::string& path)
 {
 	if (current_type == OT_MODEL)
 	{
-		GLuint textureID = SOIL_load_OGL_texture(
-			path.c_str(),
-			SOIL_LOAD_AUTO,
-			SOIL_CREATE_NEW_ID,
-			SOIL_FLAG_INVERT_Y);
 		Scene_Container* model = static_cast<Scene_Container*>(current);
-		model->SetTexture(path, Texture_Specular, textureID);
+		model->SetTexture(path, Texture_Specular, TextureLoader::LoadTexture(path));
 	}
 	return *this;
 }

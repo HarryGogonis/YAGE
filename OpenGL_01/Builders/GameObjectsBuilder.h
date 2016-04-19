@@ -33,6 +33,7 @@ public:
 	GameObjectsBuilder & copyModel();
 			// Transform
 			GameObjectsBuilder & setPosition(glm::vec3);
+			GameObjectsBuilder & setPosition(float, float, float);
 			GameObjectsBuilder & setScale(float);
 			GameObjectsBuilder & setRotation(float angleX, float angleY, float angleZ);
 			GameObjectsBuilder & setDynamic();

@@ -10,6 +10,7 @@
 #include "../Rendering/Models/Scene_Container.h"
 #include "Shader_Factory.h"
 #include "../Rendering/Models/Particle_Container.h"
+#include "../Rendering/Util/TextureLoader.h"
 
 int texture_id = 0;
 
@@ -44,15 +45,9 @@ Scene_Container* Models_Manager::CreateModel(
 	shaderFactory->SetTextureShader(*model);
 	if (!texturePath.empty())
 	{
+		GLuint texture = TextureLoader::LoadTexture(texturePath);
 		std::string texture_name = "texture_" + texture_id;
-		GLuint texture = SOIL_load_OGL_texture(
-			texturePath.c_str(),
-			SOIL_LOAD_AUTO,
-			SOIL_CREATE_NEW_ID,
-			SOIL_FLAG_INVERT_Y);
-		if (!texture)
-			std::cout << "ERROR: texture for model not loaded properly" << std::endl;
-		else
+		if (texture)
 			model->SetTexture(texture_name, type, texture);
 	}
 	gameModelList.push_back(model);

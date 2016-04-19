@@ -8,6 +8,8 @@ float Camera::fov = 45.0f;
 float Camera::aspect;
 float Camera::width;
 float Camera::height;
+float Camera::zNear = 0.1f;
+float Camera::zFar = 100.0f;
 
 float speed = 50.0f;
 float mouseSpeed = 1.0f;
@@ -15,7 +17,7 @@ float mouseSpeed = 1.0f;
 glm::mat4 viewMatrix;
 glm::mat4 projMatrix;
 
-glm::vec3 eyeVector = glm::vec3(0, 0, 15);
+glm::vec3 eyeVector = glm::vec3(0.0f, 2.0f, 7.0f);
 float pitch, yaw = 0.0f;
 
 float deltaTime = 0.0f;
@@ -173,9 +175,10 @@ void Camera::ComputeMatrices(Scene_Container* actor)
 	// TODO: Move this
 	glutMouseFunc(onMouseButton);
 
-	projMatrix = glm::perspective(glm::radians(fov), aspect, 0.1f, 100.0f);
+	projMatrix = glm::perspective(glm::radians(fov), aspect, zNear, zFar);
 
 	viewMatrix = rotate * translate;
+
 	startTime = endTime; // update "previous" time
 }
 

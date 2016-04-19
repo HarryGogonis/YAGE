@@ -4,6 +4,7 @@
 #include "../Rendering/Util/Light.h"
 #include "../Rendering/Models/Scene_Container.h"
 #include "../Rendering/Models/Particle_Container.h"
+#include "../Rendering/Models/Skybox.h"
 
 /**********************************************************************************************//**
  * @class	Models_Manager

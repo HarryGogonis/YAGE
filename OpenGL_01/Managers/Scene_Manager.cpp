@@ -25,7 +25,7 @@ Scene_Manager::Scene_Manager(std::string scene_name)
 	shader_manager = Shader_Factory::GetInstance();
 	shadow_manager = Shadow_Manager::GetInstance();
 	physics_manager = Physics_Manager::GetInstance();
-	
+	skybox = Skybox::GetInstance();
 }
 
 Scene_Manager::~Scene_Manager()
@@ -45,6 +45,7 @@ void Scene_Manager::UpdatePass() const
 {
 	physics_manager->Step();
 	models_manager->Update();
+	skybox->Update();
 }
 
 
@@ -61,6 +62,8 @@ void Scene_Manager::RenderPass() const
 	glClearColor(0.0, 0.0, 0.0, 1.0);
 	physics_manager->DrawDebug();
 	models_manager->Draw();
+	skybox->Draw();
+
 }
 
 int Scene_Manager::GetDeltaTime()
