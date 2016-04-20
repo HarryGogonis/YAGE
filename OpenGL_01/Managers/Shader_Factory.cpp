@@ -54,7 +54,7 @@ GLuint Shader_Factory::CreateShader(GLenum shaderType,
 								   const std::string& source,
 								   const std::string& shaderName)
 {
-	std::cout << "compiling shader: " << shaderName.c_str() << std::endl;
+	//std::cout << "compiling shader: " << shaderName.c_str() << std::endl;
 
 	int compile_result = 0;
 

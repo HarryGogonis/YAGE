@@ -40,7 +40,7 @@ private:
 	bool isDynamic;
 	int texture_id = 0;
 
-	void addMeshWithMat(const aiMesh*, const aiMaterial*);
+	void addMeshWithMat(const aiMesh*, const aiMaterial*, const std::string&);
 	void CreateCollisionShape();
 };
 

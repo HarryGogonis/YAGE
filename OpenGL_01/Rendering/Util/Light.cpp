@@ -2,15 +2,12 @@
 #include <string>
 #include <glm/gtc/matrix_transform.hpp>
 #include "../../Managers/Shadow_Manager.h"
+#include "Camera.h"
 
-///< An enum representing the different types of light code in the shader
-enum
-{
-	AMBIENT_LIGHT = 0,
-	DIRECTIONAL_LIGHT = 1,
-	POINT_LIGHT = 2,
-	SPOT_LIGHT = 3
-};
+const static int AMBIENT_LIGHT = 0;
+const static int DIRECTIONAL_LIGHT = 1;
+const static int POINT_LIGHT = 2;
+const static int SPOT_LIGHT = 3;
 
 /** @brief	Number of lights. */
 unsigned int Light::count = 0;
@@ -118,7 +115,8 @@ void DirectionalLight::DrawShadow(GLuint shadowProgram)
 {
 	if (!isEnabled || !castsShadow) return;
 
-	glm::mat4 projection = glm::ortho<float>(-10, 10, -10, 10, -10, 20);
+	glm::mat4 projection = glm::ortho<float>(
+		-100, 100, -100, 100, -100, 200);
 	glm::mat4 view = glm::lookAt(position, glm::vec3(0.0f), glm::vec3(0.0, 1.0, 0.0));
 	glm::mat4 depth_mvp = projection * view;
 

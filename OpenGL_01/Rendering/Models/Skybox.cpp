@@ -91,7 +91,7 @@ Skybox::Skybox()
 		"skyboxShader",
 		"Shaders\\SkyboxVertexShader.glsl",
 		"Shaders\\SkyboxFragmentShader.glsl"));
-	SetCubemap("Examples\\skybox_texture.jpg");
+	SetCubemap("Assets\\skybox.jpg");
 
 	P_ID = glGetUniformLocation(program, "projection");
 	V_ID = glGetUniformLocation(program, "view");

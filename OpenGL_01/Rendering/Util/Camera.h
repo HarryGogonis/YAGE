@@ -63,6 +63,8 @@ public:
 	/** @brief	The farthest Z value to render */
 	static float zFar;
 
+	glm::vec3 transform;
+
 	Camera(Camera const&) = delete;
 	void operator=(Camera const&) = delete;
 

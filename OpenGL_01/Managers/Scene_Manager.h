@@ -25,7 +25,6 @@ public:
 	void notifyDisplayFrame();
 	void notifyEndFrame();
 	void notifyReshape(int width, int height, int p_width, int p_height);
-
 private:
 	Shader_Factory* shader_manager;
 	Models_Manager* models_manager;

@@ -39,6 +39,10 @@ public:
 	 **************************************************************************************************/
 
 	void SetPosition(const glm::vec3 &position);
+	void SetPosition(float x, float y, float z)
+	{
+		SetPosition(glm::vec3(x, y, z));
+	};
 
 	/**********************************************************************************************//**
 	 * @fn	void Transform::SetRotation(float angle, glm::vec3 axis);

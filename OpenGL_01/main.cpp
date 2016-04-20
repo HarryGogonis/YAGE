@@ -1,4 +1,4 @@
-	#include "Core\Init\Init_GLUT.h"
+#include "Core\Init\Init_GLUT.h"
 #include "Managers\Scene_Manager.h"
 #include "Builders/GameObjectsBuilder.h"
 #include <random>
@@ -25,39 +25,39 @@ int main(int argc, char **argv)
 	Scene_Manager* scene = new Scene_Manager(game_name);
 
 	GameObjectsBuilder gob = GameObjectsBuilder();
-	
-	std::random_device rd; // obtain a random number from hardware
-	std::mt19937 eng(rd()); // seed the generator
-	std::uniform_int_distribution<> distrX(-7, 3); // define the range
-	std::uniform_int_distribution<> distrZ(-7, 0); // define the range
 
-	gob.addModel("Examples\\wall.obj", "Examples\\bricks.jpg") // Back center
-		.setPosition(glm::vec3(-3.f, 0.f, 0.f))
-		.setScale(8.f)
-		.setRotation(90.f, 0.f, 0.f)
-		.addRigidBody(0.f)
-	.addModel("Examples\\wall.obj", "Examples\\dirt.jpg") // Back center
-		.setPosition(glm::vec3(-3.f, 7.f, -7.f))
-		.setScale(8.f)
-		.setRotation(0.f, 0.f, 0.f)
-		.addRigidBody(0.f)
-	.addModel("Examples\\diablo.obj", "Examples\\diablo_diffuse.tga")
+	gob.addModel("Assets\\quad.obj", "Assets\\grass\\ls_grass.jpg")
+		.setNormal("Assets\\grass\\ls_grass_norm.jpg")
+		.setSpecular("Assets\\grass\\ls_grass_spec.jpg")
 		.setPosition(glm::vec3(0.f, 0.f, 0.f))
+		.setRotation(90.f, 0.f, 0.f)
+		.setScale(10.f)
+		.addRigidBody(0.f);
+
+	gob.addModel("Assets\\environment\\HighShack.obj", "Assets\\environment\\T_HighShack_D.tga")
+		.setNormal("Assets\\environment\\T_HighShack_N.tga")
+		.setSpecular("Assets\\environment\\T_HighShack_S.tga")
+		.setPosition(-7.f, 0.f, -10.f)
+		.setScale(3.f)
+		.addRigidBody(0.f);
+
+	gob.addModel("Examples\\diablo.obj", "Examples\\diablo_diffuse.tga")
+		.setNormal("Examples\\diablo_normal.tga")
+		.setSpecular("Examples\\diablo_specular.tga")
+		.setPosition(glm::vec3(-5.f, 10.f, 0.f))
 		.setScale(1.f)
-		.setRotation(0.f, 180.f, 0.f)
-		.addRigidBody(5.f)
+		.setRotation(0.f, 45.f, 0.f)
+		.addRigidBody(1000.f)
 		.lockUpright()
 		.controlAsPlayer()
-		.setDynamic()
-	.addLight(OT_LIGHT_POINT)
-		.setColor(glm::vec3(0.6f, 0.5f, 0.5f))
-		.setPosition(glm::vec3(0.0, 4.0, 0.0))
-	.addLight(OT_LIGHT_DIRECTIONAL)
-		.setColor(glm::vec3(0.6f, 0.6f, 0.6f))
-		.setPosition(glm::vec3(0.f, 0.f, 1.f))
+		.setDynamic();
+
+		gob.addLight(OT_LIGHT_DIRECTIONAL)
+		.setColor(glm::vec3(0.8f, 0.8f, 0.8f))
+		.setPosition(glm::vec3(1.0f, 1.0f, 0.0f))
 		.setHalfVector(glm::vec3(0.5f, 0.5f, 0.5f))
-		.setCastsShadows(false)
-	.addLight(OT_LIGHT_AMBIENT)
+		.setCastsShadows(true)
+		.addLight(OT_LIGHT_AMBIENT)
 		.setColor(glm::vec3(1.f, 1.f, 1.f))
 		.setStrength(0.2f);
 

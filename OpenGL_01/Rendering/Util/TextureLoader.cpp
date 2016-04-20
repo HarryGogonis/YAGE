@@ -22,6 +22,6 @@ GLuint TextureLoader::LoadTexture(const std::string& texturePath)
 		SOIL_CREATE_NEW_ID,
 		SOIL_FLAG_INVERT_Y);
 	if (!texture)
-		std::cout << "ERROR: texture for model not loaded properly: " << SOIL_last_result() << std::endl;
+		std::cout << "ERROR loading texture  " << texturePath << " " << SOIL_last_result() << std::endl;
 	return texture;
 }

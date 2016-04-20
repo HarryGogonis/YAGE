@@ -6,6 +6,7 @@
 #include "BulletDynamics/Character/btKinematicCharacterController.h"
 
 #include <GL/freeglut.h>
+#include "Scene_Manager.h"
 
 struct CharacterContainer
 {
@@ -51,22 +52,45 @@ void onKeyPressed(const unsigned char key, int x, int y)
 	Physics_Manager* physics_mgr = Physics_Manager::GetInstance();
 	btRigidBody* actor = physics_mgr->getActorBody();
 	CharacterContainer* charContainer = physics_mgr->getCharacter();
+	btPairCachingGhostObject* ghost = charContainer->ghost;
 	if (charContainer)
 	{
 		btVector3 prev = actor->getLinearVelocity();
 		btKinematicCharacterController* controller = charContainer->controller;
+
+		btScalar walkVelocity = btScalar(1.1) * 0.05; // 4 km/h -> 1.1 m/s
+		btScalar walkSpeed = walkVelocity * float(Scene_Manager::GetDeltaTime() / 1000.0f);
+		
+		btMatrix3x3 orn = ghost->getWorldTransform().getBasis();
+		ghost->getWorldTransform().setBasis(orn);
+		const float PI = 3.141592654;
 		switch (key)
 		{
-		case 'd':
-			charContainer->rightPressed = true;
-			controller->setWalkDirection(btVector3(.05f, 0.f, 0.f));
+		case 'w':
+			charContainer->leftPressed = true;
+			orn = btMatrix3x3(btQuaternion(btVector3(0, 1, 0), PI));
+			ghost->getWorldTransform().setBasis(orn);
+			controller->setWalkDirection(btVector3(0.f, 0.f, -walkSpeed));
+			//controller->jump();
 			break;
 		case 'a':
 			charContainer->leftPressed = true;
-			controller->setWalkDirection(btVector3(-.05f, 0.f, 0.f));
+			orn = btMatrix3x3(btQuaternion(btVector3(0, 1, 0), 3*PI/2));
+			ghost->getWorldTransform().setBasis(orn);
+			controller->setWalkDirection(btVector3(-walkSpeed, 0.f, 0.f));
 			break;
-		case 'w':
-			controller->jump();
+		case 's':
+			charContainer->leftPressed = true;
+			orn = btMatrix3x3(btQuaternion(btVector3(0, 1, 0), 0));
+			ghost->getWorldTransform().setBasis(orn);
+			controller->setWalkDirection(btVector3(0.f, 0.f, walkSpeed));
+			//controller->setWalkDirection(btVector3(0.f, 0.f, .05f));
+			break;
+		case 'd':
+			charContainer->rightPressed = true;
+			orn = btMatrix3x3(btQuaternion(btVector3(0, 1, 0), PI/2));
+			ghost->getWorldTransform().setBasis(orn);
+			controller->setWalkDirection(btVector3(walkSpeed, 0.f, 0.f));
 			break;
 		default:
 			break;
