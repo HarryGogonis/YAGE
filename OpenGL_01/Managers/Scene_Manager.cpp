@@ -12,7 +12,9 @@ Scene_Manager::Scene_Manager(std::string scene_name)
 {
 	glEnable(GL_NORMALIZE);
 	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_CULL_FACE);
 
 	if (CULL_BACK)
 	{

@@ -58,8 +58,8 @@ void onKeyPressed(const unsigned char key, int x, int y)
 		btVector3 prev = actor->getLinearVelocity();
 		btKinematicCharacterController* controller = charContainer->controller;
 
-		btScalar walkVelocity = btScalar(1.1) * 0.05; // 4 km/h -> 1.1 m/s
-		btScalar walkSpeed = walkVelocity * float(Scene_Manager::GetDeltaTime() / 1000.0f);
+		btScalar walkVelocity = 0.05; // 4 km/h -> 1.1 m/s
+		btScalar walkSpeed = walkVelocity;
 		
 		btMatrix3x3 orn = ghost->getWorldTransform().getBasis();
 		ghost->getWorldTransform().setBasis(orn);
@@ -91,6 +91,9 @@ void onKeyPressed(const unsigned char key, int x, int y)
 			orn = btMatrix3x3(btQuaternion(btVector3(0, 1, 0), PI/2));
 			ghost->getWorldTransform().setBasis(orn);
 			controller->setWalkDirection(btVector3(walkSpeed, 0.f, 0.f));
+			break;
+		case 'f':
+			controller->jump();
 			break;
 		default:
 			break;

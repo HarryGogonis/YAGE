@@ -85,6 +85,7 @@ void Particle_Container::Draw(GLuint p)
 
 void Particle_Container::Draw()
 {
+	//glDepthMask(GL_FALSE);
 	glUseProgram(program);
 
 	glActiveTexture(GL_TEXTURE0);
@@ -119,6 +120,7 @@ void Particle_Container::Draw()
 	glVertexAttribDivisor(2, 2);
 
 	glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, 4, ParticleCount);
+	//glDepthMask(GL_TRUE);
 }
 
 void Particle_Container::Update()

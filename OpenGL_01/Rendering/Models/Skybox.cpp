@@ -70,7 +70,8 @@ void Skybox::SetCubemap(const std::string& path)
 {
 	texture = SOIL_load_OGL_single_cubemap(
 			path.c_str(),
-			"EWUDNS",
+			//"EWUDNS",
+			"SWUDNE", // WUD
 			SOIL_LOAD_AUTO,
 			SOIL_CREATE_NEW_ID,
 			SOIL_FLAG_MIPMAPS);

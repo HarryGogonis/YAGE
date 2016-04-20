@@ -27,11 +27,60 @@ int main(int argc, char **argv)
 	GameObjectsBuilder gob = GameObjectsBuilder();
 
 	gob.addModel("Assets\\quad.obj", "Assets\\grass\\ls_grass.jpg")
-		.setNormal("Assets\\grass\\ls_grass_norm.jpg")
 		.setSpecular("Assets\\grass\\ls_grass_spec.jpg")
 		.setPosition(glm::vec3(0.f, 0.f, 0.f))
 		.setRotation(90.f, 0.f, 0.f)
 		.setScale(10.f)
+		.addRigidBody(0.f)
+		.copyModel()
+		.setPosition(glm::vec3(-30.f, 0.f, 0.f))
+		.setScale(10.f)
+		.addRigidBody(0.f);
+
+	gob.addModel("Assets\\cat\\cat.obj")
+		.setPosition(0.f, 5.f, 0.f)
+		.setRotation(0.0f, 0.0f, 0.0f)
+		.setScale(1.f)
+		.addRigidBody(5.f)
+		.lockUpright()
+		.setDynamic();
+	gob.copyModel()
+		.setPosition(2.5f, 5.f, -2.f)
+		.setRotation(0.0f, 0.0f, 0.0f)
+		.setScale(1.f)
+		.addRigidBody(5.f)
+		.lockUpright()
+		.setDynamic();
+	gob.copyModel()
+		.setPosition(1.f, 5.f, 1.f)
+		.setRotation(0.0f, 0.0f, 0.0f)
+		.setScale(1.f)
+		.addRigidBody(5.f)
+		.lockUpright()
+		.setDynamic();
+
+	gob.addModel("Assets\\cube.obj", "Assets\\wall\\brick_diffuse.DDS")
+		.setNormal("Assets\\wall\\brick_normal.bmp")
+		.setSpecular("Assets\\wall\\brick_specular.DDS")
+		.setPosition(glm::vec3(-10.f, 1.f, 0.f))
+		.setRotation(90.f, 0.f, 0.f)
+		.setScale(1.f)
+		.addRigidBody(5.f)
+		.lockUpright()
+		.setDynamic();
+
+	gob.addModel("Assets\\trees\\tree01.3ds")
+		.setPosition(5.f, 0.f, -4.f)
+		.setRotation(-90.0f, 0.0f, 0.0f)
+		.setScale(5.f)
+		.addRigidBody(0.f);
+
+	gob.addModel("Assets\\woodenbridge.obj", "Assets\\environment\\T_HighShack_D.tga")
+		.setNormal("Assets\\environment\\T_HighShack_N.tga")
+		.setSpecular("Assets\\environment\\T_HighShack_S.tga")
+		.setPosition(15.f, -1.f, 0.f)
+		.setRotation(0.f, 0.f, 0.f)
+		.setScale(1.f)
 		.addRigidBody(0.f);
 
 	gob.addModel("Assets\\environment\\HighShack.obj", "Assets\\environment\\T_HighShack_D.tga")
@@ -52,6 +101,9 @@ int main(int argc, char **argv)
 		.controlAsPlayer()
 		.setDynamic();
 
+	gob.addParticleSystem("").
+		setPosition(-15.f, 0.f, 3.f);
+
 		gob.addLight(OT_LIGHT_DIRECTIONAL)
 		.setColor(glm::vec3(0.8f, 0.8f, 0.8f))
 		.setPosition(glm::vec3(1.0f, 1.0f, 0.0f))
@@ -59,7 +111,7 @@ int main(int argc, char **argv)
 		.setCastsShadows(true)
 		.addLight(OT_LIGHT_AMBIENT)
 		.setColor(glm::vec3(1.f, 1.f, 1.f))
-		.setStrength(0.2f);
+		.setStrength(0.3f);
 
 	scene->SetupScene(gob);
 

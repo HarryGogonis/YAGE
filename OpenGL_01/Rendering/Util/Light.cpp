@@ -115,8 +115,9 @@ void DirectionalLight::DrawShadow(GLuint shadowProgram)
 {
 	if (!isEnabled || !castsShadow) return;
 
+	const int SHADOW_SIZE = 50;
 	glm::mat4 projection = glm::ortho<float>(
-		-100, 100, -100, 100, -100, 200);
+		-SHADOW_SIZE, SHADOW_SIZE, -SHADOW_SIZE, SHADOW_SIZE, -SHADOW_SIZE, 2 * SHADOW_SIZE);
 	glm::mat4 view = glm::lookAt(position, glm::vec3(0.0f), glm::vec3(0.0, 1.0, 0.0));
 	glm::mat4 depth_mvp = projection * view;
 
