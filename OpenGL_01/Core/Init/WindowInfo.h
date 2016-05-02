@@ -1,6 +1,15 @@
 #pragma once
 #include <string>
 
+/**********************************************************************************************//**
+ * @struct	WindowInfo
+ *
+ * @brief	Information about the game window.
+ *
+ * @author	Harry
+ * @date	4/14/2016
+ **************************************************************************************************/
+
 struct WindowInfo
 {
 	std::string name;

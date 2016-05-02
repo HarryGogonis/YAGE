@@ -10,6 +10,7 @@ uniform sampler2D particle_texture;
 
 void main()
 {
-	color = texture(particle_texture, UV) * particleColor;
+	//color = texture(particle_texture, UV) * particleColor;
 	//color = vec4(1.0f);
+	color = particleColor;
 }

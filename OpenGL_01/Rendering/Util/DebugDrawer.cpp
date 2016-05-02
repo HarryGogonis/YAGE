@@ -2,6 +2,7 @@
 #include <iostream>
 #include "../../Managers/Shader_Factory.h"
 #include "VboIndexer.h"
+#include "Camera.h"
 
 
 DebugDrawer::DebugDrawer()

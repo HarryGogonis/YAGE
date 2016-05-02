@@ -6,7 +6,7 @@
 class Mesh : public Model
 {
 public:
-	Mesh(const aiMesh*, const aiMaterial*, Transform*);
+	Mesh(const std::string&, const aiMesh*, const aiMaterial*, Transform*);
 	Mesh(const Mesh*, Transform*);
 	~Mesh();
 

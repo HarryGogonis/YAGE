@@ -15,9 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Core\Init\Init_GLEW.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -69,6 +66,15 @@
     <ClCompile Include="Rendering\Models\Particle_Container.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Rendering\Util\TextureLoader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Rendering\Models\Skybox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -81,6 +87,8 @@
     <None Include="Shaders\ShadowVertexShader.glsl" />
     <None Include="Shaders\ParticleFragmentShader.glsl" />
     <None Include="Shaders\ParticleVertexShader.glsl" />
+    <None Include="Shaders\SkyboxFragmentShader.glsl" />
+    <None Include="Shaders\SkyboxVertexShader.glsl" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core\Init\WindowInfo.h">
@@ -156,6 +164,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Rendering\Models\Particle_Container.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering\Util\TextureLoader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering\Models\Skybox.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

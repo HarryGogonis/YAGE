@@ -1,7 +1,7 @@
 #pragma once
 #include <GL/glew.h>
 #include <vector>
-#include "Camera.h"
+#include <glm/glm.hpp>
 #include "LinearMath/btIDebugDraw.h"
 
 

@@ -11,6 +11,7 @@ int Particle_Container::instanceCount = 0;
 Particle_Container::Particle_Container(Transform t, const std::string& texturePath, bool enable,
 	int max_particles, int particle_rate, float particle_max_life)
 {
+	transform = t;
 	MaxParticles = max_particles;
 	ParticleCount = 0;
 	LastUsedParticle = 0;
@@ -84,6 +85,7 @@ void Particle_Container::Draw(GLuint p)
 
 void Particle_Container::Draw()
 {
+	//glDepthMask(GL_FALSE);
 	glUseProgram(program);
 
 	glActiveTexture(GL_TEXTURE0);
@@ -118,6 +120,7 @@ void Particle_Container::Draw()
 	glVertexAttribDivisor(2, 2);
 
 	glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, 4, ParticleCount);
+	//glDepthMask(GL_TRUE);
 }
 
 void Particle_Container::Update()
@@ -190,7 +193,7 @@ void Particle_Container::AddNewParticles(int newparticles)
 	{
 		int pIndex = FindUnusedParticle();
 		particles[pIndex].life = max_life; //TODO randomize between (min_life, max_life)
-		particles[pIndex].pos = t.position;
+		particles[pIndex].pos = transform.position;
 		// TODO don't hardcode a lot of these values
 		float spread = 1.5f;
 
@@ -209,7 +212,7 @@ void Particle_Container::AddNewParticles(int newparticles)
 		particles[pIndex].r = rand() % 256;
 		particles[pIndex].g = rand() % 256;
 		particles[pIndex].b = rand() % 256;
-		particles[pIndex].a = (rand() % 256) / 3;
+		particles[pIndex].a = rand() % 256;
 
 		// TODO better random size
 		particles[pIndex].size = (rand() % 1000) / 2000.0f + 0.1f;

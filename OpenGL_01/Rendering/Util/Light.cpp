@@ -2,13 +2,16 @@
 #include <string>
 #include <glm/gtc/matrix_transform.hpp>
 #include "../../Managers/Shadow_Manager.h"
+#include "Camera.h"
 
 const static int AMBIENT_LIGHT = 0;
 const static int DIRECTIONAL_LIGHT = 1;
 const static int POINT_LIGHT = 2;
 const static int SPOT_LIGHT = 3;
 
+/** @brief	Number of lights. */
 unsigned int Light::count = 0;
+/** @brief	Number of shadow-casting lights. */
 unsigned int shadowLightCount = 0;
 
 Light::Light()
@@ -35,37 +38,19 @@ void Light::Draw(GLuint program)
 	ids.quadraticAttenuation = glGetUniformLocation(program, (prefix + "quadradicAttenuation").c_str());
 }
 
-void Light::DrawShadow(GLuint shadowProgram)
+void Light::DrawShadow(GLuint)
 {
-	// override
-
-
-		//for spot light :
-		//glm::vec3 lightPos(5, 20, 20);
-		//glm::mat4 depthProjectionMatrix = glm::perspective<float>(45.0f, 1.0f, 2.0f, 50.0f);
-		//glm::mat4 depthViewMatrix = glm::lookAt(lightPos, lightPos-lightInvDir, glm::vec3(0,1,0));
-
-		// See this for more: http://www.opengl-tutorial.org/intermediate-tutorials/tutorial-16-shadow-mapping/
+	// Sub class must implement
 }
 
 void Light::Update()
 {
-	// override
-}
-
-void Light::SetProgram(GLuint program)
-{
-	this->program = program;
-}
-
-void Light::SetShadowProgram(GLuint program)
-{
-	this->shadowProgram = program;
+	// TODO Implement update?
 }
 
 void Light::Destroy()
 {
-	//TODO what happens when a light is destroyed?
+	// TODO what happens when a light is destroyed?
 	this->isEnabled = false;
 }
 
@@ -130,7 +115,9 @@ void DirectionalLight::DrawShadow(GLuint shadowProgram)
 {
 	if (!isEnabled || !castsShadow) return;
 
-	glm::mat4 projection = glm::ortho<float>(-10, 10, -10, 10, -10, 20);
+	const int SHADOW_SIZE = 50;
+	glm::mat4 projection = glm::ortho<float>(
+		-SHADOW_SIZE, SHADOW_SIZE, -SHADOW_SIZE, SHADOW_SIZE, -SHADOW_SIZE, 2 * SHADOW_SIZE);
 	glm::mat4 view = glm::lookAt(position, glm::vec3(0.0f), glm::vec3(0.0, 1.0, 0.0));
 	glm::mat4 depth_mvp = projection * view;
 

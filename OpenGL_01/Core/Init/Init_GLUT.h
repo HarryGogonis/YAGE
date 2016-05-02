@@ -7,9 +7,22 @@
 
 #include <iostream>
 
+/**********************************************************************************************//**
+ * @class	Init_GLUT
+ *
+ * @brief	Helper class to initalize GLUT and setup listener callbacks
+ **************************************************************************************************/
+
 class Init_GLUT
 {
 public:
+
+	/**********************************************************************************************//**
+	 * @fn	static void Init_GLUT::init(const WindowInfo&, const ContextInfo&, const FrameBufferInfo&);
+	 *
+	 * @brief	Initalizes GLUT with a window
+	 **************************************************************************************************/
+
 	static void init(const WindowInfo&, const ContextInfo&, const FrameBufferInfo&);
 
 	static void run();
@@ -23,8 +36,17 @@ public:
 	static void setListener(Scene_Manager*& iListener);
 
 private:
-	// GLUT callbacks
 	static void idleCallback();
+
+	/**********************************************************************************************//**
+	 * @fn	static void Init_GLUT::displayCallback();
+	 *
+	 * @brief	Callback from GLUT on each frame
+	 *
+	 * @author	Harry
+	 * @date	4/14/2016
+	 **************************************************************************************************/
+
 	static void displayCallback();
 	static void reshapeCallback(int width, int height);
 	static void closeCallback();

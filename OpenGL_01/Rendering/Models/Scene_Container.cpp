@@ -1,9 +1,36 @@
+#include <assimp/Importer.hpp>
 #include "Scene_Container.h"
 #include "BulletCollision/CollisionShapes/btShapeHull.h"
 #include "../../Managers/Physics_Manager.h"
+#include <string>
+
+std::vector<std::string> split(const std::string &str, const char &delim) {
+	typedef std::string::const_iterator iter;
+	iter beg = str.begin();
+	std::vector<std::string> tokens;
+
+	while (beg != str.end()) {
+		//cout << ":" << beg._Myptr << ":" << endl;
+		iter temp = find(beg, str.end(), delim);
+		if (beg != str.end())
+			tokens.push_back(std::string(beg, temp));
+		beg = temp;
+		while ((beg != str.end()) && (*beg == delim))
+			beg++;
+	}
+
+	return tokens;
+}
 
 Scene_Container::Scene_Container(const std::string &path, Transform transform)
-{
+{	
+	struct stat   buffer;
+	if (path.empty() || stat(path.c_str(), &buffer) != 0)
+	{
+		std::cout << "ERROR: cannot find file " << path << std::endl;
+		return;
+	}
+
 	Assimp::Importer importer;
 
 	this->transform = transform;
@@ -25,11 +52,17 @@ Scene_Container::Scene_Container(const std::string &path, Transform transform)
 		aiMesh *mesh = scene->mMeshes[i];
 		if (scene->mNumMaterials)
 		{
-			addMeshWithMat(mesh, scene->mMaterials[mesh->mMaterialIndex]);
+			std::string basePath = "";
+			std::vector<std::string> splitPath = split(path, '\\');
+			for (int i = 0; i < splitPath.size() - 1; i++)
+			{
+				basePath += splitPath[i] + "\\";
+			}
+			addMeshWithMat(mesh, scene->mMaterials[mesh->mMaterialIndex], basePath);
 		}
 		else
 		{
-			addMeshWithMat(mesh, nullptr);
+			addMeshWithMat(mesh, nullptr, nullptr);
 		}
 	}
 	rigidBody = nullptr;
@@ -204,8 +237,7 @@ void Scene_Container::Draw(GLuint program)
 {
 	if (rigidBody && isDynamic)
 	{
-		btTransform trans;
-		rigidBody->getMotionState()->getWorldTransform(trans);
+		btTransform trans = rigidBody->getWorldTransform();
 		transform = trans;
 	}
 	for (int i = 0; i != meshes.size(); ++i)
@@ -230,9 +262,9 @@ void Scene_Container::Update()
 	}
 }
 
-void Scene_Container::addMeshWithMat(const aiMesh* ai_mesh, const aiMaterial* ai_mat)
+void Scene_Container::addMeshWithMat(const aiMesh* ai_mesh, const aiMaterial* ai_mat, const std::string& basePath)
 {
-	Mesh *mesh = new Mesh(ai_mesh, ai_mat, &transform);
+	Mesh *mesh = new Mesh(basePath, ai_mesh, ai_mat, &transform);
 	meshes.push_back(mesh);
 }
 

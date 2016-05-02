@@ -1,9 +1,11 @@
-#include "VboIndexer.h"
+/**********************************************************************************************//**
+ * @file	Rendering\Util\VboIndexer.cpp
+ *
+ * @brief	Implements the vbo indexer class.
+ * 			Shamelessly copied from https://github.com/opengl-tutorials/ogl/blob/master/common/vboindexer.cpp
+ **************************************************************************************************/
 
-/*
- * VBO Indexing
- * Source - https://github.com/opengl-tutorials/ogl/blob/master/common/vboindexer.cpp
- */
+#include "VboIndexer.h"
 
 bool is_near(float v1, float v2) {
 	return fabs(v1 - v2) < 0.01f;

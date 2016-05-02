@@ -1,7 +1,131 @@
+#include "../Rendering/Util/Camera.h"
 #include "Physics_Manager.h"
-#include <iostream>
 #include "../Rendering/Util/DebugDrawer.h"
 #include "../Core/Options.h"
+#include "BulletCollision/CollisionDispatch/btGhostObject.h"
+#include "BulletDynamics/Character/btKinematicCharacterController.h"
+
+#include <GL/freeglut.h>
+#include "Scene_Manager.h"
+
+struct CharacterContainer
+{
+	btPairCachingGhostObject* ghost;
+	btKinematicCharacterController* controller;
+	Scene_Container* actor;
+	btGhostPairCallback* callback;
+	bool leftPressed, rightPressed;
+
+	CharacterContainer(Scene_Container* actor)
+	{
+		this->actor = actor;
+		ghost = new btPairCachingGhostObject();
+		ghost->setCollisionShape(actor->getRigidBody()->getCollisionShape());
+		btTransform t = actor->getRigidBody()->getWorldTransform();
+		ghost->setWorldTransform(t);
+		ghost->setCollisionFlags(ghost->getCollisionFlags()
+			| btCollisionObject::CF_CHARACTER_OBJECT);
+		actor->getRigidBody()->setCollisionFlags(actor->getRigidBody()->getCollisionFlags()
+			| btCollisionObject::CF_NO_CONTACT_RESPONSE);
+		actor->getRigidBody()->setGravity(btVector3(0.f, 0.f, 0.f));
+		controller = new btKinematicCharacterController(
+			ghost,
+			static_cast<btConvexShape*>(actor->getRigidBody()->getCollisionShape()),
+			0.3f);
+		controller->setJumpSpeed(15.f);
+		callback = new btGhostPairCallback();
+	}
+
+	~CharacterContainer()
+	{
+		delete callback;
+		callback = nullptr;
+		delete controller;
+		controller = nullptr;
+		delete ghost;
+		ghost = nullptr;
+	}
+};
+
+void onKeyPressed(const unsigned char key, int x, int y)
+{
+	Physics_Manager* physics_mgr = Physics_Manager::GetInstance();
+	btRigidBody* actor = physics_mgr->getActorBody();
+	CharacterContainer* charContainer = physics_mgr->getCharacter();
+	btPairCachingGhostObject* ghost = charContainer->ghost;
+	if (charContainer)
+	{
+		btVector3 prev = actor->getLinearVelocity();
+		btKinematicCharacterController* controller = charContainer->controller;
+
+		btScalar walkVelocity = 0.05; // 4 km/h -> 1.1 m/s
+		btScalar walkSpeed = walkVelocity;
+		
+		btMatrix3x3 orn = ghost->getWorldTransform().getBasis();
+		ghost->getWorldTransform().setBasis(orn);
+		const float PI = 3.141592654;
+		switch (key)
+		{
+		case 'w':
+			charContainer->leftPressed = true;
+			orn = btMatrix3x3(btQuaternion(btVector3(0, 1, 0), PI));
+			ghost->getWorldTransform().setBasis(orn);
+			controller->setWalkDirection(btVector3(0.f, 0.f, -walkSpeed));
+			//controller->jump();
+			break;
+		case 'a':
+			charContainer->leftPressed = true;
+			orn = btMatrix3x3(btQuaternion(btVector3(0, 1, 0), 3*PI/2));
+			ghost->getWorldTransform().setBasis(orn);
+			controller->setWalkDirection(btVector3(-walkSpeed, 0.f, 0.f));
+			break;
+		case 's':
+			charContainer->leftPressed = true;
+			orn = btMatrix3x3(btQuaternion(btVector3(0, 1, 0), 0));
+			ghost->getWorldTransform().setBasis(orn);
+			controller->setWalkDirection(btVector3(0.f, 0.f, walkSpeed));
+			//controller->setWalkDirection(btVector3(0.f, 0.f, .05f));
+			break;
+		case 'd':
+			charContainer->rightPressed = true;
+			orn = btMatrix3x3(btQuaternion(btVector3(0, 1, 0), PI/2));
+			ghost->getWorldTransform().setBasis(orn);
+			controller->setWalkDirection(btVector3(walkSpeed, 0.f, 0.f));
+			break;
+		case 'f':
+			controller->jump();
+			break;
+		default:
+			break;
+		}
+	}
+	else
+	{
+		Camera::onKeyPressed(key);
+	}
+}
+
+void onKeyRelease(unsigned char key, int x, int y)
+{
+	Physics_Manager* physics_mgr = Physics_Manager::GetInstance();
+	btRigidBody* actor = physics_mgr->getActorBody();
+	CharacterContainer* charContainer = physics_mgr->getCharacter();
+	if (key == 'a')
+		charContainer->leftPressed = false;
+	else if (key == 'd')
+		charContainer->rightPressed = false;
+	if (charContainer)
+	{
+		btVector3 walk = btVector3(0.f, 0.f, 0.f);
+		if (charContainer->leftPressed)
+			walk.setX(-0.2f);
+		else if (charContainer->rightPressed)
+			walk.setX(0.2f);
+		btKinematicCharacterController* controller = charContainer->controller;
+		controller->setWalkDirection(btVector3(0.f, 0.f, 0.f));
+	}
+}
+
 Physics_Manager* Physics_Manager::m_physics_mgr = nullptr;
 
 Physics_Manager* Physics_Manager::GetInstance()
@@ -13,12 +137,10 @@ Physics_Manager* Physics_Manager::GetInstance()
 	return m_physics_mgr;
 }
 
-
 Physics_Manager::Physics_Manager()
 {
 	initWorld();
 }
-
 
 Physics_Manager::~Physics_Manager()
 {
@@ -44,17 +166,24 @@ Physics_Manager::~Physics_Manager()
 	clock = nullptr;
 	delete drawer;
 	drawer = nullptr;
+	if (charContainer)
+	{
+		delete charContainer;
+		charContainer = nullptr;
+	}
 }
 
 void Physics_Manager::initWorld()
 {
+	glutKeyboardFunc(onKeyPressed);
+	glutKeyboardUpFunc(onKeyRelease);
 	clock = nullptr;
 	collisionConfiguration = new btDefaultCollisionConfiguration();
 	dispatcher = new btCollisionDispatcher(collisionConfiguration);
 	broadphase = new btDbvtBroadphase();
 	solver = new btSequentialImpulseConstraintSolver;
 	dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher, broadphase, solver, collisionConfiguration);
-	dynamicsWorld->setGravity(btVector3(0, -1, 0));
+	dynamicsWorld->setGravity(btVector3(0.f, gravity, 0.f));
 
 	// Absolute base plane so all RigidBodies can be accounted for even if they phase through the ground
 	btCollisionShape* ground = new btStaticPlaneShape(btVector3(0, 1, 0), -15);
@@ -70,17 +199,31 @@ void Physics_Manager::initWorld()
 	dynamicsWorld->setDebugDrawer(drawer);
 }
 
+void Physics_Manager::setCharacter(Scene_Container* actor)
+{
+	charContainer = new CharacterContainer(actor);
+	charContainer->controller->setGravity(abs(gravity));
+	dynamicsWorld->addAction(charContainer->controller);
+	dynamicsWorld->addCollisionObject(
+		charContainer->ghost,
+		btBroadphaseProxy::CharacterFilter,
+		btBroadphaseProxy::StaticFilter | btBroadphaseProxy::DefaultFilter);
+	dynamicsWorld->getPairCache()->setInternalGhostPairCallback(charContainer->callback);
+}
+
 void Physics_Manager::Step()
 {
-		btCollisionObject* diablo = dynamicsWorld->getCollisionObjectArray()[0];
-		btRigidBody* realDiablo = btRigidBody::upcast(diablo);
-		btTransform trans;
-		realDiablo->getMotionState()->getWorldTransform(trans);
 	if (!clock)
 	{
 		clock = new btClock();
 	}
-	dynamicsWorld->stepSimulation(clock->getTimeSeconds(), 1);
+	float secs = clock->getTimeSeconds();
+	getActorBody()->setWorldTransform(charContainer->ghost->getWorldTransform());
+	dynamicsWorld->stepSimulation(secs);
+	Scene_Container* player_model = charContainer ?
+		static_cast<Scene_Container*>(charContainer->actor) :
+		nullptr;
+	Camera::ComputeMatrices(player_model);
 }
 
 void Physics_Manager::AddRigidBody(btRigidBody* body)
@@ -91,6 +234,20 @@ void Physics_Manager::AddRigidBody(btRigidBody* body)
 void Physics_Manager::AddConstraint(btTypedConstraint* constraint)
 {
 	dynamicsWorld->addConstraint(constraint, false);
+}
+
+btRigidBody* Physics_Manager::getActorBody()
+{
+	if (charContainer)
+	{
+		return charContainer->actor->getRigidBody();
+	}
+	return nullptr;
+}
+
+CharacterContainer * Physics_Manager::getCharacter()
+{
+	return charContainer;
 }
 
 void Physics_Manager::DrawDebug()

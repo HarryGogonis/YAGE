@@ -68,7 +68,10 @@ glm::mat4 Transform::getRotationMatrix() const
 
 glm::mat4 Transform::getTransformMatrix() const
 {
-	return getTranslationMatrix() * getRotationMatrix() * getScaleMatrix();
+	//return getTranslationMatrix() * getScaleMatrix() * getRotationMatrix();//
+	return getTranslationMatrix() *
+		getRotationMatrix() *
+		getScaleMatrix();
 }
 
 Transform& Transform::operator=(const btTransform &trans)

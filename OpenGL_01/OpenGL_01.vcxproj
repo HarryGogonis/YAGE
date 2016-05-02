@@ -22,6 +22,7 @@
     <ProjectGuid>{73B7E0FD-7937-4AE7-ABEA-E513BD187E02}</ProjectGuid>
     <RootNamespace>OpenGL_01</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+    <ProjectName>YAGE</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -150,9 +151,11 @@
     <ClCompile Include="Managers\Shader_Factory.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Rendering\Models\Model.cpp" />
+    <ClCompile Include="Rendering\Util\TextureLoader.cpp" />
     <ClCompile Include="Rendering\Util\Transform.cpp" />
     <ClCompile Include="Rendering\Util\VboIndexer.cpp" />
     <ClCompile Include="Rendering\Models\Scene_Container.cpp" />
+    <ClCompile Include="Rendering\Models\Skybox.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -161,6 +164,8 @@
     <None Include="Shaders\ParticleVertexShader.glsl" />
     <None Include="Shaders\ShadowFragmentShader.glsl" />
     <None Include="Shaders\ShadowVertexShader.glsl" />
+    <None Include="Shaders\SkyboxFragmentShader.glsl" />
+    <None Include="Shaders\SkyboxVertexShader.glsl" />
     <None Include="Shaders\TextureFragmentShader.glsl" />
     <None Include="Shaders\TextureVertexShader.glsl" />
     <None Include="Shaders\VertexShader.glsl" />
@@ -187,11 +192,13 @@
     <ClInclude Include="Managers\Shader_Factory.h" />
     <ClInclude Include="Rendering\Models\Model.h" />
     <ClInclude Include="Rendering\Util\Material.h" />
+    <ClInclude Include="Rendering\Util\TextureLoader.h" />
     <ClInclude Include="Rendering\Util\Transform.h" />
     <ClInclude Include="Rendering\VertexFormat.h" />
     <ClInclude Include="Rendering\IGameObject.h" />
     <ClInclude Include="Rendering\Util\VboIndexer.h" />
     <ClInclude Include="Rendering\Models\Scene_Container.h" />
+    <ClInclude Include="Rendering\Models\Skybox.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Examples\checkerboard.dds" />

@@ -8,6 +8,8 @@ float Camera::fov = 45.0f;
 float Camera::aspect;
 float Camera::width;
 float Camera::height;
+float Camera::zNear = 0.1f;
+float Camera::zFar = 100.0f;
 
 float speed = 50.0f;
 float mouseSpeed = 1.0f;
@@ -15,7 +17,7 @@ float mouseSpeed = 1.0f;
 glm::mat4 viewMatrix;
 glm::mat4 projMatrix;
 
-glm::vec3 eyeVector = glm::vec3(0, 0, 15);
+glm::vec3 eyeVector = glm::vec3(0.0f, 2.0f, 7.0f);
 float pitch, yaw = 0.0f;
 
 float deltaTime = 0.0f;
@@ -94,7 +96,7 @@ void onMouseButton(int button, int state, int x, int y)
 	}
 }
 
-void onKeyPressed(const unsigned char key, int x, int y)
+void Camera::onKeyPressed(const unsigned char key)
 {
 	float dx = 0;
 	float dz = 0; 
@@ -147,8 +149,9 @@ void onKeyPressed(const unsigned char key, int x, int y)
 
 
 //TODO switch from hardcoding in 1024/768, aspect, etc
-void Camera::ComputeMatrices()
+void Camera::ComputeMatrices(Scene_Container* actor)
 {
+	
 	int endTime = glutGet(GLUT_ELAPSED_TIME);
 	deltaTime = float(endTime - startTime)/1000.0f; // time elapsed in seconds
 
@@ -164,17 +167,18 @@ void Camera::ComputeMatrices()
 	glm::mat4 rotate = glm::mat4_cast(matPitch * matYaw);
 	
 	// Build translation matrix
-	glm::mat4 translate = glm::mat4(1.0f);
+	actor->Update();
+	glm::mat4 translate = actor ? glm::inverse(actor->transform.getTranslationMatrix()) : glm::mat4(1.f);
 	translate = glm::translate(translate, -eyeVector);
 
 	// listen for mouse events
-	//TODO call outside of this class
-	glutKeyboardFunc(onKeyPressed);
+	// TODO: Move this
 	glutMouseFunc(onMouseButton);
 
-	projMatrix = glm::perspective(glm::radians(fov), aspect, 0.1f, 100.0f);
+	projMatrix = glm::perspective(glm::radians(fov), aspect, zNear, zFar);
 
 	viewMatrix = rotate * translate;
+
 	startTime = endTime; // update "previous" time
 }
 

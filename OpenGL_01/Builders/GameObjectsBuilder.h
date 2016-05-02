@@ -1,7 +1,14 @@
 #pragma once
 #include "../Managers/Models_Manager.h"
 
-// Everything except OT_NONE and OT_MODEL bit-wise AND with OT_LIGHT for a non-zero result
+
+/**********************************************************************************************//**
+ * @enum	GameObjectType
+ *
+ * @brief	Values that represent game object types.
+ * 			Everything except OT_NONE and OT_MODEL bit-wise AND with OT_LIGHT for a non-zero result
+ **************************************************************************************************/
+
 enum GameObjectType
 {
 	OT_NONE					= 0,
@@ -26,14 +33,17 @@ public:
 	GameObjectsBuilder & copyModel();
 			// Transform
 			GameObjectsBuilder & setPosition(glm::vec3);
+			GameObjectsBuilder & setPosition(float, float, float);
 			GameObjectsBuilder & setScale(float);
 			GameObjectsBuilder & setRotation(float angleX, float angleY, float angleZ);
+			GameObjectsBuilder & setDynamic();
 			// Textures
 			GameObjectsBuilder & setDiffuse(const std::string&);
 			GameObjectsBuilder & setNormal(const std::string&);
 			GameObjectsBuilder & setSpecular(const std::string&);
 			// Initializes collision detection with no gravity if mass is '0.f'
 			GameObjectsBuilder & addRigidBody(float mass);
+			GameObjectsBuilder & controlAsPlayer();
 			// Limit rotation on Y axis and translation on X and Y axes
 			GameObjectsBuilder & lockUpright();
 

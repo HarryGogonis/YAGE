@@ -1,6 +1,12 @@
 #pragma once
 #include <iostream>
 
+/**********************************************************************************************//**
+ * @struct	VertexFormat
+ *
+ * @brief	The vertex buffer format that is sent directly to the shader.
+ **************************************************************************************************/
+
 struct VertexFormat
 {
 	glm::vec3 position;

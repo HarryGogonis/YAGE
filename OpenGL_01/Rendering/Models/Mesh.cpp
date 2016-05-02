@@ -1,10 +1,10 @@
 #include "Mesh.h" 
 #include "GL/glew.h"
 #include "SOIL.h"
-#include <string>
-#include <sstream>
 #include <assert.h>
 #include "../../Managers/Shadow_Manager.h"
+#include "../Util/Camera.h"
+#include "../Util/TextureLoader.h"
 
 glm::vec3 assimpToGLM3D(const aiVector3D &vec)
 {
@@ -16,7 +16,7 @@ glm::vec2 assimpToGLM2D(const aiVector3D &vec)
 	return glm::vec2(vec.x, vec.y);
 }
 
-Mesh::Mesh(const aiMesh* ai_mesh, const aiMaterial* ai_mat, Transform* transform)
+Mesh::Mesh(const std::string& basePath, const aiMesh* ai_mesh, const aiMaterial* ai_mat, Transform* transform)
 {
 	shininess = 2;
 	strength = 2;
@@ -49,30 +49,49 @@ Mesh::Mesh(const aiMesh* ai_mesh, const aiMaterial* ai_mat, Transform* transform
 		for (int i = 0; i < ai_mat->GetTextureCount(aiTextureType_DIFFUSE); ++i)
 		{
 			if (ai_mat->GetTexture(
-					aiTextureType_DIFFUSE, 
-					i, 
-					&path) == AI_SUCCESS)
+				aiTextureType_DIFFUSE,
+				i,
+				&path) == AI_SUCCESS)
 			{
-				// Add texture to total textures for this mesh
-				// Note: Automatically assume diffuse (TODO: CHANGE!)
-				GLuint textureID = SOIL_load_OGL_texture(
-					path.C_Str(),
-					SOIL_LOAD_AUTO,
-					SOIL_CREATE_NEW_ID,
-					SOIL_FLAG_INVERT_Y);
-				if (!textureID)
-					std::perror("ERROR: Mesh did not load material texture");
-				else
+				GLuint textureID = TextureLoader::LoadTexture(basePath + path.C_Str());
+
+				if (textureID)
 					SetTexture("diffuse_" + textureID, Texture_Diffuse, textureID);
 			}
-			if (ai_mat->Get(AI_MATKEY_SHININESS, shininess) != AI_SUCCESS)
+		}
+		for (int i = 0; i < ai_mat->GetTextureCount(aiTextureType_NORMALS); ++i)
+		{
+			if (ai_mat->GetTexture(
+				aiTextureType_NORMALS,
+				i,
+				&path) == AI_SUCCESS)
 			{
-				shininess = 20;
+				GLuint textureID = TextureLoader::LoadTexture(basePath + path.C_Str());
+
+				if (textureID)
+					SetTexture("normal_" + textureID, Texture_Normal, textureID);
 			}
-			if (ai_mat->Get(AI_MATKEY_SHININESS_STRENGTH, strength) != AI_SUCCESS)
+		}
+		for (int i = 0; i < ai_mat->GetTextureCount(aiTextureType_SPECULAR); ++i)
+		{
+			if (ai_mat->GetTexture(
+				aiTextureType_SPECULAR,
+				i,
+				&path) == AI_SUCCESS)
 			{
-				strength = 2;
+				GLuint textureID = TextureLoader::LoadTexture(basePath + path.C_Str());
+
+				if (textureID)
+					SetTexture("specular_" + textureID, Texture_Specular, textureID);
 			}
+		}
+		if (ai_mat->Get(AI_MATKEY_SHININESS, shininess) != AI_SUCCESS)
+		{
+			shininess = 20;
+		}
+		if (ai_mat->Get(AI_MATKEY_SHININESS_STRENGTH, strength) != AI_SUCCESS)
+		{
+			strength = 2;
 		}
 	}
 }

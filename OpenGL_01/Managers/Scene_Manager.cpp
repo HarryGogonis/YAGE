@@ -12,7 +12,9 @@ Scene_Manager::Scene_Manager(std::string scene_name)
 {
 	glEnable(GL_NORMALIZE);
 	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_CULL_FACE);
 
 	if (CULL_BACK)
 	{
@@ -25,7 +27,7 @@ Scene_Manager::Scene_Manager(std::string scene_name)
 	shader_manager = Shader_Factory::GetInstance();
 	shadow_manager = Shadow_Manager::GetInstance();
 	physics_manager = Physics_Manager::GetInstance();
-	
+	skybox = Skybox::GetInstance();
 }
 
 Scene_Manager::~Scene_Manager()
@@ -33,6 +35,7 @@ Scene_Manager::~Scene_Manager()
 	delete physics_manager;
 	delete shader_manager;
 	delete models_manager;
+	delete shadow_manager;
 }
 
 void Scene_Manager::SetupScene(const GameObjectsBuilder& gob)
@@ -42,9 +45,9 @@ void Scene_Manager::SetupScene(const GameObjectsBuilder& gob)
 
 void Scene_Manager::UpdatePass() const
 {
-	Camera::ComputeMatrices();
 	physics_manager->Step();
 	models_manager->Update();
+	skybox->Update();
 }
 
 
@@ -61,6 +64,8 @@ void Scene_Manager::RenderPass() const
 	glClearColor(0.0, 0.0, 0.0, 1.0);
 	physics_manager->DrawDebug();
 	models_manager->Draw();
+	skybox->Draw();
+
 }
 
 int Scene_Manager::GetDeltaTime()
